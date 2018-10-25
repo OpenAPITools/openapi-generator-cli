@@ -1,0 +1,15 @@
+#!/usr/bin/env node
+
+const {exec} = require('child_process');
+const {resolve} = require('path');
+
+const args = process.argv.slice(2);
+
+let command = 'java -jar ' + resolve(__dirname, 'openapi-generator.jar');
+
+if (args) {
+    command += ` ${args.join(' ')}`;
+}
+
+exec(command).stdout.pipe(process.stdout);
+exec(command).stderr.pipe(process.stderr);
