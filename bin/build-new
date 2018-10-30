@@ -1,0 +1,20 @@
+#!/usr/bin/env node
+
+/*
+    This script is called by travis once a day and checks the
+    [maven repository](https://mvnrepository.com/artifact/org.openapitools/openapi-generator-cli)
+    for a new version builds the package(s) for the new version(s).
+*/
+
+const lib = require('../lib');
+
+(async function () {
+    const downloadLinks = await lib.getOpenapiGeneratorCliDownloadLinks();
+    const alreadyPublishedVersions = await lib.getAlreadyPublishedVersions();
+
+    Object.entries(downloadLinks).forEach(([version, downloadLink]) => {
+        if (alreadyPublishedVersions.indexOf(version) === -1) {
+            lib.buildPackage(version, downloadLink);
+        }
+    });
+})();

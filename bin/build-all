@@ -1,0 +1,15 @@
+#!/usr/bin/env node
+
+/*
+    This script will re-build all packages
+*/
+
+const lib = require('../lib');
+
+(async function () {
+    const downloadLinks = await lib.getOpenapiGeneratorCliDownloadLinks();
+
+    Object.entries(downloadLinks).forEach(([version, downloadLink]) => {
+        lib.buildPackage(version, downloadLink);
+    });
+})();

@@ -11,5 +11,6 @@ if (args) {
     command += ` ${args.join(' ')}`;
 }
 
-exec(command).stdout.pipe(process.stdout);
-exec(command).stderr.pipe(process.stderr);
+const cmd = exec(command);
+cmd.stdout.pipe(process.stdout);
+cmd.stderr.pipe(process.stderr);

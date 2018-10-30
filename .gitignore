@@ -1,2 +1,4 @@
 .idea
+dist/
+node_modules/
 bin/openapi-generator.jar

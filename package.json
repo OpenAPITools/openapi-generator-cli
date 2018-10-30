@@ -1,7 +1,7 @@
 {
   "name": "@harmowatch/openapi-generator-cli",
-  "version": "3.3.1-alpha-3",
-  "description": "This is just a wrapper for the OpenAPI Generator (https://github.com/OpenAPITools/openapi-generator). The version of this package equals the version of the maven package",
+  "version": "0.0.1",
+  "description": "A npm package wrapper for https://github.com/OpenAPITools/openapi-generator",
   "private": false,
   "keywords": [
     "openapi",
@@ -21,12 +21,20 @@
     "openapi-generator": "./bin/openapi-generator"
   },
   "scripts": {
-    "publish:package": "npm publish ./ --access=public --registry https://registry.npmjs.org/"
+    "clean": "rimraf ./dist",
+    "build:all": "npm run clean && node bin/build-all",
+    "build:new": "npm run clean && node bin/build-new",
+    "publish": "node bin/publish"
   },
   "author": "HarmoWatch / Kay Schecker",
   "license": "MIT",
   "files": [
     "bin/openapi-generator",
-    "bin/openapi-generator.jar"
-  ]
+    "bin/openapi-generator.jar",
+    "README.md"
+  ],
+  "devDependencies": {
+    "fs-extra": "^7.0.0",
+    "rimraf": "^2.6.2"
+  }
 }
