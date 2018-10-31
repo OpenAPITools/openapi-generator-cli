@@ -8,5 +8,4 @@ install:
 
 script:
   - npm run build:new
-  - ls -la ./dist
   - npm run publish
