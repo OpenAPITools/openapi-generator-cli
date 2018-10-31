@@ -1,6 +1,6 @@
 {
   "name": "@harmowatch/openapi-generator-cli",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A npm package wrapper for https://github.com/OpenAPITools/openapi-generator",
   "private": false,
   "keywords": [
