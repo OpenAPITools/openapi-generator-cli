@@ -27,6 +27,14 @@
     "publish": "node bin/publish"
   },
   "author": "HarmoWatch / Kay Schecker",
+  "bugs": {
+    "url": "https://github.com/HarmoWatch/openapi-generator-cli/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HarmoWatch/openapi-generator-cli.git"
+  },
+  "homepage": "https://github.com/HarmoWatch/openapi-generator-cli#readme",
   "license": "Apache-2.0",
   "files": [
     "bin/openapi-generator",
