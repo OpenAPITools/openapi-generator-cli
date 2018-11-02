@@ -18,7 +18,7 @@ const {registry, tagPrefix} = config;
         return;
     }
 
-1    if ((await fs.readdir(path.resolve('./dist'))).length < 1) {
+    if ((await fs.readdir(path.resolve('./dist'))).length < 1) {
         console.log('No packages are built, aborting!');
         return;
     }
