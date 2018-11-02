@@ -1,0 +1,29 @@
+#!/usr/bin/env node
+
+/*
+    This script is called by travis once a day and checks the
+    [maven repository](https://mvnrepository.com/artifact/org.openapitools/openapi-generator-cli)
+    for a new version builds the package(s) for the new version(s).
+*/
+
+const lib = require('../lib');
+const {exec} = require('child_process');
+const compareVersions = require('compare-versions');
+const packageInfo = require('../package.json');
+
+const {registry} = lib.config;
+
+(async function tagLatest() {
+    exec(`npm dist-tag ls --registry ${registry}`, (error, stdout) => {
+        const latestVersion = stdout.split('\n')
+            .map(line => line.split(': ')[1])
+            .filter(v => !!v)
+            .sort(compareVersions).pop();
+
+        const cmd = exec(`npm dist-tag add ${packageInfo.name}@${latestVersion} latest --registry ${registry}`);
+        cmd.stdout.pipe(process.stdout);
+        cmd.stderr.pipe(process.stderr);
+    });
+
+    //console.log(latestVersion);
+})();

@@ -18,35 +18,20 @@ const {registry, tagPrefix} = config;
         return;
     }
 
-    const versions = (await fs.readdir(path.resolve('./dist'))).sort();
-
-    if (versions.length < 1) {
+1    if ((await fs.readdir(path.resolve('./dist'))).length < 1) {
         console.log('No packages are built, aborting!');
         return;
     }
 
-    const latestVersion = versions[versions.length - 1];
-
-    versions.forEach(version => {
-
+    const command = versions.map(version => {
+        const tag = `${tagPrefix}${version}`;
         const packageDir = path.resolve('./dist', version);
-        let tag = `${tagPrefix}${version}`;
+        return `npm publish ${packageDir} --access=public --registry ${registry} --tag ${tag}`;
+    }).join(' || ');
 
-        exec(`npm publish ${packageDir} --access=public --registry ${registry} --tag ${tag}`, (error, stdout) => {
-            if (error !== null) {
-                console.error(error);
-                return;
-            }
-
-            if (latestVersion === version) {
-                const packageInfo = require(path.resolve('./dist', latestVersion, 'package.json'));
-                exec(`npm dist-tag add ${packageInfo.name}@${packageInfo.version} latest --registry ${registry}`);
-            }
-
-            console.log(stdout);
-        });
-
-    });
+    const cmd = exec(command);
+    cmd.stdout.pipe(process.stdout);
+    cmd.stderr.pipe(process.stderr);
 
 })();
 
