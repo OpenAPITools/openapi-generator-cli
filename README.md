@@ -6,6 +6,12 @@
 [![Build Status](https://travis-ci.org/HarmoWatch/openapi-generator-cli.svg?branch=master)](https://travis-ci.org/HarmoWatch/openapi-generator-cli)
 [![HitCount](http://hits.dwyl.io/harmowatch/openapi-generator-cli.svg)](http://hits.dwyl.com/harmowatch/openapi-generator-cli)
 
+OpenAPI Generator allows generation of API client libraries (SDK generation), server stubs, documentation and 
+configuration automatically given an OpenAPI Spec (both 2.0 and 3.0 are supported). Please see
+[OpenAPITools/openapi-generator](https://github.com/OpenAPITools/openapi-generator)
+
+---
+
 This project checks the [maven repository](https://mvnrepository.com/artifact/org.openapitools/openapi-generator-cli) 
 once a day for a new version and will publish this new version automatically as an npm package.
 

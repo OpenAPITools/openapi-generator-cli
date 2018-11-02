@@ -47,6 +47,6 @@
     "rimraf": "2.6.2"
   },
   "dependencies": {
-    "compare-versions": "^3.4.0"
+    "compare-versions": "3.4.0"
   }
 }
