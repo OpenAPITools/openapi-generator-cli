@@ -1,39 +1,64 @@
 # @harmowatch/openapi-generator-cli
 
 This project checks the [maven repository](https://mvnrepository.com/artifact/org.openapitools/openapi-generator-cli) 
-once a day for a new version and automatically makes it available as an npm package.
+once a day for a new version and will publish this new version automatically as an npm package.
+
+**Thanks [openapitools.org](https://openapitools.org) for this awesome CLI!**
 
 ## Installation
 
-#### latest version
+There are several ways to install the package.
+
+#### Global Mode
+
+In global mode (ie, with -g or --global appended to the command), it installs the package as a global package. This 
+means that you'll get the `openapi-generator` command available on your command line interface (CLI) as well.
 
 ```sh
-npm install @harmowatch/openapi-generator-cli -D
+# install the latest version of "openapi-generator-cli"
+npm install @harmowatch/openapi-generator-cli -g
+
+# install a specific version of "openapi-generator-cli"
+npm install @harmowatch/openapi-generator-cli@cli-3.0.0 -g
 ```
 
-#### specific version
+After the installation has finished you can type for example:
 
 ```sh
+# this shall print the correct version number
+openapi-generator version
+```
+
+#### Package Mode
+
+It is recommended to install the package as development dependency, because normally you only need this dependency
+during the development process. To do that you can type the following:
+
+```sh
+# install the latest version of "openapi-generator-cli"
+npm install @harmowatch/openapi-generator-cli -D
+
+# install a specific version of "openapi-generator-cli"
 npm install @harmowatch/openapi-generator-cli@cli-3.0.0 -D
 ```
 
-or
-
-```sh
-npm install @harmowatch/openapi-generator-cli@cli-3.1.1 -D
-```
-
-## Usage
+After the installation has finished you can add a script like this:
 
 ```json
 {
-  "name": "your-cool-package",
+  "name": "my-cool-package",
   "version": "0.0.0",
   "scripts": {
-    "openapi-generator:generate": "openapi-generator generate -i docs/openapi.yaml -g typescript-angular -o generated-sources/openapi --additional-properties=\"ngVersion=6.1.7\"",
+    "my-awesome-script-name": "openapi-generator generate -i docs/openapi.yaml -g typescript-angular -o generated-sources/openapi --additional-properties=\"ngVersion=6.1.7\"",
   }
 }
 ```
 
-Further information about possible arguments you will find in the 
-[official openapi-generator docs](https://github.com/OpenAPITools/openapi-generator#3---usage).
+## Further Documentation
+
+Please refer to the [official openapi-generator docs](https://github.com/OpenAPITools/openapi-generator#3---usage) for
+more information about the possible arguments and a detailed usage manual of the command line interface.
+
+## You like the package?
+
+Please leave a star.
