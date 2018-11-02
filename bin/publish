@@ -23,11 +23,11 @@ const {registry, tagPrefix} = config;
         return;
     }
 
-    const command = versions.map(version => {
+    const command = (await fs.readdir(path.resolve('./dist'))).map(version => {
         const tag = `${tagPrefix}${version}`;
         const packageDir = path.resolve('./dist', version);
         return `npm publish ${packageDir} --access=public --registry ${registry} --tag ${tag}`;
-    }).join(' || ');
+    }).join(';');
 
     const cmd = exec(command);
     cmd.stdout.pipe(process.stdout);
