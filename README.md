@@ -1,5 +1,7 @@
 # @harmowatch/openapi-generator-cli
 
+[![Join the chat at https://gitter.im/openapi-generator-cli/Lobby](https://badges.gitter.im/openapi-generator-cli/Lobby.svg)](https://gitter.im/openapi-generator-cli/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 This project checks the [maven repository](https://mvnrepository.com/artifact/org.openapitools/openapi-generator-cli) 
 once a day for a new version and will publish this new version automatically as an npm package.
 
