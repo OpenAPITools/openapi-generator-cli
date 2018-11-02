@@ -1,5 +1,11 @@
 # @harmowatch/openapi-generator-cli
 
+[![Join the chat at https://gitter.im/harmowatch/openapi-generator-cli](https://badges.gitter.im/harmowatch/openapi-generator-cli.svg)](https://gitter.im/harmowatch/openapi-generator-cli?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
+[![Renovate enabled](https://img.shields.io/badge/renovate-enabled-brightgreen.svg)](https://renovateapp.com/)
+[![Build Status](https://travis-ci.org/HarmoWatch/openapi-generator-cli.svg?branch=master)](https://travis-ci.org/HarmoWatch/openapi-generator-cli)
+[![HitCount](http://hits.dwyl.io/harmowatch/openapi-generator-cli.svg)](http://hits.dwyl.com/harmowatch/openapi-generator-cli)
+
 This project checks the [maven repository](https://mvnrepository.com/artifact/org.openapitools/openapi-generator-cli) 
 once a day for a new version and will publish this new version automatically as an npm package.
 
