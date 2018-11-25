@@ -1,6 +1,6 @@
 {
-  "name": "@harmowatch/openapi-generator-cli",
-  "version": "0.0.3",
+  "name": "@openapitools/openapi-generator-cli",
+  "version": "0.0.6",
   "description": "A npm package wrapper for https://github.com/OpenAPITools/openapi-generator",
   "private": false,
   "keywords": [
@@ -28,13 +28,13 @@
   },
   "author": "HarmoWatch / Kay Schecker",
   "bugs": {
-    "url": "https://github.com/HarmoWatch/openapi-generator-cli/issues"
+    "url": "https://github.com/openapitools/openapi-generator-cli/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/HarmoWatch/openapi-generator-cli.git"
+    "url": "git+https://github.com/openapitools/openapi-generator-cli.git"
   },
-  "homepage": "https://github.com/HarmoWatch/openapi-generator-cli#readme",
+  "homepage": "https://github.com/openapitools/openapi-generator-cli#readme",
   "license": "Apache-2.0",
   "files": [
     "bin/openapi-generator",

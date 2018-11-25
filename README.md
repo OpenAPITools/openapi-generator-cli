@@ -1,10 +1,10 @@
-# @harmowatch/openapi-generator-cli
+# @openapitools/openapi-generator-cli
 
-[![Join the chat at https://gitter.im/harmowatch/openapi-generator-cli](https://badges.gitter.im/harmowatch/openapi-generator-cli.svg)](https://gitter.im/harmowatch/openapi-generator-cli?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Join the chat at https://gitter.im/OpenAPITools/openapi-generator](https://badges.gitter.im/OpenAPITools/openapi-generator.svg)](https://gitter.im/OpenAPITools/openapi-generator?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 [![Renovate enabled](https://img.shields.io/badge/renovate-enabled-brightgreen.svg)](https://renovateapp.com/)
-[![Build Status](https://travis-ci.org/HarmoWatch/openapi-generator-cli.svg?branch=master)](https://travis-ci.org/HarmoWatch/openapi-generator-cli)
-[![HitCount](http://hits.dwyl.io/harmowatch/openapi-generator-cli.svg)](http://hits.dwyl.com/harmowatch/openapi-generator-cli)
+[![Build Status](https://travis-ci.org/openapitools/openapi-generator-cli.svg?branch=master)](https://travis-ci.org/OpenAPITools/openapi-generator-cli)
+[![HitCount](http://hits.dwyl.io/openapitools/openapi-generator-cli.svg)](http://hits.dwyl.com/openapitools/openapi-generator-cli)
 
 OpenAPI Generator allows generation of API client libraries (SDK generation), server stubs, documentation and 
 configuration automatically given an OpenAPI Spec (both 2.0 and 3.0 are supported). Please see
@@ -28,10 +28,10 @@ means that you'll get the `openapi-generator` command available on your command 
 
 ```sh
 # install the latest version of "openapi-generator-cli"
-npm install @harmowatch/openapi-generator-cli -g
+npm install @openapitools/openapi-generator-cli -g
 
 # install a specific version of "openapi-generator-cli"
-npm install @harmowatch/openapi-generator-cli@cli-3.0.0 -g
+npm install @openapitools/openapi-generator-cli@cli-3.0.0 -g
 ```
 
 After the installation has finished you can type for example:
@@ -48,10 +48,10 @@ during the development process. To do that you can type the following:
 
 ```sh
 # install the latest version of "openapi-generator-cli"
-npm install @harmowatch/openapi-generator-cli -D
+npm install @openapitools/openapi-generator-cli -D
 
 # install a specific version of "openapi-generator-cli"
-npm install @harmowatch/openapi-generator-cli@cli-3.0.0 -D
+npm install @openapitools/openapi-generator-cli@cli-3.0.0 -D
 ```
 
 After the installation has finished you can add a script like this:
