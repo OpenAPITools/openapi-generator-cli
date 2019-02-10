@@ -4,8 +4,10 @@ const {exec} = require('child_process');
 const {resolve} = require('path');
 
 const args = process.argv.slice(2);
+const binPath = resolve(__dirname, 'openapi-generator.jar');
+const JAVA_OPTS = process.env['JAVA_OPTS'] || '';
 
-let command = 'java ' + (process.env['JAVA_OPTS'] || '') + ' -jar "' + resolve(__dirname, 'openapi-generator.jar') + '"';
+let command = `java ${JAVA_OPTS} -jar "${binPath}"`;
 
 if (args) {
     command += ` ${args.join(' ')}`;
