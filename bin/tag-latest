@@ -18,12 +18,15 @@ const {registry} = lib.config;
         const latestVersion = stdout.split('\n')
             .map(line => line.split(': ')[1])
             .filter(v => !!v)
+            .filter(v => !v.includes('beta'))
             .sort(compareVersions).pop();
+
+        console.log('latest version (excluding beta) is set to ' + latestVersion);
 
         const cmd = exec(`npm dist-tag add ${packageInfo.name}@${latestVersion} latest --registry ${registry}`);
         cmd.stdout.pipe(process.stdout);
         cmd.stderr.pipe(process.stderr);
     });
 
-    //console.log(latestVersion);
+    console.log('latest version = ' + latestVersion);
 })();
