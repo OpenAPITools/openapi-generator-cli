@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const {exec} = require('child_process');
+const {spawn} = require('child_process');
 const {resolve} = require('path');
 
 const args = process.argv.slice(2);
@@ -13,7 +13,5 @@ if (args) {
     command += ` ${args.join(' ')}`;
 }
 
-const cmd = exec(command);
-cmd.stdout.pipe(process.stdout);
-cmd.stderr.pipe(process.stderr);
+const cmd = spawn(command, { stdio: 'inherit', shell: true });
 cmd.on('exit', process.exit);
