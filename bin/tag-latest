@@ -27,6 +27,4 @@ const {registry} = lib.config;
         cmd.stdout.pipe(process.stdout);
         cmd.stderr.pipe(process.stderr);
     });
-
-    console.log('latest version = ' + latestVersion);
 })();
