@@ -12,3 +12,10 @@ install:
 script:
   - npm run build:new
   - npm run publish
+  # install the latest version of "openapi-generator-cli"
+  - npm install @openapitools/openapi-generator-cli -g
+  - openapi-generator version
+  - npm uninstall @openapitools/openapi-generator-cli -g
+  # install a specific version of "openapi-generator-cli"
+  - npm install @openapitools/openapi-generator-cli@cli-3.2.1 -g
+  - openapi-generator version
