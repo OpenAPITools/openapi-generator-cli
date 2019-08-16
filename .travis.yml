@@ -19,3 +19,6 @@ script:
   # install a specific version of "openapi-generator-cli"
   - npm install @openapitools/openapi-generator-cli@cli-3.2.1 -g
   - openapi-generator version
+  - npm uninstall @openapitools/openapi-generator-cli@cli-3.2.1 -g
+  # install the latest version of "openapi-generator-cli" (package mode)
+  - npm install @openapitools/openapi-generator-cli -D
