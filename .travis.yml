@@ -21,4 +21,4 @@ script:
   - openapi-generator version
   - npm uninstall @openapitools/openapi-generator-cli@cli-3.2.1 -g
   # install the latest version of "openapi-generator-cli" (package mode)
-  - npm install @openapitools/openapi-generator-cli -D
+  - cd /tmp/ && npm install @openapitools/openapi-generator-cli -D
