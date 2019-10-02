@@ -8,8 +8,13 @@ before_install:
 
 install:
   - npm install
+  - npm install -g codecov
 
 script:
+  # codecov
+  - istanbul cover ./node_modules/mocha/bin/_mocha --reporter lcovonly -- -R spec
+  - codecov
+  # publish the package
   - npm run build:new
   - npm run publish
   # install the latest version of "openapi-generator-cli"
