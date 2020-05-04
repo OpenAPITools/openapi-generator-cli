@@ -66,6 +66,19 @@ After the installation has finished you can add a script like this:
 }
 ```
 
+## Usage Example
+
+Mac/Linux:
+```
+openapi-generator generate -g ruby -i https://raw.githubusercontent.com/OpenAPITools/openapi-generator/master/modules/openapi-generator/src/test/resources/3_0/petstore.yaml -o /var/tmp/ruby-client
+```
+
+Windows:
+```
+openapi-generator generate -g ruby -i https://raw.githubusercontent.com/OpenAPITools/openapi-generator/master/modules/openapi-generator/src/test/resources/3_0/petstore.yaml -o C:\temp\ruby-client
+```
+
+
 ## Further Documentation
 
 Please refer to the [official openapi-generator docs](https://github.com/OpenAPITools/openapi-generator#3---usage) for
