@@ -61,10 +61,11 @@ After the installation has finished you can add a script like this:
   "name": "my-cool-package",
   "version": "0.0.0",
   "scripts": {
-    "my-awesome-script-name": "openapi-generator generate -i docs/openapi.yaml -g typescript-angular -o generated-sources/openapi --additional-properties=\"ngVersion=6.1.7\"",
+    "my-awesome-script-name": "openapi-generator generate -i docs/openapi.yaml -g typescript-angular -o generated-sources/openapi --additional-properties=ngVersion=6.1.7,npmName=restClient,supportsES6=true,npmVersion=6.9.0,withInterfaces=true",
   }
 }
 ```
+Note the whitespace sensitivity when using mulitiple additional-properties.
 
 ## Usage Example
 
@@ -77,7 +78,6 @@ Windows:
 ```
 openapi-generator generate -g ruby -i https://raw.githubusercontent.com/OpenAPITools/openapi-generator/master/modules/openapi-generator/src/test/resources/3_0/petstore.yaml -o C:\temp\ruby-client
 ```
-
 
 ## Further Documentation
 
