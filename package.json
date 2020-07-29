@@ -24,7 +24,8 @@
     "clean": "rimraf ./dist",
     "build:all": "npm run clean && node bin/build-all",
     "build:new": "npm run clean && node bin/build-new",
-    "publish": "node bin/publish && node bin/tag-latest"
+    "publish": "node bin/publish && node bin/tag-latest",
+    "lint": "eslint --fix lib/*.js"
   },
   "author": "HarmoWatch / Kay Schecker",
   "bugs": {
@@ -43,10 +44,11 @@
     "LICENSE"
   ],
   "devDependencies": {
-    "fs-extra": "7.0.1",
-    "rimraf": "2.6.2"
+    "eslint": "^7.5.0",
+    "fs-extra": "^9.0.1",
+    "rimraf": "3.0.2"
   },
   "dependencies": {
-    "compare-versions": "3.4.0"
+    "compare-versions": "^3.6.0"
   }
 }
