@@ -1,6 +1,6 @@
 {
   "name": "@openapitools/openapi-generator-cli",
-  "version": "1.0.15",
+  "version": "1.1.0",
   "description": "A npm package wrapper for OpenAPI Generator (https://github.com/OpenAPITools/openapi-generator), generates which API client libraries (SDK generation), server stubs, documentation and configuration automatically given an OpenAPI Spec (v2, v3)",
   "private": false,
   "keywords": [
