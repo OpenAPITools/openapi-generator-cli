@@ -27,7 +27,7 @@
     "publish": "node bin/publish && node bin/tag-latest",
     "lint": "./node_modules/.bin/eslint --fix lib/*.js"
   },
-  "author": "HarmoWatch / Kay Schecker",
+  "author": "OpenAPI Tools / Kay Schecker",
   "bugs": {
     "url": "https://github.com/openapitools/openapi-generator-cli/issues"
   },
@@ -49,6 +49,8 @@
     "rimraf": "3.0.2"
   },
   "dependencies": {
-    "compare-versions": "^3.6.0"
+    "compare-versions": "^3.6.0",
+    "concurrently": "^5.3.0",
+    "glob": "^7.1.6"
   }
 }

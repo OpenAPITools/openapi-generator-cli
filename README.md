@@ -57,6 +57,7 @@ npm install @openapitools/openapi-generator-cli@cli-3.0.0 -D
 After the installation has finished you can add a script like this:
 
 ```json
+// package.json
 {
   "name": "my-cool-package",
   "version": "0.0.0",
@@ -66,6 +67,88 @@ After the installation has finished you can add a script like this:
 }
 ```
 Note the whitespace sensitivity when using mulitiple additional-properties.
+
+#### Configuration File
+
+It is also possible to store configurations for code generation in the package.json:
+
+```json
+// package.json
+{
+  "name": "my-cool-package",
+  "version": "0.0.0",
+  "scripts": {
+    "my-awesome-script-name": "openapi-generator" // (1) call openapi-generator without args
+  },
+  "openapi-generator": { // (2) add openapi-generator node
+    "docs/*.yaml": [ // (3) define a glob pattern
+      { // (4) configure generators
+        "generator-name": "typescript-angular",
+        "output": "#{root}/generated-sources/openapi/typescript-angular/#{name}",
+        "additional-properties": {
+          "fileNaming": "kebab-case",
+          "apiModulePrefix": "#{Name}",
+          "npmName": "#{name}RestClient",
+          "supportsES6": true,
+          "withInterfaces": true
+        }
+      },
+      {
+        "generator-name": "typescript-fetch",
+        "output": "#{root}/generated-sources/openapi/typescript-fetch/#{name}"
+      }
+    ]
+  }
+}
+```
+
+If you don't want to do the configuration in the package.json, you can put it into a separate file:
+
+```json
+// package.json
+{
+  "name": "my-cool-package",
+  "version": "0.0.0",
+  "scripts": {
+    "my-awesome-script-name": "openapi-generator openapi-generator.json" // (1) call openapi-generator config path
+  }
+}
+
+// openapi-generator.json // (2) create file
+{
+  "docs/*.yaml": [
+    {
+      "generator-name": "typescript-angular",
+      "output": "#{root}/generated-sources/openapi/typescript-angular/#{name}",
+      "additional-properties": {
+        "fileNaming": "kebab-case",
+        "apiModulePrefix": "#{Name}",
+        "npmName": "#{name}RestClient",
+        "supportsES6": true,
+        "withInterfaces": true
+      }
+    },
+    {
+      "generator-name": "typescript-fetch",
+      "output": "#{root}/generated-sources/openapi/typescript-fetch/#{name}"
+    }
+  ]
+}
+```
+
+##### Executing Command Placeholders
+     
+| placeholder  | description                                                   | example                                               |
+|--------------|---------------------------------------------------------------|-------------------------------------------------------|
+| name         | just file name                                                | auth                                                  |
+| Name         | just file name, but starting with a capital letter            | Auth                                                  |
+| root         | file root                                                     | /Users/some-user/projects/some-project                |
+| base         | file name and extension                                       | auth.yaml                                             |
+| path         | full path and filename                                        | /Users/some-user/projects/some-project/docs/auth.yaml |
+| dir          | path without the filename                                     | /Users/some-user/projects/some-project/docs           |
+| reldir       | directory name of file relative to the glob provided          | docs                                                  |
+| relpath      | file name and extension of file relative to the glob provided | docs/auth.yaml                                        |
+| ext          | just file extension                                           | yaml                                                  |
 
 ## Usage Example
 
