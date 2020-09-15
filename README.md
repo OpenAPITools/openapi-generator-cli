@@ -78,11 +78,11 @@ It is also possible to store configurations for code generation in the package.j
   "name": "my-cool-package",
   "version": "0.0.0",
   "scripts": {
-    "my-awesome-script-name": "openapi-generator" // (1) call openapi-generator without args
+    "my-awesome-script-name": "openapi-generator"
   },
-  "openapi-generator": { // (2) add openapi-generator node
-    "docs/*.yaml": [ // (3) define a glob pattern
-      { // (4) configure generators
+  "openapi-generator": {
+    "docs/*.yaml": [
+      {
         "generator-name": "typescript-angular",
         "output": "#{root}/generated-sources/openapi/typescript-angular/#{name}",
         "additional-properties": {
@@ -110,11 +110,11 @@ If you don't want to do the configuration in the package.json, you can put it in
   "name": "my-cool-package",
   "version": "0.0.0",
   "scripts": {
-    "my-awesome-script-name": "openapi-generator openapi-generator.json" // (1) call openapi-generator config path
+    "my-awesome-script-name": "openapi-generator openapi-generator.json"
   }
 }
 
-// openapi-generator.json // (2) create file
+// openapi-generator.json
 {
   "docs/*.yaml": [
     {
