@@ -37,25 +37,16 @@ export class VersionManagerService {
 
     return this.httpService.get(queryUrl).pipe(
       map(({data}) => data.response.docs),
-      map(docs => docs.map((doc) => {
-        const versionTags = [];
-        const group = replace(mvn.group, '.', '/');
-        const artifact = replace(mvn.artifact, '.', '/');
-
-        if (doc.v.match(/^[0-9]+\.[0-9]+\.[0-9]+$/)) {
-          versionTags.push('stable', doc.v)
-        } else {
-          versionTags.push(...(doc.v.match(/(^[0-9]+\.[0-9]+\.[0-9]+)\-(([a-z]+)[0-9]?)$/) || []))
-        }
-
-        return ({
-          version: doc.v,
-          versionTags,
-          releaseDate: new Date(doc.timestamp),
-          installed: this.isInstalled(doc.v),
-          downloadLink: `https://repo1.maven.org/maven2/${group}/${artifact}/${doc.v}/${artifact}-${doc.v}.jar`,
-        });
-      })),
+      map(docs => docs.map((doc) => ({
+        version: doc.v,
+        versionTags: [
+          ...(doc.v.match(/^[0-9]+\.[0-9]+\.[0-9]+$/)?.concat('stable') || []),
+          ...(doc.v.match(/(^[0-9]+\.[0-9]+\.[0-9]+)\-(([a-z]+)[0-9]?)$/) || [])
+        ],
+        releaseDate: new Date(doc.timestamp),
+        installed: this.isInstalled(doc.v),
+        downloadLink: this.createDownloadLink(doc.v),
+      }))),
       map(versions => {
         const latestVersion = this.filterVersionsByTags(versions, ['stable'])
           .sort((l, r) => compare(l.version, r.version)).pop()

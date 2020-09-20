@@ -34,7 +34,7 @@ describe('VersionManagerService', () => {
       installed: true,
       releaseDate: new Date(1599197918000),
       version: '4.2.0',
-      versionTags: ['stable', '4.2.0']
+      versionTags: ['4.2.0', 'stable']
     },
     '5.0.0-beta': {
       downloadLink: 'https://repo1.maven.org/maven2/org/openapitools/openapi-generator-cli/5.0.0-beta/openapi-generator-cli-5.0.0-beta.jar',
@@ -48,7 +48,7 @@ describe('VersionManagerService', () => {
       installed: false,
       releaseDate: new Date(1588758220000),
       version: '4.3.1',
-      versionTags: ['stable', '4.3.1', 'latest']
+      versionTags: ['4.3.1', 'stable', 'latest']
     },
     '5.0.0-beta2': {
       downloadLink: 'https://repo1.maven.org/maven2/org/openapitools/openapi-generator-cli/5.0.0-beta2/openapi-generator-cli-5.0.0-beta2.jar',
