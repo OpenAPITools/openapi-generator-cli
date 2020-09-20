@@ -2,7 +2,7 @@ import {Test} from '@nestjs/testing';
 import {Version, VersionManagerService} from './version-manager.service';
 import {HttpService} from '@nestjs/common';
 import {of} from 'rxjs';
-import {mocked} from 'ts-jest';
+import {mocked} from 'ts-jest/utils';
 
 jest.mock('fs-extra');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
