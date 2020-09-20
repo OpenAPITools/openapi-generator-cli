@@ -1,0 +1,1 @@
+export const COMMANDER_PROGRAM = Symbol('COMMANDER_PROGRAM')

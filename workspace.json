@@ -14,7 +14,8 @@
             "outputPath": "dist/apps/generator-cli",
             "main": "apps/generator-cli/src/main.ts",
             "tsConfig": "apps/generator-cli/tsconfig.app.json",
-            "assets": ["apps/generator-cli/src/assets"]
+            "assets": ["apps/generator-cli/src/assets"],
+            "webpackConfig": "apps/generator-cli/webpack.config.js"
           },
           "configurations": {
             "production": {
