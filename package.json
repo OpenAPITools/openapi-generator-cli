@@ -1,56 +1,58 @@
 {
-  "name": "@openapitools/openapi-generator-cli",
-  "version": "1.1.0",
-  "description": "A npm package wrapper for OpenAPI Generator (https://github.com/OpenAPITools/openapi-generator), generates which API client libraries (SDK generation), server stubs, documentation and configuration automatically given an OpenAPI Spec (v2, v3)",
-  "private": false,
-  "keywords": [
-    "rest-api",
-    "rest-client",
-    "sdk",
-    "generator",
-    "restful-api",
-    "api",
-    "api-client",
-    "api-server",
-    "openapi3",
-    "openapi",
-    "oas",
-    "rest"
-  ],
-  "bin": {
-    "openapi-generator": "./bin/openapi-generator"
-  },
+  "name": "openapitools",
+  "version": "0.0.0",
+  "license": "MIT",
   "scripts": {
-    "clean": "rimraf ./dist",
-    "build:all": "npm run clean && node bin/build-all",
-    "build:new": "npm run clean && node bin/build-new",
-    "publish": "node bin/publish && node bin/tag-latest",
-    "lint": "./node_modules/.bin/eslint --fix lib/*.js"
+    "nx": "nx",
+    "start": "nx serve",
+    "build": "nx build",
+    "test": "nx test",
+    "lint": "nx workspace-lint && nx lint",
+    "e2e": "nx e2e",
+    "affected:apps": "nx affected:apps",
+    "affected:libs": "nx affected:libs",
+    "affected:build": "nx affected:build",
+    "affected:e2e": "nx affected:e2e",
+    "affected:test": "nx affected:test",
+    "affected:lint": "nx affected:lint",
+    "affected:dep-graph": "nx affected:dep-graph",
+    "affected": "nx affected",
+    "format": "nx format:write",
+    "format:write": "nx format:write",
+    "format:check": "nx format:check",
+    "update": "nx migrate latest",
+    "workspace-schematic": "nx workspace-schematic",
+    "dep-graph": "nx dep-graph",
+    "help": "nx help"
   },
-  "author": "OpenAPI Tools / Kay Schecker",
-  "bugs": {
-    "url": "https://github.com/openapitools/openapi-generator-cli/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/openapitools/openapi-generator-cli.git"
-  },
-  "homepage": "https://github.com/openapitools/openapi-generator-cli#readme",
-  "license": "Apache-2.0",
-  "files": [
-    "bin/openapi-generator",
-    "bin/openapi-generator.jar",
-    "README.md",
-    "LICENSE"
-  ],
-  "devDependencies": {
-    "eslint": "^7.5.0",
-    "fs-extra": "^9.0.1",
-    "rimraf": "3.0.2"
-  },
+  "private": true,
   "dependencies": {
-    "compare-versions": "^3.6.0",
-    "concurrently": "^5.3.0",
-    "glob": "^7.1.6"
+    "@nestjs/common": "^7.0.0",
+    "@nestjs/core": "^7.0.0",
+    "@nestjs/platform-express": "^7.0.0",
+    "reflect-metadata": "^0.1.13",
+    "rxjs": "~6.5.5"
+  },
+  "devDependencies": {
+    "@nrwl/workspace": "10.2.1",
+    "@types/node": "~8.9.4",
+    "dotenv": "6.2.0",
+    "ts-node": "~7.0.0",
+    "tslint": "~6.0.0",
+    "eslint": "6.8.0",
+    "typescript": "~3.9.3",
+    "prettier": "2.0.4",
+    "@nrwl/nest": "10.2.1",
+    "@nrwl/jest": "10.2.1",
+    "jest": "26.2.2",
+    "@types/jest": "26.0.8",
+    "ts-jest": "26.1.4",
+    "@nrwl/node": "10.2.1",
+    "@nestjs/schematics": "^7.0.0",
+    "@nestjs/testing": "^7.0.0",
+    "@nrwl/eslint-plugin-nx": "10.2.1",
+    "@typescript-eslint/parser": "2.19.2",
+    "@typescript-eslint/eslint-plugin": "2.19.2",
+    "eslint-config-prettier": "6.0.0"
   }
 }
