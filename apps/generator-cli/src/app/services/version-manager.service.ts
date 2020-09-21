@@ -43,7 +43,7 @@ export class VersionManagerService {
         version: doc.v,
         versionTags: [
           ...(doc.v.match(/^[0-9]+\.[0-9]+\.[0-9]+$/)?.concat('stable') || []),
-          ...(doc.v.match(/(^[0-9]+\.[0-9]+\.[0-9]+)\-(([a-z]+)[0-9]?)$/) || [])
+          ...(doc.v.match(/(^[0-9]+\.[0-9]+\.[0-9]+)-(([a-z]+)[0-9]?)$/) || [])
         ],
         releaseDate: new Date(doc.timestamp),
         installed: this.isInstalled(doc.v),
@@ -72,14 +72,15 @@ export class VersionManagerService {
     const filePath = path.resolve(this.storage, `${versionName}.jar`)
 
     try {
-      await this.httpService.get<Stream>(downloadLink, {responseType: 'stream'}).pipe(switchMap(res => {
-        return new Promise(resolve => {
-          fs.ensureDirSync(this.storage)
-          const file = fs.createWriteStream(filePath);
-          res.data.pipe(file)
-          res.data.on('end', resolve);
-        })
-      })).toPromise()
+      await this.httpService
+        .get<Stream>(downloadLink, {responseType: 'stream'})
+        .pipe(switchMap(res => new Promise(resolve => {
+            fs.ensureDirSync(this.storage)
+            const file = fs.createWriteStream(filePath);
+            res.data.pipe(file)
+            res.data.on('end', resolve);
+          })
+        )).toPromise()
 
       this.logger.log(chalk.green(`Installed ${versionName}`))
       return true
