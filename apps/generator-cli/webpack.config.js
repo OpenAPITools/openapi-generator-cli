@@ -3,7 +3,7 @@ const webpack = require('webpack')
 
 module.exports = (config) => {
   const basePackageValues = {
-    version: version + '-beta2',
+    version: version + '-beta5',
     keywords,
     private,
     name: `@${name}/openapi-generator-cli`,

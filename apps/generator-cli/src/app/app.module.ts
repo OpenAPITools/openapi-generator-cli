@@ -4,6 +4,7 @@ import {COMMANDER_PROGRAM, LOGGER} from './constants';
 import {Command} from 'commander';
 import {VersionManagerController} from './controllers/version-manager.controller';
 import {UIService, VersionManagerService} from './services';
+import {ConfigService} from './services/config.service';
 
 @Module({
   imports: [HttpModule],
@@ -12,6 +13,7 @@ import {UIService, VersionManagerService} from './services';
   ],
   providers: [
     UIService,
+    ConfigService,
     VersionManagerService,
     {provide: COMMANDER_PROGRAM, useValue: new Command()},
     {provide: LOGGER, useValue: console}

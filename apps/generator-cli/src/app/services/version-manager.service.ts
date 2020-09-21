@@ -8,6 +8,7 @@ import * as Stream from 'stream';
 import * as chalk from 'chalk';
 import * as compare from 'compare-versions'
 import {LOGGER} from '../constants';
+import {ConfigService} from './config.service';
 
 export interface Version {
   version: string
@@ -31,6 +32,7 @@ export class VersionManagerService {
   constructor(
     @Inject(LOGGER) private readonly logger: LOGGER,
     private httpService: HttpService,
+    private configService: ConfigService,
   ) {
   }
 
@@ -67,11 +69,13 @@ export class VersionManagerService {
   }
 
   getSelectedVersion() {
-    return '4.3.0'
+    return this.configService.get('generator-cli.version')
   }
 
   async setSelectedVersion(versionName: string) {
-
+    await this.downloadIfNeeded(versionName)
+    this.configService.set('generator-cli.version', versionName)
+    this.logger.log(chalk.green(`Did set selected version to ${versionName}`))
   }
 
   async remove(versionName: string) {
