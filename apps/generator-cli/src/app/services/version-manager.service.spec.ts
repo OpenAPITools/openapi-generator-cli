@@ -174,25 +174,6 @@ describe('VersionManagerService', () => {
 
     })
 
-    describe('isInstalled()', () => {
-
-      it('returns true, if the file exists', () => {
-        fs.existsSync.mockReturnValue(true)
-        expect(fixture.isInstalled('4.3.1')).toBeTruthy()
-      })
-
-      it('returns false, if the file does not exists', () => {
-        fs.existsSync.mockReturnValue(false)
-        expect(fixture.isInstalled('4.3.1')).toBeFalsy()
-      })
-
-      it('provides the correct file path', () => {
-        fixture.isInstalled('4.3.1')
-        expect(fs.existsSync).toHaveBeenNthCalledWith(1, fixture.storage + '/4.3.1.jar')
-      })
-
-    })
-
     describe('isSelectedVersion()', () => {
 
       it('return true if equal to the selected version', () => {
@@ -342,6 +323,79 @@ describe('VersionManagerService', () => {
 
         })
 
+      })
+
+    })
+
+    describe('downloadIfNeeded()', () => {
+
+      let downloadSpy: jest.SpyInstance
+      let isDownloadedSpy: jest.SpyInstance
+
+      beforeEach(() => {
+        isDownloadedSpy = jest.spyOn(fixture, 'isDownloaded').mockReset()
+        downloadSpy = jest.spyOn(fixture, 'download').mockReset()
+      })
+
+      describe('the version exists', () => {
+
+        let returnValue: boolean
+
+        beforeEach(async () => {
+          isDownloadedSpy.mockReturnValueOnce(true)
+          returnValue = await fixture.downloadIfNeeded('4.2.0');
+        })
+
+        it('does not call download', () => {
+          expect(downloadSpy).toBeCalledTimes(0)
+        })
+
+        it('returns true', () => {
+          expect(returnValue).toBeTruthy()
+        })
+
+      })
+
+      describe('the version does not exists', () => {
+
+        beforeEach(async () => {
+          isDownloadedSpy.mockReturnValueOnce(false)
+          await fixture.downloadIfNeeded('4.2.0');
+        })
+
+        it('calls download once', () => {
+          expect(downloadSpy).toHaveBeenNthCalledWith(1, '4.2.0')
+        })
+
+        it('returns true, if download return true', async () => {
+          downloadSpy.mockReturnValueOnce(true)
+          expect(await fixture.downloadIfNeeded('4.2.0')).toBeTruthy()
+        })
+
+        it('returns true, if download return true', async () => {
+          downloadSpy.mockReturnValueOnce(false)
+          expect(await fixture.downloadIfNeeded('4.2.0')).toBeFalsy()
+        })
+
+      })
+
+    })
+
+    describe('isDownloaded()', () => {
+
+      it('returns true, if the file exists', () => {
+        fs.existsSync.mockReturnValue(true)
+        expect(fixture.isDownloaded('4.3.1')).toBeTruthy()
+      })
+
+      it('returns false, if the file does not exists', () => {
+        fs.existsSync.mockReturnValue(false)
+        expect(fixture.isDownloaded('4.3.1')).toBeFalsy()
+      })
+
+      it('provides the correct file path', () => {
+        fixture.isDownloaded('4.3.1')
+        expect(fs.existsSync).toHaveBeenNthCalledWith(1, fixture.storage + '/4.3.1.jar')
       })
 
     })

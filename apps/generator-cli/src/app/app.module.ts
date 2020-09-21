@@ -27,19 +27,15 @@ export class AppModule implements OnApplicationBootstrap {
 
   onApplicationBootstrap = async () => {
 
-    const cfg = {version: this.versionManager.getSelectedVersion()};
+    let selectedVersion = this.versionManager.getSelectedVersion()
 
-    if (!cfg.version) {
-      const [latestVersion] = await this.versionManager.search(['latest']).toPromise()
-      cfg.version = latestVersion.version
+    if (!selectedVersion) {
+      const [{version}] = await this.versionManager.search(['latest']).toPromise()
+      await this.versionManager.setSelectedVersion(version)
+      selectedVersion = version
     }
 
-    if (!this.versionManager.isInstalled(cfg.version)) {
-      if (!await this.versionManager.download(cfg.version)) {
-        return
-      }
-    }
-
+    await this.versionManager.downloadIfNeeded(selectedVersion)
     this.program.parse(process.argv)
 
   };

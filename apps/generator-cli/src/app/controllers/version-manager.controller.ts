@@ -43,7 +43,7 @@ export class VersionManagerController {
       await this.service.download(versions[0].version)
     } else if (versions.length > 1) {
       const version = await this.table(true, versions)
-      const installed = await this.service.isInstalled(version.version)
+      const installed = await this.service.isDownloaded(version.version)
       const inUse = await this.service.isSelectedVersion(version.version)
 
       const choices = [{

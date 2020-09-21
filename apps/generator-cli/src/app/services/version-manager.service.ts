@@ -46,7 +46,7 @@ export class VersionManagerService {
           ...(doc.v.match(/(^[0-9]+\.[0-9]+\.[0-9]+)-(([a-z]+)[0-9]?)$/) || [])
         ],
         releaseDate: new Date(doc.timestamp),
-        installed: this.isInstalled(doc.v),
+        installed: this.isDownloaded(doc.v),
         downloadLink: this.createDownloadLink(doc.v),
       }))),
       map(versions => {
@@ -62,16 +62,16 @@ export class VersionManagerService {
     return this.getAll().pipe(map(versions => this.filterVersionsByTags(versions, tags)))
   }
 
-  isInstalled(versionName: string) {
-    return fs.existsSync(path.resolve(this.storage, `${versionName}.jar`))
-  }
-
   isSelectedVersion(versionName: string) {
     return versionName === this.getSelectedVersion()
   }
 
   getSelectedVersion() {
     return '4.3.0'
+  }
+
+  async setSelectedVersion(versionName: string) {
+
   }
 
   async delete(versionName: string) {
@@ -101,6 +101,14 @@ export class VersionManagerService {
       this.logger.log(chalk.red(`Installation failed, because of: "${e.message}"`))
       return false
     }
+  }
+
+  async downloadIfNeeded(versionName: string) {
+    return this.isDownloaded(versionName) || this.download(versionName)
+  }
+
+  isDownloaded(versionName: string) {
+    return fs.existsSync(path.resolve(this.storage, `${versionName}.jar`))
   }
 
   private filterVersionsByTags(versions: Version[], tags: string[]) {
