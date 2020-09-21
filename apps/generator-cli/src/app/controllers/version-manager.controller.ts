@@ -37,29 +37,18 @@ export class VersionManagerController {
     const {version} = await this.table(true, versions)
     const downloaded = await this.service.isDownloaded(version)
     const isSelected = await this.service.isSelectedVersion(version)
+    const choice = (name: string, cb = () => null, color = v => v) => ({name: color(name), value: cb})
 
-    const choices = [{
-      name: 'exit',
-      value: () => null,
-    }]
+    const choices = [choice('exit')]
 
     if (!downloaded) {
-      choices.unshift({
-        name: chalk.yellow('download'),
-        value: () => this.service.download(version),
-      })
+      choices.unshift(choice('download', () => this.service.download(version), chalk.yellow))
     } else if (!isSelected) {
-      choices.unshift({
-        name: chalk.red('delete'),
-        value: () => this.service.remove(version),
-      })
+      choices.unshift(choice('remove', () => this.service.remove(version), chalk.red))
     }
 
     if (!isSelected) {
-      choices.unshift({
-        name: chalk.green('use'),
-        value: () => this.service.setSelectedVersion(version),
-      })
+      choices.unshift(choice('use', () => this.service.setSelectedVersion(version), chalk.green))
     }
 
     await (await this.ui.list({
