@@ -3,7 +3,7 @@ const webpack = require('webpack')
 
 module.exports = (config) => {
   const basePackageValues = {
-    version: version + '-beta5',
+    version: version + '-beta8',
     keywords,
     private,
     name: `@${name}/openapi-generator-cli`,
@@ -11,10 +11,6 @@ module.exports = (config) => {
     main: "./main.js",
     bin: {
       "openapi-generator-cli": "./main.js"
-    },
-    scripts: {
-      install: 'echo "INSTALL CALLED"',
-      postinstall: 'echo "POST INSTALL CALLED"'
     },
     files: [
       'main.js',
@@ -30,6 +26,9 @@ module.exports = (config) => {
     }),
     new GeneratePackageJsonPlugin(basePackageValues, versionsPackageFilename, {
       useInstalledVersions: true,
+      additionalDependencies: {
+        'reflect-metadata': '0.1.13',
+      }
     })
   )
 
