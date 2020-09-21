@@ -8,12 +8,12 @@ jobs:
     - stage: test
       name: "Lint"
       language: node_js
-      script: npm run lint
+      script: yarn run lint
 
     - # stage name not required, will continue to use `test`
       name: "Test"
       language: node_js
-      script: npm test
+      script: yarn test
 
     - stage: deploy
       if: type IN (push) and branch IN (master, develop)
@@ -21,4 +21,4 @@ jobs:
       os: osx
       language: node_js
       script:
-        - npm run build
+        - yarn run build

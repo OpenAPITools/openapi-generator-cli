@@ -20,7 +20,7 @@ export class PassTroughService {
       .split('\n')
       .filter(line => startsWith(line, ' '))
       .map(trim)
-      .map(line => line.match(/^([a-z\-]+)\s+(.+)/i).slice(1))
+      .map(line => line.match(/^([a-z-]+)\s+(.+)/i).slice(1))
       .forEach(([command, desc]) => {
         this.program.command(command).description(desc).action((cmd: Command) => {
 
