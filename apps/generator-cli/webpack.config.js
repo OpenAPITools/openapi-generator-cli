@@ -10,7 +10,7 @@ module.exports = (config) => {
     description: 'A npm package wrapper for OpenAPI Generator (https://github.com/OpenAPITools/openapi-generator), generates which API client libraries (SDK generation), server stubs, documentation and configuration automatically given an OpenAPI Spec (v2, v3)',
     main: "./main.js",
     bin: {
-      "openapi-generator": "./main.js"
+      "openapi-generator-cli": "./main.js"
     },
     scripts: {
       install: 'echo "INSTALL CALLED"',

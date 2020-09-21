@@ -69,7 +69,7 @@ export class VersionManagerService {
   }
 
   getSelectedVersion() {
-    return this.configService.get('generator-cli.version')
+    return this.configService.get<string>('generator-cli.version')
   }
 
   async setSelectedVersion(versionName: string) {
@@ -131,7 +131,7 @@ export class VersionManagerService {
     return `https://repo1.maven.org/maven2/${group}/${artifact}/${versionName}/${artifact}-${versionName}.jar`
   }
 
-  private filePath(versionName: string) {
+  public filePath(versionName: string) {
     return path.resolve(this.storage, `${versionName}.jar`)
   }
 

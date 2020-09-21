@@ -10,7 +10,7 @@ export class VersionManagerController {
 
   private readonly mainCommand = this.program
     .command('version-manager')
-    .alias('vm')
+    .description('Manage used / installed generator version')
 
   private readonly listCommand = this.mainCommand
     .command('list [versionTags...]')

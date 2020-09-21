@@ -3,7 +3,7 @@ import {HttpModule, Inject, Module, OnApplicationBootstrap} from '@nestjs/common
 import {COMMANDER_PROGRAM, LOGGER} from './constants';
 import {Command} from 'commander';
 import {VersionManagerController} from './controllers/version-manager.controller';
-import {UIService, VersionManagerService} from './services';
+import {PassTroughService, UIService, VersionManagerService} from './services';
 import {ConfigService} from './services/config.service';
 
 @Module({
@@ -14,8 +14,12 @@ import {ConfigService} from './services/config.service';
   providers: [
     UIService,
     ConfigService,
+    PassTroughService,
     VersionManagerService,
-    {provide: COMMANDER_PROGRAM, useValue: new Command()},
+    {
+      provide: COMMANDER_PROGRAM,
+      useValue: new Command('openapi-generator-cli').helpOption(false).usage('<command> [<args>]')
+    },
     {provide: LOGGER, useValue: console}
   ],
 })
@@ -24,6 +28,7 @@ export class AppModule implements OnApplicationBootstrap {
   constructor(
     @Inject(COMMANDER_PROGRAM) private readonly program: Command,
     private readonly versionManager: VersionManagerService,
+    private readonly passTroughService: PassTroughService,
   ) {
   }
 
@@ -38,6 +43,7 @@ export class AppModule implements OnApplicationBootstrap {
     }
 
     await this.versionManager.downloadIfNeeded(selectedVersion)
+    await this.passTroughService.init()
     this.program.parse(process.argv)
 
   };
