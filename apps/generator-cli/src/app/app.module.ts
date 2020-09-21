@@ -1,6 +1,6 @@
 import {HttpModule, Inject, Module, OnApplicationBootstrap} from '@nestjs/common';
 
-import {COMMANDER_PROGRAM} from './constants';
+import {COMMANDER_PROGRAM, LOGGER} from './constants';
 import {Command} from 'commander';
 import {VersionManagerController} from './controllers/version-manager.controller';
 import {VersionManagerService} from './services/version-manager.service';
@@ -14,9 +14,8 @@ import {UIService} from './services/ui.service';
   providers: [
     UIService,
     VersionManagerService,
-    {
-      provide: COMMANDER_PROGRAM, useValue: new Command()
-    }
+    {provide: COMMANDER_PROGRAM, useValue: new Command()},
+    {provide: LOGGER, useValue: console}
   ],
 })
 export class AppModule implements OnApplicationBootstrap {
