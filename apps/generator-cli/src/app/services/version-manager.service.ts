@@ -66,10 +66,23 @@ export class VersionManagerService {
     return fs.existsSync(path.resolve(this.storage, `${versionName}.jar`))
   }
 
+  isSelectedVersion(versionName: string) {
+    return versionName === this.getSelectedVersion()
+  }
+
+  getSelectedVersion() {
+    return '4.3.0'
+  }
+
+  async delete(versionName: string) {
+    fs.removeSync(this.filePath(versionName))
+    this.logger.log(chalk.green(`Deleted ${versionName}`))
+  }
+
   async download(versionName: string) {
     this.logger.log(chalk.yellow(`Install ${versionName} ...`))
     const downloadLink = this.createDownloadLink(versionName)
-    const filePath = path.resolve(this.storage, `${versionName}.jar`)
+    const filePath = this.filePath(versionName)
 
     try {
       await this.httpService
@@ -104,6 +117,10 @@ export class VersionManagerService {
     const group = replace(mvn.group, '.', '/');
     const artifact = replace(mvn.artifact, '.', '/');
     return `https://repo1.maven.org/maven2/${group}/${artifact}/${versionName}/${artifact}-${versionName}.jar`
+  }
+
+  private filePath(versionName: string) {
+    return path.resolve(this.storage, `${versionName}.jar`)
   }
 
 }

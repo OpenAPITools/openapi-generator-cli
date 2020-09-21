@@ -1,6 +1,8 @@
 import {Controller, Inject} from '@nestjs/common';
 import {COMMANDER_PROGRAM} from '../constants';
 import {Command} from 'commander';
+import * as chalk from 'chalk';
+
 import {UIService, Version, VersionManagerService} from '../services';
 
 @Controller()
@@ -16,11 +18,6 @@ export class VersionManagerController {
     .alias('li')
     .option('-j, --json', 'print as json', false)
     .action(tags => this.list(tags))
-
-  private readonly installCommand = this.mainCommand
-    .command('install [versionTags...]')
-    .description('installs a version. If there are several hits, a selection is displayed')
-    .action(tags => this.install(tags))
 
   private readonly useCommand = this.mainCommand
     .command('use [versionTags...]')
@@ -39,19 +36,45 @@ export class VersionManagerController {
 
     if (this.listCommand.opts().json) {
       console.log(JSON.stringify(versions, null, 2))
-    } else {
-      await this.table(false, versions)
+      return
     }
-  };
-
-  private install = async (versionTags: string[]) => {
-    const versions = await this.service.search(versionTags).toPromise()
 
     if (versions.length === 1) {
       await this.service.download(versions[0].version)
     } else if (versions.length > 1) {
       const version = await this.table(true, versions)
-      await this.service.download(version.version)
+      const installed = await this.service.isInstalled(version.version)
+      const inUse = await this.service.isSelectedVersion(version.version)
+
+      const choices = [{
+        name: 'exit',
+        value: () => null,
+      }]
+
+      if (!installed) {
+        choices.unshift({
+          name: chalk.yellow('download'),
+          value: () => this.service.download(version.version),
+        })
+      } else if (!inUse) {
+        choices.unshift({
+          name: chalk.red('delete'),
+          value: () => this.service.delete(version.version),
+        })
+      }
+
+      if (!inUse) {
+        choices.unshift({
+          name: chalk.green('use'),
+          value: () => null,//this.service.use(version.version),
+        })
+      }
+
+      await (await this.ui.list({
+        name: 'next',
+        message: 'Whats next?',
+        choices,
+      }))();
     } else {
       throw new Error('No installation candidate found')
     }
@@ -75,19 +98,25 @@ export class VersionManagerController {
   private table = (interactive: boolean, versions: Version[]) => this.ui.table({
     interactive,
     printColNum: false,
-    message: 'Please select a version to install',
+    message: 'The following releases are available:',
     name: 'version',
-    rows: versions.map(version => ({
-      row: {
-        version: version.version,
-        installed: version.installed,
-        versionTags: version.versionTags.sort().join(' '),
-        releaseDate: version.releaseDate.toISOString(),
-        jar: version.downloadLink,
-      },
-      short: version.version,
-      value: version,
-    })),
+    rows: versions.map(version => {
+      const stable = version.versionTags.includes('stable')
+      const selected = version.version === '4.3.0'
+      const versionTags = version.versionTags.map(t => t === 'latest' ? chalk.green(t) : t)
+
+      return ({
+        value: version,
+        short: version.version,
+        row: {
+          '☐': selected ? '☒' : '☐',
+          version: stable ? chalk.yellow(version.version) : chalk.gray(version.version),
+          installed: version.installed ? chalk.green('yes') : chalk.red('no'),
+          versionTags: versionTags.join(' '),
+          releaseDate: version.releaseDate.toISOString().replace('T', ' '),
+        },
+      });
+    }),
   });
 
 }

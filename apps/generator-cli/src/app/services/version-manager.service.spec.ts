@@ -29,7 +29,7 @@ describe('VersionManagerService', () => {
     }).compile();
 
     fixture = moduleRef.get(VersionManagerService);
-    (fs.existsSync).mockImplementation(filePath => filePath.indexOf('4.2') !== -1)
+    fs.existsSync.mockReset().mockImplementation(filePath => filePath.indexOf('4.2') !== -1)
   });
 
   const expectedVersions = {
@@ -174,6 +174,72 @@ describe('VersionManagerService', () => {
 
     })
 
+    describe('isInstalled()', () => {
+
+      it('returns true, if the file exists', () => {
+        fs.existsSync.mockReturnValue(true)
+        expect(fixture.isInstalled('4.3.1')).toBeTruthy()
+      })
+
+      it('returns false, if the file does not exists', () => {
+        fs.existsSync.mockReturnValue(false)
+        expect(fixture.isInstalled('4.3.1')).toBeFalsy()
+      })
+
+      it('provides the correct file path', () => {
+        fixture.isInstalled('4.3.1')
+        expect(fs.existsSync).toHaveBeenNthCalledWith(1, fixture.storage + '/4.3.1.jar')
+      })
+
+    })
+
+    describe('isSelectedVersion()', () => {
+
+      it('return true if equal to the selected version', () => {
+        expect(fixture.isSelectedVersion('4.3.0'))
+      })
+
+      it('return false if equal to the selected version', () => {
+        expect(fixture.isSelectedVersion('4.3.1'))
+      })
+
+    })
+
+    describe('delete()', () => {
+
+      let logMessages = {
+        before: [],
+        after: [],
+      }
+
+      beforeEach(() => {
+        logMessages = {
+          before: [],
+          after: [],
+        }
+
+        log.mockReset().mockImplementation(m => logMessages.before.push(m))
+
+        fs.removeSync.mockImplementation(() => {
+          log.mockReset().mockImplementation(m => logMessages.after.push(m))
+        })
+
+        fixture.delete('4.3.1')
+      })
+
+      it('deletes the correct file', () => {
+        expect(fs.removeSync).toHaveBeenNthCalledWith(1, `${fixture.storage}/4.3.1.jar`)
+      })
+
+      it('logs the correct messages', () => {
+        expect(logMessages).toEqual({
+          before: [],
+          after: [chalk.green(`Deleted 4.3.1`)],
+        })
+      })
+
+    })
+
     describe('download()', () => {
 
       let returnValue: boolean
@@ -245,7 +311,7 @@ describe('VersionManagerService', () => {
           returnValue = await fixture.download('4.2.0')
         })
 
-        it('returns false', () => {
+        it('returns true', () => {
           expect(returnValue).toBeTruthy()
         })
 
@@ -254,6 +320,10 @@ describe('VersionManagerService', () => {
             before: [chalk.yellow(`Install 4.2.0 ...`)],
             after: [chalk.green(`Installed 4.2.0`)],
           })
+        })
+
+        it('provides the correct params to get', () => {
+          expect(get).toHaveBeenNthCalledWith(1, 'https://repo1.maven.org/maven2/org/openapitools/openapi-generator-cli/4.2.0/openapi-generator-cli-4.2.0.jar', {responseType: 'stream'})
         })
 
         describe('file saving', () => {
