@@ -1,0 +1,188 @@
+{
+  "$id": "https://openapitools.org/openapi-generator-cli/config.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "OpenAPI Generator CLI - Config",
+  "type": "object",
+  "required": ["generator-cli"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "spaces": {
+      "type": "number",
+      "default": 2
+    },
+    "generator-cli": {
+      "type": "object",
+      "required": [
+        "version"
+      ],
+      "properties": {
+        "version": {
+          "type": "string"
+        },
+        "generators": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/generator"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "generator": {
+      "type": "object",
+      "required": [
+        "glob",
+        "output",
+        "generator-name"
+      ],
+      "properties": {
+        "glob": {
+          "type": "string"
+        },
+        "output": {
+          "type": "string"
+        },
+        "disabled": {
+          "type": "boolean"
+        },
+        "generator-name": {
+          "anyOf": [{
+            "type": "string"
+          },{
+            "type": "string",
+            "enum": [
+              "ada",
+              "ada-server",
+              "android",
+              "apache2",
+              "apex",
+              "asciidoc",
+              "aspnetcore",
+              "avro-schema",
+              "bash",
+              "c",
+              "clojure",
+              "cpp-pistache-server",
+              "cpp-qt5-client",
+              "cpp-qt5-qhttpengine-server",
+              "cpp-restbed-server",
+              "cpp-restsdk",
+              "cpp-tizen",
+              "csharp",
+              "csharp-nancyfx",
+              "csharp-netcore",
+              "cwiki",
+              "dart",
+              "dart-dio",
+              "dart-jaguar",
+              "dynamic-html",
+              "eiffel",
+              "elixir",
+              "elm",
+              "erlang-client",
+              "erlang-proper",
+              "erlang-server",
+              "flash",
+              "fsharp-functions",
+              "fsharp-giraffe-server",
+              "go",
+              "go-experimental",
+              "go-gin-server",
+              "go-server",
+              "graphql-nodejs-express-server",
+              "graphql-schema",
+              "groovy",
+              "haskell",
+              "haskell-http-client",
+              "html",
+              "html2",
+              "java",
+              "java-inflector",
+              "java-msf4j",
+              "java-pkmst",
+              "java-play-framework",
+              "java-undertow-server",
+              "java-vertx",
+              "java-vertx-web",
+              "javascript",
+              "javascript-apollo",
+              "javascript-closure-angular",
+              "javascript-flowtyped",
+              "jaxrs-cxf",
+              "jaxrs-cxf-cdi",
+              "jaxrs-cxf-client",
+              "jaxrs-cxf-extended",
+              "jaxrs-jersey",
+              "jaxrs-resteasy",
+              "jaxrs-resteasy-eap",
+              "jaxrs-spec",
+              "jmeter",
+              "k6",
+              "kotlin",
+              "kotlin-server",
+              "kotlin-spring",
+              "kotlin-vertx",
+              "lua",
+              "markdown",
+              "mysql-schema",
+              "nim",
+              "nodejs-express-server",
+              "objc",
+              "ocaml",
+              "openapi",
+              "openapi-yaml",
+              "perl",
+              "php",
+              "php-laravel",
+              "php-lumen",
+              "php-silex",
+              "php-slim4",
+              "php-symfony",
+              "php-ze-ph",
+              "powershell",
+              "powershell-experimental",
+              "protobuf-schema",
+              "python",
+              "python-aiohttp",
+              "python-blueplanet",
+              "python-experimental",
+              "python-flask",
+              "r",
+              "ruby",
+              "ruby-on-rails",
+              "ruby-sinatra",
+              "rust",
+              "rust-server",
+              "scala-akka",
+              "scala-akka-http-server",
+              "scala-finch",
+              "scala-gatling",
+              "scala-lagom-server",
+              "scala-play-server",
+              "scala-sttp",
+              "scalatra",
+              "scalaz",
+              "spring",
+              "swift4",
+              "swift5",
+              "typescript-angular",
+              "typescript-angularjs",
+              "typescript-aurelia",
+              "typescript-axios",
+              "typescript-fetch",
+              "typescript-inversify",
+              "typescript-jquery",
+              "typescript-node",
+              "typescript-redux-query",
+              "typescript-rxjs"
+            ]
+          }]
+        }
+      }
+    }
+  }
+}
