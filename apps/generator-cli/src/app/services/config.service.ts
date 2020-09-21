@@ -22,11 +22,11 @@ export class ConfigService {
   ) {
   }
 
-  get<T = any>(path: string): T {
+  get<T = unknown>(path: string): T {
     return get(this.read(), path)
   }
 
-  set(path: string, value: any) {
+  set(path: string, value: unknown) {
     this.write(set(this.read(), path, value))
     return this
   }
