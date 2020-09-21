@@ -9,13 +9,8 @@ import {UIService, Version, VersionManagerService} from '../services';
 export class VersionManagerController {
 
   private readonly mainCommand = this.program
-    .command('version-manager')
+    .command('version-manager [versionTags...]')
     .description('Manage used / installed generator version')
-
-  private readonly listCommand = this.mainCommand
-    .command('list [versionTags...]')
-    .description('lists all published versions')
-    .alias('li')
     .option('-j, --json', 'print as json', false)
     .action(tags => this.list(tags))
 
@@ -29,12 +24,17 @@ export class VersionManagerController {
   private list = async (versionTags: string[]) => {
     const versions = await this.service.search(versionTags).toPromise()
 
-    if (this.listCommand.opts().json) {
+    if (this.mainCommand.opts().json) {
       console.log(JSON.stringify(versions, null, 2))
       return
     }
 
-    const {version} = await this.table(true, versions)
+    if (versions.length < 1) {
+      console.log(chalk.red('No results for: ' + versionTags.join(' ')))
+      return
+    }
+
+    const {version} = await this.table(versions)
     const downloaded = await this.service.isDownloaded(version)
     const isSelected = await this.service.isSelectedVersion(version)
     const choice = (name: string, cb = () => null, color = v => v) => ({name: color(name), value: cb})
@@ -58,8 +58,7 @@ export class VersionManagerController {
     }))();
   };
 
-  private table = (interactive: boolean, versions: Version[]) => this.ui.table({
-    interactive,
+  private table = (versions: Version[]) => this.ui.table({
     printColNum: false,
     message: 'The following releases are available:',
     name: 'version',
