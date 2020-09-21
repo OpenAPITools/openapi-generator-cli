@@ -186,7 +186,7 @@ describe('VersionManagerService', () => {
 
     })
 
-    describe('delete()', () => {
+    describe('remove()', () => {
 
       let logMessages = {
         before: [],
@@ -205,17 +205,17 @@ describe('VersionManagerService', () => {
           log.mockReset().mockImplementation(m => logMessages.after.push(m))
         })
 
-        fixture.delete('4.3.1')
+        fixture.remove('4.3.1')
       })
 
-      it('deletes the correct file', () => {
+      it('removes the correct file', () => {
         expect(fs.removeSync).toHaveBeenNthCalledWith(1, `${fixture.storage}/4.3.1.jar`)
       })
 
       it('logs the correct messages', () => {
         expect(logMessages).toEqual({
           before: [],
-          after: [chalk.green(`Deleted 4.3.1`)],
+          after: [chalk.green(`Removed 4.3.1`)],
         })
       })
 
@@ -253,8 +253,8 @@ describe('VersionManagerService', () => {
 
         it('logs the correct messages', () => {
           expect(logMessages).toEqual({
-            before: [chalk.yellow(`Install 4.2.0 ...`)],
-            after: [chalk.red(`Installation failed, because of: "HTTP 404 Not Found"`)],
+            before: [chalk.yellow(`Download 4.2.0 ...`)],
+            after: [chalk.red(`Download failed, because of: "HTTP 404 Not Found"`)],
           })
         })
 
@@ -298,8 +298,8 @@ describe('VersionManagerService', () => {
 
         it('logs the correct messages', () => {
           expect(logMessages).toEqual({
-            before: [chalk.yellow(`Install 4.2.0 ...`)],
-            after: [chalk.green(`Installed 4.2.0`)],
+            before: [chalk.yellow(`Download 4.2.0 ...`)],
+            after: [chalk.green(`Downloaded 4.2.0`)],
           })
         })
 

@@ -74,13 +74,13 @@ export class VersionManagerService {
 
   }
 
-  async delete(versionName: string) {
+  async remove(versionName: string) {
     fs.removeSync(this.filePath(versionName))
-    this.logger.log(chalk.green(`Deleted ${versionName}`))
+    this.logger.log(chalk.green(`Removed ${versionName}`))
   }
 
   async download(versionName: string) {
-    this.logger.log(chalk.yellow(`Install ${versionName} ...`))
+    this.logger.log(chalk.yellow(`Download ${versionName} ...`))
     const downloadLink = this.createDownloadLink(versionName)
     const filePath = this.filePath(versionName)
 
@@ -95,10 +95,10 @@ export class VersionManagerService {
           })
         )).toPromise()
 
-      this.logger.log(chalk.green(`Installed ${versionName}`))
+      this.logger.log(chalk.green(`Downloaded ${versionName}`))
       return true
     } catch (e) {
-      this.logger.log(chalk.red(`Installation failed, because of: "${e.message}"`))
+      this.logger.log(chalk.red(`Download failed, because of: "${e.message}"`))
       return false
     }
   }

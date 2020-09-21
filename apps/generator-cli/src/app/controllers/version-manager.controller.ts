@@ -59,7 +59,7 @@ export class VersionManagerController {
       } else if (!inUse) {
         choices.unshift({
           name: chalk.red('delete'),
-          value: () => this.service.delete(version.version),
+          value: () => this.service.remove(version.version),
         })
       }
 
