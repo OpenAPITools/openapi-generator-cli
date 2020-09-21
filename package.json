@@ -2,7 +2,26 @@
   "name": "openapitools",
   "version": "2.0.0",
   "license": "Apache-2.0",
-  "author": "HarmoWatch / Kay Schecker",
+  "private": false,
+  "author": {
+    "name": "OpenAPI Tools",
+    "url": "https://openapitools.org/",
+    "email": "team@openapitools.org"
+  },
+  "contributors": [
+    {
+      "name": "Kay Schecker",
+      "email": "sayhello@kay-schecker.de",
+      "url": "https://www.kay-schecker.de"
+    }
+  ],
+  "homepage": "https://github.com/OpenAPITools/openapi-generator-cli",
+  "bugs": "https://github.com/OpenAPITools/openapi-generator-cli/issues",
+  "readme": "README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/OpenAPITools/openapi-generator-cli.git"
+  },
   "keywords": [
     "rest-api",
     "rest-client",
@@ -42,7 +61,6 @@
     "dep-graph": "nx dep-graph",
     "help": "nx help"
   },
-  "private": false,
   "dependencies": {
     "@nestjs/common": "^7.0.0",
     "@nestjs/core": "^7.0.0",

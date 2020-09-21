@@ -5,6 +5,7 @@ import {of} from 'rxjs';
 import {mocked} from 'ts-jest/utils';
 import {LOGGER} from '../constants';
 import * as chalk from 'chalk';
+import {ConfigService} from './config.service';
 
 jest.mock('fs-extra');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -24,6 +25,11 @@ describe('VersionManagerService', () => {
       providers: [
         VersionManagerService,
         {provide: HttpService, useValue: {get}},
+        {
+          provide: ConfigService, useValue: {
+            get: () => '4.3.0'
+          }
+        },
         {provide: LOGGER, useValue: {log}},
       ],
     }).compile();
@@ -177,11 +183,11 @@ describe('VersionManagerService', () => {
     describe('isSelectedVersion()', () => {
 
       it('return true if equal to the selected version', () => {
-        expect(fixture.isSelectedVersion('4.3.0'))
+        expect(fixture.isSelectedVersion('4.3.0')).toBeTruthy()
       })
 
       it('return false if equal to the selected version', () => {
-        expect(fixture.isSelectedVersion('4.3.1'))
+        expect(fixture.isSelectedVersion('4.3.1')).toBeFalsy()
       })
 
     })

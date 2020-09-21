@@ -1,4 +1,4 @@
-const {name, version, keywords, private} = require('../../package.json')
+const {name, version, keywords, private, author, contributors} = require('../../package.json')
 const webpack = require('webpack')
 
 module.exports = (config) => {
@@ -6,6 +6,8 @@ module.exports = (config) => {
     version: version + '-beta8',
     keywords,
     private,
+    author,
+    contributors,
     name: `@${name}/openapi-generator-cli`,
     description: 'A npm package wrapper for OpenAPI Generator (https://github.com/OpenAPITools/openapi-generator), generates which API client libraries (SDK generation), server stubs, documentation and configuration automatically given an OpenAPI Spec (v2, v3)',
     main: "./main.js",

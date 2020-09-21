@@ -13,7 +13,7 @@ jobs:
     - # stage name not required, will continue to use `test`
       name: "Test"
       language: node_js
-      script: npm run nx -- test
+      script: npm test
 
     - stage: deploy
       if: type IN (push) and branch IN (master, develop)
@@ -21,8 +21,4 @@ jobs:
       os: osx
       language: node_js
       script:
-        - npm run nx -- build generator-cli --prod --webpack-config ./apps/generator-cli/webpack.config.js
-        - mv $TRAVIS_BUILD_DIR/dist/apps/api/package.json $TRAVIS_BUILD_DIR/dist/package.json
-        - terraform init $tf_init_cli_options
-        - terraform workspace select $tf_workspace
-        - terraform apply $tf_apply_cli_options
+        - npm run build
