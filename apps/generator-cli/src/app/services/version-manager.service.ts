@@ -1,4 +1,4 @@
-import {HttpService, Injectable} from '@nestjs/common';
+import {HttpService, Inject, Injectable} from '@nestjs/common';
 import {map, switchMap} from 'rxjs/operators';
 import {replace} from 'lodash';
 import {Observable} from 'rxjs';
@@ -7,6 +7,7 @@ import * as path from 'path';
 import * as Stream from 'stream';
 import * as chalk from 'chalk';
 import * as compare from 'compare-versions'
+import {LOGGER} from '../constants';
 
 export interface Version {
   version: string
@@ -25,9 +26,10 @@ const mvn = {
 @Injectable()
 export class VersionManagerService {
 
-  private readonly storage = path.resolve(__dirname, './versions')
+  public readonly storage = path.resolve(__dirname, './versions')
 
   constructor(
+    @Inject(LOGGER) private readonly logger: LOGGER,
     private httpService: HttpService,
   ) {
   }
@@ -65,33 +67,26 @@ export class VersionManagerService {
   }
 
   async install(versionName: string) {
-    console.log(chalk.yellow(`Install ${versionName} ...`))
+    this.logger.log(chalk.yellow(`Install ${versionName} ...`))
     const downloadLink = this.createDownloadLink(versionName)
     const filePath = path.resolve(this.storage, `${versionName}.jar`)
 
     try {
       await this.httpService.get<Stream>(downloadLink, {responseType: 'stream'}).pipe(switchMap(res => {
-        if (res.status >= 200 && res.status < 300) {
-
-          return new Promise(resolve => {
-            const file = fs.createWriteStream(filePath);
-            res.data.pipe(file)
-            res.data.on('end', resolve);
-          })
-
-        }
+        return new Promise(resolve => {
+          fs.ensureDirSync(this.storage)
+          const file = fs.createWriteStream(filePath);
+          res.data.pipe(file)
+          res.data.on('end', resolve);
+        })
       })).toPromise()
 
-      console.log(chalk.green(`Installed ${versionName}`))
+      this.logger.log(chalk.green(`Installed ${versionName}`))
       return true
     } catch (e) {
-      console.log(chalk.red(`Installation failed, because of: "${e.message}"`))
+      this.logger.log(chalk.red(`Installation failed, because of: "${e.message}"`))
       return false
     }
-  }
-
-  async set(version: Version) {
-    return version
   }
 
   private filterVersionsByTags(versions: Version[], tags: string[]) {
