@@ -1,8 +1,7 @@
 import {Controller, Inject} from '@nestjs/common';
 import {COMMANDER_PROGRAM} from '../constants';
 import {Command} from 'commander';
-import {Version, VersionManagerService} from '../services/version-manager.service';
-import {UIService} from '../services/ui.service';
+import {UIService, Version, VersionManagerService} from '../services';
 
 @Controller()
 export class VersionManagerController {
@@ -49,10 +48,10 @@ export class VersionManagerController {
     const versions = await this.service.search(versionTags).toPromise()
 
     if (versions.length === 1) {
-      await this.service.install(versions[0].version)
+      await this.service.download(versions[0].version)
     } else if (versions.length > 1) {
       const version = await this.table(true, versions)
-      await this.service.install(version.version)
+      await this.service.download(version.version)
     } else {
       throw new Error('No installation candidate found')
     }
@@ -64,10 +63,10 @@ export class VersionManagerController {
     const success = (v: Version) => console.log(`Set version "${v.version}"`)
 
     if (versions.length === 1) {
-      success(await this.service.set(versions[0]))
+      // success(await this.service.set(versions[0]))
     } else if (versions.length > 1) {
       const version = await this.table(true, versions)
-      success(await this.service.set(version))
+      // success(await this.service.set(version))
     } else {
       throw new Error('No installation candidate found')
     }

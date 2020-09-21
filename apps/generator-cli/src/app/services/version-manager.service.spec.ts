@@ -174,7 +174,7 @@ describe('VersionManagerService', () => {
 
     })
 
-    describe('install()', () => {
+    describe('download()', () => {
 
       let returnValue: boolean
 
@@ -197,7 +197,7 @@ describe('VersionManagerService', () => {
           }
 
           log.mockReset().mockImplementation(m => logMessages.before.push(m))
-          returnValue = await fixture.install('4.2.0')
+          returnValue = await fixture.download('4.2.0')
         })
 
         it('returns false', () => {
@@ -242,7 +242,7 @@ describe('VersionManagerService', () => {
           }
 
           log.mockReset().mockImplementation(m => logMessages.before.push(m))
-          returnValue = await fixture.install('4.2.0')
+          returnValue = await fixture.download('4.2.0')
         })
 
         it('returns false', () => {

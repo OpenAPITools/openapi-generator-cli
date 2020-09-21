@@ -3,8 +3,7 @@ import {HttpModule, Inject, Module, OnApplicationBootstrap} from '@nestjs/common
 import {COMMANDER_PROGRAM, LOGGER} from './constants';
 import {Command} from 'commander';
 import {VersionManagerController} from './controllers/version-manager.controller';
-import {VersionManagerService} from './services/version-manager.service';
-import {UIService} from './services/ui.service';
+import {UIService, VersionManagerService} from './services';
 
 @Module({
   imports: [HttpModule],
@@ -36,7 +35,7 @@ export class AppModule implements OnApplicationBootstrap {
     }
 
     if (!this.versionManager.isInstalled(cfg.version)) {
-      if (!await this.versionManager.install(cfg.version)) {
+      if (!await this.versionManager.download(cfg.version)) {
         return
       }
     }

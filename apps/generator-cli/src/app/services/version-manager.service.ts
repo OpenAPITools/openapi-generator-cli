@@ -66,7 +66,7 @@ export class VersionManagerService {
     return fs.existsSync(path.resolve(this.storage, `${versionName}.jar`))
   }
 
-  async install(versionName: string) {
+  async download(versionName: string) {
     this.logger.log(chalk.yellow(`Install ${versionName} ...`))
     const downloadLink = this.createDownloadLink(versionName)
     const filePath = path.resolve(this.storage, `${versionName}.jar`)
