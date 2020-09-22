@@ -3,8 +3,7 @@ import {HttpModule, Inject, Module, OnApplicationBootstrap} from '@nestjs/common
 import {COMMANDER_PROGRAM, LOGGER} from './constants';
 import {Command} from 'commander';
 import {VersionManagerController} from './controllers/version-manager.controller';
-import {PassTroughService, UIService, VersionManagerService} from './services';
-import {ConfigService} from './services/config.service';
+import {ConfigService, PassTroughService, UIService, VersionManagerService} from './services';
 
 @Module({
   imports: [HttpModule],

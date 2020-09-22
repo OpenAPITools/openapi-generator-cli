@@ -80,7 +80,6 @@ describe('PassTroughService', () => {
         })
 
         it('throw the error', () => {
-          console.log(error)
           expect(error.message).toEqual('Some error')
         })
 
