@@ -13,6 +13,19 @@ jobs:
       name: "Test"
       script: yarn test
 
+    - # stage name not required, will continue to use `test`
+      name: "Integration test (simple)"
+      script:
+        - yarn run build
+        - mkdir tmp
+        - cd dist/apps/generator-cli
+        - yarn pack -f ../../../tmp/generator-cli.tgz
+        - cd ../../../tmp
+        - tar zxvf generator-cli.tg
+        - chmod +x package/main.js
+        - package/main.js version
+        - package/main.js help
+
     - stage: deploy
       if: type IN (push) and branch IN (master)
       name: "Build & Deploy"
