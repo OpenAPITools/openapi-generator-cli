@@ -9,20 +9,13 @@ export class UIService {
     name: string,
     message: string,
     printColNum?: boolean,
-    interactive?: boolean,
     rows: Array<{ row: {}, short: string, value: T }>,
   }): Promise<T> {
 
-    const tableRows = config.rows.map(({row}, index: number) => {
+
+    const table = require('console.table').getTable(config.rows.map(({row}, index: number) => {
       return config.printColNum === false ? row : ({'#': index + 1, ...row});
-    })
-
-    const table = require('console.table').getTable(tableRows)
-
-    if (config.interactive === false) {
-      console.log(table)
-      return
-    }
+    }))
 
     const [header, separator, ...rows] = table.trim().split('\n')
     return this.list({
@@ -33,8 +26,8 @@ export class UIService {
         new Separator(separator),
         ...rows.map((name: string, index: number) => ({
           name,
-          short: config.rows[index]?.short,
-          value: config.rows[index]?.value,
+          short: config.rows[index].short,
+          value: config.rows[index].value,
         })),
         new Separator(separator),
         new Separator(' '.repeat(separator.length)),
