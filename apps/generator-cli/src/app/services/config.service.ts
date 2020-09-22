@@ -1,7 +1,7 @@
 import {Inject, Injectable} from '@nestjs/common';
 import * as path from 'path';
 import {LOGGER} from '../constants';
-import {set, get} from 'lodash';
+import {set, get, merge} from 'lodash';
 import * as fs from 'fs-extra';
 
 @Injectable()
@@ -33,11 +33,14 @@ export class ConfigService {
 
   private read() {
     fs.ensureFileSync(this.configFile)
-    return fs.readJSONSync(this.configFile, {throws: false, encoding: 'utf8'}) || this.defaultConfig
+
+    return merge(
+      this.defaultConfig,
+      fs.readJSONSync(this.configFile, {throws: false, encoding: 'utf8'}),
+    )
   }
 
   private write(config) {
-    fs.ensureFileSync(this.configFile)
     fs.writeJSONSync(this.configFile, config, {encoding: 'utf8', spaces: config.spaces || 2})
   }
 
