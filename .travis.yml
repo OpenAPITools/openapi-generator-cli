@@ -1,24 +1,20 @@
 os: linux
 cache: yarn
 dist: xenial
-language: shell
+language: node_js
 
 jobs:
   include:
     - stage: test
       name: "Lint"
-      language: node_js
       script: yarn run lint
 
     - # stage name not required, will continue to use `test`
       name: "Test"
-      language: node_js
       script: yarn test
 
     - stage: deploy
-      if: type IN (push) and branch IN (master, develop)
+      if: type IN (push) and branch IN (master)
       name: "Build & Deploy"
-      os: osx
-      language: node_js
       script:
         - yarn run build
