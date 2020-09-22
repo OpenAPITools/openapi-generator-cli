@@ -1,7 +1,7 @@
 import {Inject, Injectable} from '@nestjs/common';
 import {COMMANDER_PROGRAM} from '../constants';
 import {Command} from 'commander';
-import {startsWith, trim} from 'lodash';
+import {startsWith, trim, isString} from 'lodash';
 import {VersionManagerService} from './version-manager.service';
 import {exec, spawn} from 'child_process';
 
@@ -42,14 +42,13 @@ export class PassTroughService {
 
   private help = () => new Promise<string>((resolve, reject) => {
     exec(`${this.cmd()} help`, (error, stdout, stderr) => {
-      error ? reject(stderr) : resolve(stdout)
+      error ? reject(new Error(stderr)) : resolve(stdout)
     })
   });
 
-  private cmd(args?: string[]) {
+  private cmd() {
     const binPath = this.versionManager.filePath(this.versionManager.getSelectedVersion())
-    const cmd = `java ${process.env['JAVA_OPTS'] || ''} -jar "${binPath}"`;
-    return args ? `${cmd} ${args.join(' ')}` : cmd
+    return ['java', process.env['JAVA_OPTS'],`-jar "${binPath}"`].filter(isString).join(' ');
   }
 
 }
