@@ -15,8 +15,11 @@ describe('VersionManagerService', () => {
 
   let fixture: VersionManagerService;
 
-  const get = jest.fn();
+  const get = jest.fn()
   const log = jest.fn()
+
+  const getVersion = jest.fn().mockReturnValue('4.3.0')
+  const setVersion = jest.fn()
 
   beforeEach(async () => {
     [get].forEach(fn => fn.mockClear());
@@ -27,7 +30,8 @@ describe('VersionManagerService', () => {
         {provide: HttpService, useValue: {get}},
         {
           provide: ConfigService, useValue: {
-            get: () => '4.3.0'
+            get: getVersion,
+            set: setVersion,
           }
         },
         {provide: LOGGER, useValue: {log}},
@@ -188,6 +192,39 @@ describe('VersionManagerService', () => {
 
       it('return false if equal to the selected version', () => {
         expect(fixture.isSelectedVersion('4.3.1')).toBeFalsy()
+      })
+
+    })
+
+    describe('getSelectedVersion', () => {
+
+      it('returns the value from the config service', () => {
+        expect(getVersion).toHaveBeenNthCalledWith(1, 'generator-cli.version')
+        expect(fixture.getSelectedVersion()).toEqual('4.3.0')
+      })
+
+    })
+
+    describe('setSelectedVersion', () => {
+
+      let downloadIfNeeded: jest.SpyInstance
+
+      beforeEach(async () => {
+        log.mockReset()
+        downloadIfNeeded = jest.spyOn(fixture, 'downloadIfNeeded').mockReturnValue(null)
+        await fixture.setSelectedVersion('1.2.3')
+      })
+
+      it('calls downloadIfNeeded once', () => {
+        expect(downloadIfNeeded).toHaveBeenNthCalledWith(1, '1.2.3')
+      })
+
+      it('sets the correct config value', () => {
+        expect(setVersion).toHaveBeenNthCalledWith(1, 'generator-cli.version', '1.2.3')
+      })
+
+      it('logs a success message', () => {
+        expect(log).toHaveBeenNthCalledWith(1, chalk.green('Did set selected version to 1.2.3'))
       })
 
     })
