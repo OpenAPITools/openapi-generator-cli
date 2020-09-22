@@ -13,6 +13,7 @@ module.exports = (config) => {
       "openapi-generator-cli": "./main.js"
     },
     files: [
+      'config.schema.json',
       'main.js',
     ],
   }
