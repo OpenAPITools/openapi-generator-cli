@@ -19,7 +19,7 @@ import {ConfigService, PassTroughService, UIService, VersionManagerService} from
       provide: COMMANDER_PROGRAM,
       useValue: new Command('openapi-generator-cli').helpOption(false).usage('<command> [<args>]')
     },
-    {provide: LOGGER, useValue: console}
+    {provide: LOGGER, useValue: console},
   ],
 })
 export class AppModule implements OnApplicationBootstrap {

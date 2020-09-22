@@ -25,6 +25,9 @@ jobs:
         - ./node_modules/.bin/openapi-generator-cli version
         - ./node_modules/.bin/openapi-generator-cli help
         - ./node_modules/.bin/openapi-generator-cli help generate
+        - (./node_modules/.bin/openapi-generator-cli version-manager set 3.0.0 && node ./node_modules/.bin/openapi-generator-cli version | grep -q '3.0.0') || exit 1
+        - (./node_modules/.bin/openapi-generator-cli version-manager set 4.0 && node ./node_modules/.bin/openapi-generator-cli version | grep -q '4.0.3') || exit 1
+        - (./node_modules/.bin/openapi-generator-cli version-manager set 4.3.1 && node ./node_modules/.bin/openapi-generator-cli version | grep -q '4.3.1') || exit 1
 
     - stage: deploy
       if: type IN (push) and branch IN (master)

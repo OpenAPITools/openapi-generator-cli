@@ -209,22 +209,52 @@ describe('VersionManagerService', () => {
 
       let downloadIfNeeded: jest.SpyInstance
 
-      beforeEach(async () => {
+
+      beforeEach(() => {
         log.mockReset()
-        downloadIfNeeded = jest.spyOn(fixture, 'downloadIfNeeded').mockReturnValue(null)
-        await fixture.setSelectedVersion('1.2.3')
+        setVersion.mockReset()
       })
 
-      it('calls downloadIfNeeded once', () => {
-        expect(downloadIfNeeded).toHaveBeenNthCalledWith(1, '1.2.3')
+      describe('the was download or exists', () => {
+
+        beforeEach(async () => {
+          downloadIfNeeded = jest.spyOn(fixture, 'downloadIfNeeded').mockResolvedValue(true)
+          await fixture.setSelectedVersion('1.2.3')
+        })
+
+        it('calls downloadIfNeeded once', () => {
+          expect(downloadIfNeeded).toHaveBeenNthCalledWith(1, '1.2.3')
+        })
+
+        it('sets the correct config value', () => {
+          expect(setVersion).toHaveBeenNthCalledWith(1, 'generator-cli.version', '1.2.3')
+        })
+
+        it('logs a success message', () => {
+          expect(log).toHaveBeenNthCalledWith(1, chalk.green('Did set selected version to 1.2.3'))
+        })
+
       })
 
-      it('sets the correct config value', () => {
-        expect(setVersion).toHaveBeenNthCalledWith(1, 'generator-cli.version', '1.2.3')
-      })
+      describe('the was not download nor exists', () => {
 
-      it('logs a success message', () => {
-        expect(log).toHaveBeenNthCalledWith(1, chalk.green('Did set selected version to 1.2.3'))
+        beforeEach(async () => {
+          downloadIfNeeded = jest.spyOn(fixture, 'downloadIfNeeded').mockResolvedValue(false)
+          await fixture.setSelectedVersion('1.2.3')
+        })
+
+        it('calls downloadIfNeeded once', () => {
+          expect(downloadIfNeeded).toHaveBeenNthCalledWith(1, '1.2.3')
+        })
+
+        it('does not set the config value', () => {
+          expect(setVersion).toBeCalledTimes(0)
+        })
+
+        it('logs no success message', () => {
+          expect(log).toBeCalledTimes(0)
+        })
+
       })
 
     })

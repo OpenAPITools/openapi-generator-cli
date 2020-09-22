@@ -1,5 +1,5 @@
 import {Controller, Inject} from '@nestjs/common';
-import {COMMANDER_PROGRAM} from '../constants';
+import {COMMANDER_PROGRAM, LOGGER} from '../constants';
 import {Command} from 'commander';
 import * as chalk from 'chalk';
 
@@ -9,12 +9,22 @@ import {UIService, Version, VersionManagerService} from '../services';
 export class VersionManagerController {
 
   private readonly mainCommand = this.program
-    .command('version-manager [versionTags...]')
+    .command('version-manager')
     .description('Manage used / installed generator version')
+
+  private readonly listCommand = this.mainCommand
+    .command('list [versionTags...]')
+    .description('lists all published versions')
     .option('-j, --json', 'print as json', false)
     .action(tags => this.list(tags))
 
+  private readonly setCommand = this.mainCommand
+    .command('set [versionTags...]')
+    .description('set version to use')
+    .action(tags => this.set(tags))
+
   constructor(
+    @Inject(LOGGER) private readonly logger: LOGGER,
     @Inject(COMMANDER_PROGRAM) private readonly program: Command,
     private readonly ui: UIService,
     private readonly service: VersionManagerService,
@@ -24,7 +34,7 @@ export class VersionManagerController {
   private list = async (versionTags: string[]) => {
     const versions = await this.service.search(versionTags).toPromise()
 
-    if (this.mainCommand.opts().json) {
+    if (this.listCommand.opts().json) {
       console.log(JSON.stringify(versions, null, 2))
       return
     }
@@ -57,6 +67,19 @@ export class VersionManagerController {
       choices,
     }))();
   };
+
+  private set = async (versionTags: string[]) => {
+    const versions = await this.service.search(versionTags).toPromise()
+
+    if (versions.length > 0) {
+      await this.service.setSelectedVersion(versions[0].version)
+      return
+    }
+
+    this.logger.log(chalk.red(`Unable to find version matching criteria "${versionTags.join(' ')}"`))
+    process.exit(1)
+
+  }
 
   private table = (versions: Version[]) => this.ui.table({
     printColNum: false,

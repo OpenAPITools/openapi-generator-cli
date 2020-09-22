@@ -73,9 +73,11 @@ export class VersionManagerService {
   }
 
   async setSelectedVersion(versionName: string) {
-    await this.downloadIfNeeded(versionName)
-    this.configService.set('generator-cli.version', versionName)
-    this.logger.log(chalk.green(`Did set selected version to ${versionName}`))
+    const downloaded = await this.downloadIfNeeded(versionName)
+    if (downloaded) {
+      this.configService.set('generator-cli.version', versionName)
+      this.logger.log(chalk.green(`Did set selected version to ${versionName}`))
+    }
   }
 
   async remove(versionName: string) {
