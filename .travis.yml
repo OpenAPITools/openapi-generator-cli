@@ -25,6 +25,7 @@ jobs:
         - chmod +x package/main.js
         - package/main.js version
         - package/main.js help
+        - package/main.js help generate
 
     - stage: deploy
       if: type IN (push) and branch IN (master)
