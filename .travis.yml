@@ -21,7 +21,7 @@ jobs:
         - cd dist/apps/generator-cli
         - yarn pack -f ../../../tmp/generator-cli.tgz
         - cd ../../../tmp
-        - tar zxvf generator-cli.tg
+        - tar zxvf generator-cli.tgz
         - chmod +x package/main.js
         - package/main.js version
         - package/main.js help
