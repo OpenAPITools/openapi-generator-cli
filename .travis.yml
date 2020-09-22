@@ -10,22 +10,21 @@ jobs:
       script: yarn run lint
 
     - # stage name not required, will continue to use `test`
-      name: "Test"
+      name: "Unit test"
       script: yarn test
 
     - # stage name not required, will continue to use `test`
       name: "Integration test (simple)"
       script:
         - yarn run build
-        - mkdir tmp
         - cd dist/apps/generator-cli
-        - yarn pack -f ../../../tmp/generator-cli.tgz
-        - cd ../../../tmp
-        - tar zxvf generator-cli.tgz
-        - chmod +x package/main.js
-        - package/main.js version
-        - package/main.js help
-        - package/main.js help generate
+        - yarn pack -f ../generator-cli.tgz
+        - mkdir ~/generator-cli-integration-test && cd "$_"
+        - yarn init -y
+        - yarn add $TRAVIS_BUILD_DIR/dist/app/generator-cli.tgz
+        - ./node_modules/.bin/openapi-generator-cli version
+        - ./node_modules/.bin/openapi-generator-cli help
+        - ./node_modules/.bin/openapi-generator-cli help generate
 
     - stage: deploy
       if: type IN (push) and branch IN (master)
