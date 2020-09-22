@@ -21,7 +21,7 @@ jobs:
         - yarn pack -f ../generator-cli.tgz
         - mkdir ~/generator-cli-integration-test && cd "$_"
         - yarn init -y
-        - yarn add $TRAVIS_BUILD_DIR/dist/app/generator-cli.tgz
+        - yarn add $TRAVIS_BUILD_DIR/dist/apps/generator-cli.tgz
         - ./node_modules/.bin/openapi-generator-cli version
         - ./node_modules/.bin/openapi-generator-cli help
         - ./node_modules/.bin/openapi-generator-cli help generate
