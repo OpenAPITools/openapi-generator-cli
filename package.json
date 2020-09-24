@@ -43,6 +43,7 @@
     "nx": "nx",
     "start": "nx serve",
     "start:verdaccio": "verdaccio",
+    "openapi-generator-cli": "node ./dist/apps/generator-cli/main.js",
     "build": "nx build",
     "pack": "npm run build && npm publish ./dist/apps/generator-cli --registry http://localhost:4873",
     "test": "nx test",

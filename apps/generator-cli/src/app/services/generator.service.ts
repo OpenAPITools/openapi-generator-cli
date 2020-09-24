@@ -34,7 +34,13 @@ export class GeneratorService {
       return glob.sync(globPattern, {cwd}).map(spec => this.buildCommand(cwd, spec, params))
     }))
 
-    await concurrently(commands)
+    if (commands.length > 0) {
+      await concurrently(commands)
+      return true
+    }
+
+    return false
+
   }
 
   private buildCommand(cwd: string, specFile: string, params: {}) {
