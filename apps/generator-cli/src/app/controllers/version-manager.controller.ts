@@ -84,7 +84,7 @@ export class VersionManagerController {
       const selected = this.service.isSelectedVersion(version.version)
       const versionTags = version.versionTags.map(t => t === 'latest' ? chalk.green(t) : t)
 
-      return ({
+      return {
         value: version,
         short: version.version,
         row: {
@@ -94,7 +94,7 @@ export class VersionManagerController {
           installed: version.installed ? chalk.green('yes') : chalk.red('no'),
           versionTags: versionTags.join(' '),
         },
-      });
+      };
     }),
   });
 
