@@ -1,9 +1,10 @@
 import {Inject, Injectable} from '@nestjs/common';
 import {COMMANDER_PROGRAM} from '../constants';
 import {Command} from 'commander';
-import {startsWith, trim, isString} from 'lodash';
+import {isString, startsWith, trim} from 'lodash';
 import {VersionManagerService} from './version-manager.service';
 import {exec, spawn} from 'child_process';
+import {GeneratorService} from './generator.service';
 
 @Injectable()
 export class PassTroughService {
@@ -11,6 +12,7 @@ export class PassTroughService {
   constructor(
     @Inject(COMMANDER_PROGRAM) private readonly program: Command,
     private readonly versionManager: VersionManagerService,
+    private readonly generatorService: GeneratorService,
   ) {
   }
 
@@ -22,11 +24,17 @@ export class PassTroughService {
       .map(trim)
       .map(line => line.match(/^([a-z-]+)\s+(.+)/i).slice(1))
       .forEach(([command, desc]) => {
-        this.program.command(command).description(desc).action((cmd: Command) => {
+        this.program.command(command).description(desc).action(async (cmd: Command) => {
 
-          if (cmd.name() === 'help' && cmd.args.length === 0) {
-            console.log(this.program.helpInformation())
-            return;
+          if (cmd.args.length === 0) {
+            switch (cmd.name()) {
+              case 'help':
+                console.log(this.program.helpInformation())
+                return
+              case 'generate':
+                await this.generatorService.generate()
+                return
+            }
           }
 
           this.passTrough([cmd.name(), ...cmd.args])
@@ -47,8 +55,7 @@ export class PassTroughService {
   });
 
   private cmd() {
-    const binPath = this.versionManager.filePath(this.versionManager.getSelectedVersion())
-    return ['java', process.env['JAVA_OPTS'],`-jar "${binPath}"`].filter(isString).join(' ');
+    return ['java', process.env['JAVA_OPTS'], `-jar "${this.versionManager.filePath()}"`].filter(isString).join(' ');
   }
 
 }

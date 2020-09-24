@@ -48,6 +48,10 @@ describe('ConfigService', () => {
           expect(fixture.get(key)).toEqual(expectedValue)
         })
 
+        it('can return a default value', () => {
+          expect(fixture.get('unknown', 'foo')).toEqual('foo')
+        })
+
       })
 
       describe('the config has values', () => {

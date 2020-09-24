@@ -5,6 +5,7 @@ import {COMMANDER_PROGRAM} from '../constants';
 import {VersionManagerService} from './version-manager.service';
 import {noop} from 'rxjs';
 import {CommandMock} from '../mocks/command.mock';
+import {GeneratorService} from './generator.service';
 
 jest.mock('child_process');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -15,6 +16,7 @@ describe('PassTroughService', () => {
   let fixture: PassTroughService;
   let commandMock: CommandMock;
 
+  const generate = jest.fn().mockResolvedValue('')
   const getSelectedVersion = jest.fn().mockReturnValue('4.2.1');
   const filePath = jest.fn().mockImplementation(v => `/some/path/to/${v}.jar`);
 
@@ -25,6 +27,7 @@ describe('PassTroughService', () => {
       providers: [
         PassTroughService,
         {provide: VersionManagerService, useValue: {filePath, getSelectedVersion}},
+        {provide: GeneratorService, useValue: {generate}},
         {provide: COMMANDER_PROGRAM, useValue: commandMock},
       ],
     }).compile();
@@ -151,6 +154,16 @@ describe('PassTroughService', () => {
               expect(childProcess.spawn).toBeCalledTimes(0)
               expect(commandMock.helpInformation).toBeCalledTimes(1)
               expect(logSpy).toHaveBeenNthCalledWith(1, 'some help text')
+            })
+          }
+
+          if (cmd === 'generate') {
+            it('generates by using the generator config', () => {
+              childProcess.spawn.mockReset()
+              cmdMock.args = []
+              commandMock.commands[cmd].action(cmdMock)
+              expect(childProcess.spawn).toBeCalledTimes(0)
+              expect(generate).toHaveBeenNthCalledWith(1)
             })
           }
 

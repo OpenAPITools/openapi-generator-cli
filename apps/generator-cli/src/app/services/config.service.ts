@@ -7,7 +7,8 @@ import * as fs from 'fs-extra';
 @Injectable()
 export class ConfigService {
 
-  public readonly configFile = path.resolve(process.env.INIT_CWD || process.cwd(), 'openapitools.json')
+  public readonly cwd = process.env.INIT_CWD || process.cwd()
+  public readonly configFile = path.resolve(this.cwd, 'openapitools.json')
 
   private readonly defaultConfig = {
     $schema: 'node_modules/@openapitools/openapi-generator-cli/config.schema.json',
@@ -22,8 +23,8 @@ export class ConfigService {
   ) {
   }
 
-  get<T = unknown>(path: string): T {
-    return get(this.read(), path)
+  get<T = unknown>(path: string, defaultValue?: T): T {
+    return get(this.read(), path, defaultValue)
   }
 
   set(path: string, value: unknown) {
