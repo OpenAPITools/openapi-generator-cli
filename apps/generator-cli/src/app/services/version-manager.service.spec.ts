@@ -473,6 +473,18 @@ describe('VersionManagerService', () => {
 
     })
 
+    describe('filePath()', () => {
+
+      it('returns the path to the given version name', () => {
+        expect(fixture.filePath('1.2.3')).toEqual(`${fixture.storage}/1.2.3.jar`)
+      })
+
+      it('returns the path to the selected version name as default', () => {
+        expect(fixture.filePath()).toEqual(`${fixture.storage}/4.3.0.jar`)
+      })
+
+    })
+
   })
 
 })

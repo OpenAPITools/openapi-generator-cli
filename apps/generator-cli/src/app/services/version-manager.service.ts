@@ -133,7 +133,7 @@ export class VersionManagerService {
     return `https://repo1.maven.org/maven2/${group}/${artifact}/${versionName}/${artifact}-${versionName}.jar`
   }
 
-  public filePath(versionName: string) {
+  public filePath(versionName = this.getSelectedVersion()) {
     return path.resolve(this.storage, `${versionName}.jar`)
   }
 
