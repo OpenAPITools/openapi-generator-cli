@@ -18,7 +18,7 @@ describe('PassTroughService', () => {
 
   const generate = jest.fn().mockResolvedValue('')
   const getSelectedVersion = jest.fn().mockReturnValue('4.2.1');
-  const filePath = jest.fn().mockImplementation(v => `/some/path/to/${v}.jar`);
+  const filePath = jest.fn().mockReturnValue(`/some/path/to/4.2.1.jar`);
 
   beforeEach(async () => {
     commandMock = new CommandMock()
