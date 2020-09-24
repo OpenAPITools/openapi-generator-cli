@@ -90,14 +90,16 @@ describe('GeneratorService', () => {
       };
 
       let executedCommands = []
+      let concurrentlyCfg = []
 
       beforeEach(() => {
         executedCommands = []
         fs.existsSync.mockImplementation(p => !!config[p])
         fs.readJSONSync.mockImplementation(p => config[p])
         glob.sync.mockImplementation(g => specFiles[g])
-        concurrently.mockImplementation(ec => {
+        concurrently.mockImplementation((ec, cfg) => {
           executedCommands = ec
+          concurrentlyCfg = cfg
           return Promise.resolve();
         })
       })
@@ -156,18 +158,28 @@ describe('GeneratorService', () => {
         ['none.json', []]
       ])('%s', (filePath, expectedCommands) => {
 
+        let returnValue: boolean
+
         beforeEach(async () => {
           configGet.mockImplementation((path, defaultValue) => config[filePath] || defaultValue)
-          await fixture.generate()
+          returnValue = await fixture.generate()
         })
 
         it('calls the config get well', () => {
           expect(configGet).toHaveBeenNthCalledWith(1, 'generator-cli.generators', [])
         })
 
+        it('runs max 10 processes at the same time', () => {
+          expect(concurrentlyCfg).toEqual({maxProcesses: 10})
+        })
+
         it(`executes ${expectedCommands.length} commands`, async () => {
           expect(executedCommands).toHaveLength(expectedCommands.length)
           expect(executedCommands).toEqual(expectedCommands)
+        })
+
+        it(`resolved to ${expectedCommands.length  > 1}`, () => {
+          expect(returnValue).toEqual(expectedCommands.length > 0)
         })
 
       })

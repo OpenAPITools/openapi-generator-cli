@@ -35,7 +35,7 @@ export class GeneratorService {
     }))
 
     if (commands.length > 0) {
-      await concurrently(commands)
+      await concurrently(commands, {maxProcesses: 10})
       return true
     }
 
