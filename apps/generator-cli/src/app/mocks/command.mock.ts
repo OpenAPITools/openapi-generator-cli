@@ -1,10 +1,10 @@
 import {get, set} from 'lodash';
 
-export class CommandMockSpec {
+export class CommandMock {
 
   commands: {
     [key: string]: {
-      self: CommandMockSpec,
+      self: CommandMock,
       description: string
       action: (cmd) => unknown
       options: Array<{
@@ -16,7 +16,7 @@ export class CommandMockSpec {
   } = {};
 
   refs: {
-    [key: string]: CommandMockSpec
+    [key: string]: CommandMock
   } = {}
 
   private currentCommand: string

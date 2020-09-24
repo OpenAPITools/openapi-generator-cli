@@ -4,7 +4,7 @@ import {mocked} from 'ts-jest/utils';
 import {COMMANDER_PROGRAM} from '../constants';
 import {VersionManagerService} from './version-manager.service';
 import {noop} from 'rxjs';
-import {CommandMockSpec} from '../mocks/command.mock.spec';
+import {CommandMock} from '../mocks/command.mock';
 
 jest.mock('child_process');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -13,13 +13,13 @@ const childProcess = mocked(require('child_process'), true)
 describe('PassTroughService', () => {
 
   let fixture: PassTroughService;
-  let commandMock: CommandMockSpec;
+  let commandMock: CommandMock;
 
   const getSelectedVersion = jest.fn().mockReturnValue('4.2.1');
   const filePath = jest.fn().mockImplementation(v => `/some/path/to/${v}.jar`);
 
   beforeEach(async () => {
-    commandMock = new CommandMockSpec()
+    commandMock = new CommandMock()
 
     const moduleRef = await Test.createTestingModule({
       providers: [

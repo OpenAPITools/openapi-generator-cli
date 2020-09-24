@@ -1,6 +1,6 @@
 import {Test} from '@nestjs/testing';
 import {VersionManagerController} from './version-manager.controller';
-import {CommandMockSpec} from '../mocks/command.mock.spec';
+import {CommandMock} from '../mocks/command.mock';
 import {COMMANDER_PROGRAM, LOGGER} from '../constants';
 import {UIService, VersionManagerService} from '../services';
 import {of} from 'rxjs';
@@ -11,7 +11,7 @@ jest.mock('fs-extra');
 describe('VersionManagerController', () => {
 
   let fixture: VersionManagerController;
-  let commandMock: CommandMockSpec;
+  let commandMock: CommandMock;
 
   const log = jest.fn()
 
@@ -30,7 +30,7 @@ describe('VersionManagerController', () => {
   }
 
   beforeEach(async () => {
-    commandMock = new CommandMockSpec();
+    commandMock = new CommandMock();
 
     [
       log,
