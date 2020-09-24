@@ -28,6 +28,7 @@ describe('AppModule', () => {
     [
       ...Object.values(versionManagerServiceMock),
       ...Object.values(passTroughServiceMock),
+      ...Object.values(programMock),
     ].forEach(spy => spy.mockReset())
 
     const moduleRef = await Test.createTestingModule({

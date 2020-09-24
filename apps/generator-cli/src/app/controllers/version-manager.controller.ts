@@ -35,23 +35,22 @@ export class VersionManagerController {
     const versions = await this.service.search(versionTags).toPromise()
 
     if (this.listCommand.opts().json) {
-      console.log(JSON.stringify(versions, null, 2))
+      this.logger.log(JSON.stringify(versions, null, 2))
       return
     }
 
     if (versions.length < 1) {
-      console.log(chalk.red('No results for: ' + versionTags.join(' ')))
+      this.logger.log(chalk.red('No results for: ' + versionTags.join(' ')))
       return
     }
 
-    const {version} = await this.table(versions)
-    const downloaded = await this.service.isDownloaded(version)
+    const {version, installed} = await this.table(versions)
     const isSelected = await this.service.isSelectedVersion(version)
     const choice = (name: string, cb = () => null, color = v => v) => ({name: color(name), value: cb})
 
     const choices = [choice('exit')]
 
-    if (!downloaded) {
+    if (!installed) {
       choices.unshift(choice('download', () => this.service.download(version), chalk.yellow))
     } else if (!isSelected) {
       choices.unshift(choice('remove', () => this.service.remove(version), chalk.red))
@@ -61,11 +60,7 @@ export class VersionManagerController {
       choices.unshift(choice('use', () => this.service.setSelectedVersion(version), chalk.green))
     }
 
-    await (await this.ui.list({
-      name: 'next',
-      message: 'Whats next?',
-      choices,
-    }))();
+    await (await this.ui.list({name: 'next', message: 'Whats next?', choices}))();
   };
 
   private set = async (versionTags: string[]) => {
@@ -77,7 +72,6 @@ export class VersionManagerController {
     }
 
     this.logger.log(chalk.red(`Unable to find version matching criteria "${versionTags.join(' ')}"`))
-    process.exit(1)
 
   }
 

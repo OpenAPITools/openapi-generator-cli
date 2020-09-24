@@ -1,55 +1,25 @@
 import {Test} from '@nestjs/testing';
 import {PassTroughService} from './pass-trough.service';
 import {mocked} from 'ts-jest/utils';
-import {set} from 'lodash';
 import {COMMANDER_PROGRAM} from '../constants';
 import {VersionManagerService} from './version-manager.service';
 import {noop} from 'rxjs';
+import {CommandMockSpec} from '../mocks/command.mock.spec';
 
 jest.mock('child_process');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const childProcess = mocked(require('child_process'), true)
 
-class CommandMock {
-
-  commands: {
-    [key: string]: {
-      description: string
-      action: (cmd) => unknown
-    }
-  } = {};
-
-  private currentCommand: string
-
-  helpInformation = jest.fn().mockReturnValue('some help text')
-
-  action = jest.fn().mockImplementation((action) => {
-    set(this.commands, [this.currentCommand, 'action'], action);
-    return this
-  })
-
-  command = jest.fn().mockImplementation((cmd) => {
-    this.currentCommand = cmd
-    return this
-  })
-
-  description = jest.fn().mockImplementation((desc) => {
-    set(this.commands, [this.currentCommand, 'description'], desc);
-    return this
-  })
-
-}
-
 describe('PassTroughService', () => {
 
   let fixture: PassTroughService;
-  let commandMock: CommandMock;
+  let commandMock: CommandMockSpec;
 
   const getSelectedVersion = jest.fn().mockReturnValue('4.2.1');
   const filePath = jest.fn().mockImplementation(v => `/some/path/to/${v}.jar`);
 
   beforeEach(async () => {
-    commandMock = new CommandMock()
+    commandMock = new CommandMockSpec()
 
     const moduleRef = await Test.createTestingModule({
       providers: [
