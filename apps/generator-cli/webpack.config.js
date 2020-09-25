@@ -1,14 +1,14 @@
 const {name, version, ...packageConfig} = require('../../package.json')
 const GeneratePackageJsonPlugin = require('generate-package-json-webpack-plugin')
 const {BannerPlugin} = require('webpack')
+const {omit} = require('lodash')
 
 module.exports = (config) => {
   const basePackageValues = {
-    ...packageConfig,
-    version: `${version}-beta10`,
+    ...omit(packageConfig, ['scripts', 'dependencies', 'devDependencies']),
+    version: `${version}-beta13`,
     name: `@${name}/openapi-generator-cli`,
     description: 'A npm package wrapper for OpenAPI Generator (https://github.com/OpenAPITools/openapi-generator), generates which API client libraries (SDK generation), server stubs, documentation and configuration automatically given an OpenAPI Spec (v2, v3)',
-    main: "./main.js",
     bin: {
       "openapi-generator-cli": "./main.js"
     },

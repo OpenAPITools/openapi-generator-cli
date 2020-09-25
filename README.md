@@ -16,6 +16,8 @@ configuration automatically given an OpenAPI Spec (both 2.0 and 3.0 are supporte
 
 #### **[added] [semver](https://semver.org/) is support! 🎉**
 
+<p align="center"><img src="/img/vm.gif?raw=true"/></p>
+
 To make that happen, a version management was added to the package.
 The first time you run the command `openapi-generator-cli` the last stable version 
 of [OpenAPITools/openapi-generator](https://github.com/OpenAPITools/openapi-generator) is downloaded by default. 
@@ -49,7 +51,7 @@ or using yarn
 yarn add @openapitools/openapi-generator-cli
 ```
 
-After the installation has finished you can add a script like this:
+After the installation has finished you can run `npx openapi-generator-cli` or add a script like this:
 
 ```json
 {
