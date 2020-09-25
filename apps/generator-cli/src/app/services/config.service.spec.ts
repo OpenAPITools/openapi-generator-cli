@@ -85,6 +85,29 @@ describe('ConfigService', () => {
 
     })
 
+    describe('has()', () => {
+
+      beforeEach(() => {
+        fs.readJSONSync.mockReturnValue({
+          propFalsy: false,
+          propUndefined: undefined,
+          propNull: null,
+        })
+      })
+
+      it('returns true, if the prop is set', () => {
+        expect(fixture.has('propFalsy')).toBeTruthy()
+        expect(fixture.has('propUndefined')).toBeTruthy()
+        expect(fixture.has('propNull')).toBeTruthy()
+      })
+
+      it('returns false, if the value is set', () => {
+        expect(fixture.has('foo')).toBeFalsy()
+      })
+
+
+    })
+
     describe('set()', () => {
       beforeEach(() => {
         fs.readJSONSync.mockReturnValue({

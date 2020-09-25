@@ -1,7 +1,7 @@
 import {Test} from '@nestjs/testing';
 import {PassTroughService} from './pass-trough.service';
 import {mocked} from 'ts-jest/utils';
-import {COMMANDER_PROGRAM} from '../constants';
+import {COMMANDER_PROGRAM, LOGGER} from '../constants';
 import {VersionManagerService} from './version-manager.service';
 import {noop} from 'rxjs';
 import {CommandMock} from '../mocks/command.mock';
@@ -16,7 +16,8 @@ describe('PassTroughService', () => {
   let fixture: PassTroughService;
   let commandMock: CommandMock;
 
-  const generate = jest.fn().mockResolvedValue('')
+  const log = jest.fn()
+  const generate = jest.fn().mockResolvedValue(true)
   const getSelectedVersion = jest.fn().mockReturnValue('4.2.1');
   const filePath = jest.fn().mockReturnValue(`/some/path/to/4.2.1.jar`);
 
@@ -29,6 +30,7 @@ describe('PassTroughService', () => {
         {provide: VersionManagerService, useValue: {filePath, getSelectedVersion}},
         {provide: GeneratorService, useValue: {generate, enabled: true}},
         {provide: COMMANDER_PROGRAM, useValue: commandMock},
+        {provide: LOGGER, useValue: {log}},
       ],
     }).compile();
 
