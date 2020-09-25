@@ -51,19 +51,15 @@ export class GeneratorService {
       }))
     }))
 
-    let generated = false;
-
-    if (commands.length > 0) {
-      generated = await (async () => {
-        try {
-          this.printResult(await concurrently(commands, {maxProcesses: 10}))
-          return true
-        } catch (e) {
-          this.printResult(e);
-          return false
-        }
-      })()
-    }
+    const generated = commands.length > 0 && await (async () => {
+      try {
+        this.printResult(await concurrently(commands, {maxProcesses: 10}))
+        return true
+      } catch (e) {
+        this.printResult(e);
+        return false
+      }
+    })()
 
     globsWithNoMatches.map(g => this.logger.log(chalk.yellow(`[warn] Did not found any file matching glob "${g}"`)))
     return generated

@@ -1,7 +1,8 @@
 import {Inject, Injectable} from '@nestjs/common';
-import {COMMANDER_PROGRAM} from '../constants';
+import {COMMANDER_PROGRAM, LOGGER} from '../constants';
 import {Command} from 'commander';
 import {isString, startsWith, trim} from 'lodash';
+import * as chalk from 'chalk';
 import {VersionManagerService} from './version-manager.service';
 import {exec, spawn} from 'child_process';
 import {GeneratorService} from './generator.service';
@@ -10,6 +11,7 @@ import {GeneratorService} from './generator.service';
 export class PassTroughService {
 
   constructor(
+    @Inject(LOGGER) private readonly logger: LOGGER,
     @Inject(COMMANDER_PROGRAM) private readonly program: Command,
     private readonly versionManager: VersionManagerService,
     private readonly generatorService: GeneratorService,
@@ -34,6 +36,7 @@ export class PassTroughService {
               case 'generate':
                 if (this.generatorService.enabled) {
                   if (!await this.generatorService.generate()) {
+                    this.logger.log(chalk.red('Code generation failed'))
                     process.exit(1)
                   }
                   return
