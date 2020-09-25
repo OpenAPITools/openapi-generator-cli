@@ -14,7 +14,7 @@ configuration automatically given an OpenAPI Spec (both 2.0 and 3.0 are supporte
 
 ## Version 2.x.x
 
-#### **[added] [semver](https://semver.org/) is support! 🎉**
+#### [added] [semver](https://semver.org/) is support! 🎉**
 
 <p align="center"><img src="/img/vm.gif?raw=true"/></p>
 
@@ -31,7 +31,7 @@ you could change it by using one of the following commands:
 - `openapi-generator-cli version-manager list` 
 - `openapi-generator-cli version-manager set  <versionTags...>`
 
-####**[added] generator config**
+#### [added] generator config**
 
 You will now be able to configure the code generation in *openapitools.json*. 
 This makes it more convenient to generate code for every file that matches the given glob expression.
