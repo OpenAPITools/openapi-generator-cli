@@ -65,7 +65,9 @@ After the installation has finished you can run `npx openapi-generator-cli` or a
 
 Note the whitespace sensitivity when using multiple additional-properties:
 
-`--additional-properties=ngVersion=6.1.7,npmName=restClient,supportsES6=true,npmVersion=6.9.0,withInterfaces=true`
+```text
+--additional-properties=ngVersion=6.1.7,npmName=restClient,supportsES6=true,npmVersion=6.9.0,withInterfaces=true
+```
 
 ### Globally
 
