@@ -38,4 +38,4 @@ testem.log
 .DS_Store
 Thumbs.db
 
-openapitools.json
+/openapitools.json
