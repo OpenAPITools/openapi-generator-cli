@@ -100,7 +100,7 @@ you will find a new file called *openapitools.json* along with the *package.json
 
 Initially the file has the following content:
 
-```json
+```json5
 {
   "$schema": "node_modules/@openapitools/openapi-generator-cli/config.schema.json",
   "spaces": 2,
@@ -117,7 +117,7 @@ This configuration indicates the following:
 
 Further it is also possible to configure generators, for example:
 
-```json
+```json5
 {
   "$schema": "node_modules/@openapitools/openapi-generator-cli/config.schema.json",
   "spaces": 2,
