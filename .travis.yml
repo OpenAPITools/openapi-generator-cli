@@ -30,7 +30,7 @@ jobs:
         - (./node_modules/.bin/openapi-generator-cli version-manager set 4.0 && node ./node_modules/.bin/openapi-generator-cli version | grep -q '4.0.3') || exit 1
         - (./node_modules/.bin/openapi-generator-cli version-manager set 4.3.1 && node ./node_modules/.bin/openapi-generator-cli version | grep -q '4.3.1') || exit 1
         - ./node_modules/.bin/openapi-generator-cli version-manager set latest
-        - cp $TRAVIS_BUILD_DIR/examples ./example
+        - cp -r $TRAVIS_BUILD_DIR/examples ./examples
         - ls -la
 
     - stage: deploy
