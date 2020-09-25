@@ -1,7 +1,7 @@
 import {Inject, Injectable} from '@nestjs/common';
 import * as path from 'path';
 import {LOGGER} from '../constants';
-import {set, get, merge} from 'lodash';
+import {set, get, has, merge} from 'lodash';
 import * as fs from 'fs-extra';
 
 @Injectable()
@@ -25,6 +25,10 @@ export class ConfigService {
 
   get<T = unknown>(path: string, defaultValue?: T): T {
     return get(this.read(), path, defaultValue)
+  }
+
+  has(path) {
+    return has(this.read(), path)
   }
 
   set(path: string, value: unknown) {

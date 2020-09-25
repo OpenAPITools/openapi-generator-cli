@@ -32,7 +32,8 @@ export class PassTroughService {
                 console.log(this.program.helpInformation())
                 return
               case 'generate':
-                if (await this.generatorService.generate()) {
+                if (this.generatorService.enabled) {
+                  await this.generatorService.generate()
                   return
                 }
             }

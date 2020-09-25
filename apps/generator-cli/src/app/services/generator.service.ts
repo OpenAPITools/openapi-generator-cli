@@ -1,11 +1,13 @@
-import {Injectable} from '@nestjs/common';
-import {flatten, isString, upperFirst, kebabCase} from 'lodash';
+import {Inject, Injectable} from '@nestjs/common';
+import {flatten, isString, upperFirst, kebabCase, sortBy} from 'lodash';
 
 import * as concurrently from 'concurrently';
 import * as path from 'path';
 import * as glob from 'glob';
+import * as chalk from 'chalk';
 import {VersionManagerService} from './version-manager.service';
 import {ConfigService} from './config.service';
+import {LOGGER} from '../constants';
 
 interface GeneratorConfig {
   glob: string
@@ -17,7 +19,11 @@ interface GeneratorConfig {
 @Injectable()
 export class GeneratorService {
 
+  private readonly configPath = 'generator-cli.generators';
+  public readonly enabled = this.configService.has(this.configPath)
+
   constructor(
+    @Inject(LOGGER) private readonly logger: LOGGER,
     private readonly configService: ConfigService,
     private readonly versionManager: VersionManagerService,
   ) {
@@ -26,24 +32,52 @@ export class GeneratorService {
   public async generate() {
 
     const cwd = this.configService.cwd
-    const generators = Object.entries(this.configService.get<{ [name: string]: GeneratorConfig }>('generator-cli.generators', {}))
-    const enabledGenerators = generators.filter(([name, {disabled}]) => disabled !== true)
+    const generators = Object.entries(this.configService.get<{ [name: string]: GeneratorConfig }>(this.configPath, {}))
+    const enabledGenerators = generators.filter(([, {disabled}]) => disabled !== true)
+
+    const globsWithNoMatches = []
 
     const commands = flatten(enabledGenerators.map(([name, config]) => {
       const {glob: globPattern, disabled, ...params} = config
+      const specFiles = glob.sync(globPattern, {cwd})
+
+      if (specFiles.length < 1) {
+        globsWithNoMatches.push(globPattern)
+      }
+
       return glob.sync(globPattern, {cwd}).map(spec => ({
         name: `[${name}] ${spec}`,
         command: this.buildCommand(cwd, spec, params),
       }))
     }))
 
+    let generated = false;
+
     if (commands.length > 0) {
-      await concurrently(commands, {maxProcesses: 10})
-      return true
+      generated = await (async () => {
+        try {
+          this.printResult(await concurrently(commands, {maxProcesses: 10}))
+          return true
+        } catch (e) {
+          this.printResult(e);
+          return false
+        }
+      })()
     }
 
-    return false
+    globsWithNoMatches.map(g => this.logger.log(chalk.yellow(`[warn] Did not found any file matching glob "${g}"`)))
+    return generated
 
+  }
+
+  private printResult(res: { command: concurrently.CommandObj, exitCode: number }[]) {
+    this.logger.log(sortBy(res, 'command.name').map(({exitCode, command}) => {
+      const failed = exitCode > 0
+      return [
+        chalk[failed ? 'red' : 'green'](command.name),
+        ...(failed ? [chalk.yellow(`  ${command.command}\n`)] : []),
+      ].join('\n')
+    }).join('\n'))
   }
 
   private buildCommand(cwd: string, specFile: string, params: {}) {

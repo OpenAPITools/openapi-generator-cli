@@ -29,7 +29,7 @@ describe('GeneratorService', () => {
         GeneratorService,
         {provide: LOGGER, useValue: {log}},
         {provide: VersionManagerService, useValue: {filePath: () => '/path/to/4.2.1.jar'}},
-        {provide: ConfigService, useValue: {cwd, get: configGet}},
+        {provide: ConfigService, useValue: {cwd, get: configGet, has: () => true}},
       ],
     }).compile();
 
@@ -64,7 +64,7 @@ describe('GeneratorService', () => {
             disabled: true,
           },
           baz: {
-            glob: 'def/**/*.(yaml|json)',
+            glob: 'def/**/*.{json,yaml}',
             name: '#{name}',
             nameUcFirst: '#{Name}',
             cwd: '#{cwd}',
@@ -89,7 +89,7 @@ describe('GeneratorService', () => {
 
       const specFiles = {
         'abc/**/*.yaml': ['abc/app/pet.yaml', 'abc/app/car.yaml'],
-        'def/**/*.(yaml|json)': ['def/app/pet.yaml', 'def/app/car.json'],
+        'def/**/*.{json,yaml}': ['def/app/pet.yaml', 'def/app/car.json'],
         'bar/abc/**/*.yaml': ['api/cat.yaml', 'api/bird.json'],
       };
 

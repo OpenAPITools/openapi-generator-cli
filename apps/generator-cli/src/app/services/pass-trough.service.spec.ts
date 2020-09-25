@@ -27,7 +27,7 @@ describe('PassTroughService', () => {
       providers: [
         PassTroughService,
         {provide: VersionManagerService, useValue: {filePath, getSelectedVersion}},
-        {provide: GeneratorService, useValue: {generate}},
+        {provide: GeneratorService, useValue: {generate, enabled: true}},
         {provide: COMMANDER_PROGRAM, useValue: commandMock},
       ],
     }).compile();
