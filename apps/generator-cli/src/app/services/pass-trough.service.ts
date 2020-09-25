@@ -33,7 +33,9 @@ export class PassTroughService {
                 return
               case 'generate':
                 if (this.generatorService.enabled) {
-                  await this.generatorService.generate()
+                  if (!await this.generatorService.generate()) {
+                    process.exit(1)
+                  }
                   return
                 }
             }
