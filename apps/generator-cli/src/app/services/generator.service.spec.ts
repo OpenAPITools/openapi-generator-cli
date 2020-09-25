@@ -44,8 +44,9 @@ describe('GeneratorService', () => {
 
       const config = {
         ['none.json']: undefined,
-        ['foo.json']: [
-          {
+        ['also-none.json']: {},
+        ['foo.json']: {
+          angular: {
             glob: 'abc/**/*.yaml',
             output: '#{cwd}/generated-sources/openapi/typescript-angular/#{name}',
             'generator-name': 'typescript-angular',
@@ -57,15 +58,15 @@ describe('GeneratorService', () => {
               withInterfaces: true
             }
           },
-          {
+          foo: {
             glob: 'disabled/**/*.yaml',
             output: 'disabled/',
             disabled: true,
           },
-          {
+          baz: {
             glob: 'def/**/*.(yaml|json)',
             name: '#{name}',
-            Name: '#{Name}',
+            nameUcFirst: '#{Name}',
             cwd: '#{cwd}',
             base: '#{base}',
             dir: '#{dir}',
@@ -73,14 +74,17 @@ describe('GeneratorService', () => {
             relDir: '#{relDir}',
             relPath: '#{relPath}',
             ext: '#{ext}',
+            someBool: true,
+            someInt: 1,
           },
-        ],
-        ['bar.json']: [
-          {
+        },
+        ['bar.json']: {
+          bar: {
             glob: 'bar/abc/**/*.yaml',
             output: 'bar/#{name}',
+            someBool: false,
           },
-        ],
+        },
       }
 
       const specFiles = {
@@ -104,58 +108,68 @@ describe('GeneratorService', () => {
         })
       })
 
-      const cmd = (appendix: string[]) => `java -jar "/path/to/4.2.1.jar" generate ${appendix.join(' ')}`
+      const cmd = (name, appendix: string[]) => ({
+        name,
+        command: `java -jar "/path/to/4.2.1.jar" generate ${appendix.join(' ')}`,
+      });
 
       describe.each([
         ['foo.json', [
-          cmd([
+          cmd('[angular] abc/app/pet.yaml', [
             `--input-spec="${cwd}/abc/app/pet.yaml"`,
             `--output="${cwd}/generated-sources/openapi/typescript-angular/pet"`,
             `--generator-name="typescript-angular"`,
             `--additional-properties="fileNaming=kebab-case,apiModulePrefix=Pet,npmName=petRestClient,supportsES6=true,withInterfaces=true"`,
           ]),
-          cmd([
+          cmd('[angular] abc/app/car.yaml', [
             `--input-spec="${cwd}/abc/app/car.yaml"`,
             `--output="${cwd}/generated-sources/openapi/typescript-angular/car"`,
             `--generator-name="typescript-angular"`,
             `--additional-properties="fileNaming=kebab-case,apiModulePrefix=Car,npmName=carRestClient,supportsES6=true,withInterfaces=true"`,
           ]),
-          cmd([
+          cmd('[baz] def/app/pet.yaml', [
             `--input-spec="${cwd}/def/app/pet.yaml"`,
             `--name="pet"`,
-            `--Name="Pet"`,
+            `--name-uc-first="Pet"`,
             `--cwd="${cwd}"`,
             `--base="pet.yaml"`,
             `--dir="${cwd}/def/app"`,
             `--path="${cwd}/def/app/pet.yaml"`,
-            `--relDir="def/app"`,
-            `--relPath="def/app/pet.yaml"`,
+            `--rel-dir="def/app"`,
+            `--rel-path="def/app/pet.yaml"`,
             `--ext="yaml"`,
+            '--some-bool=true',
+            '--some-int=1',
           ]),
-          cmd([
+          cmd('[baz] def/app/car.json', [
             `--input-spec="${cwd}/def/app/car.json"`,
             `--name="car"`,
-            `--Name="Car"`,
+            `--name-uc-first="Car"`,
             `--cwd="${cwd}"`,
             `--base="car.json"`,
             `--dir="${cwd}/def/app"`,
             `--path="${cwd}/def/app/car.json"`,
-            `--relDir="def/app"`,
-            `--relPath="def/app/car.json"`,
+            `--rel-dir="def/app"`,
+            `--rel-path="def/app/car.json"`,
             `--ext="json"`,
+            '--some-bool=true',
+            '--some-int=1',
           ]),
         ]],
         ['bar.json', [
-          cmd([
+          cmd('[bar] api/cat.yaml', [
             `--input-spec="${cwd}/api/cat.yaml"`,
             `--output="bar/cat"`,
+            '--some-bool=false',
           ]),
-          cmd([
+          cmd('[bar] api/bird.json', [
             `--input-spec="${cwd}/api/bird.json"`,
             `--output="bar/bird"`,
+            '--some-bool=false',
           ]),
         ]],
-        ['none.json', []]
+        ['none.json', []],
+        ['also-none.json', []],
       ])('%s', (filePath, expectedCommands) => {
 
         let returnValue: boolean
@@ -166,7 +180,7 @@ describe('GeneratorService', () => {
         })
 
         it('calls the config get well', () => {
-          expect(configGet).toHaveBeenNthCalledWith(1, 'generator-cli.generators', [])
+          expect(configGet).toHaveBeenNthCalledWith(1, 'generator-cli.generators', {})
         })
 
         it('runs max 10 processes at the same time', () => {
@@ -178,7 +192,7 @@ describe('GeneratorService', () => {
           expect(executedCommands).toEqual(expectedCommands)
         })
 
-        it(`resolved to ${expectedCommands.length  > 1}`, () => {
+        it(`resolved to ${expectedCommands.length > 1}`, () => {
           expect(returnValue).toEqual(expectedCommands.length > 0)
         })
 

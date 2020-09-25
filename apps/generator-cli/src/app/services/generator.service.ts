@@ -1,5 +1,5 @@
 import {Injectable} from '@nestjs/common';
-import {flatten, isString, upperFirst} from 'lodash';
+import {flatten, isString, upperFirst, kebabCase} from 'lodash';
 
 import * as concurrently from 'concurrently';
 import * as path from 'path';
@@ -26,12 +26,15 @@ export class GeneratorService {
   public async generate() {
 
     const cwd = this.configService.cwd
-    const generators = this.configService.get<GeneratorConfig[]>('generator-cli.generators', [])
-    const enabledGenerators = generators.filter(({disabled}) => disabled !== true)
+    const generators = Object.entries(this.configService.get<{ [name: string]: GeneratorConfig }>('generator-cli.generators', {}))
+    const enabledGenerators = generators.filter(([name, {disabled}]) => disabled !== true)
 
-    const commands = flatten(enabledGenerators.map(config => {
+    const commands = flatten(enabledGenerators.map(([name, config]) => {
       const {glob: globPattern, disabled, ...params} = config
-      return glob.sync(globPattern, {cwd}).map(spec => this.buildCommand(cwd, spec, params))
+      return glob.sync(globPattern, {cwd}).map(spec => ({
+        name: `[${name}] ${spec}`,
+        command: this.buildCommand(cwd, spec, params),
+      }))
     }))
 
     if (commands.length > 0) {
@@ -50,7 +53,22 @@ export class GeneratorService {
       ['input-spec']: absoluteSpecPath,
       ...params,
     }).map(([k, v]) => {
-      return typeof v === 'object' ? `--${k}="${Object.entries(v).map(z => z.join('=')).join(',')}"` : `--${k}="${v}"`
+
+      const key = kebabCase(k)
+      const value = (() => {
+        switch (typeof v) {
+          case 'object':
+            return `"${Object.entries(v).map(z => z.join('=')).join(',')}"`
+          case 'boolean':
+          case 'number':
+          case 'bigint':
+            return `${v}`
+          default:
+            return `"${v}"`
+        }
+      })()
+
+      return `--${key}=${value}`
     }).join(' ')
 
     const ext = path.extname(absoluteSpecPath)

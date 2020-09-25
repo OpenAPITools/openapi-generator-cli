@@ -5,7 +5,7 @@ const {BannerPlugin} = require('webpack')
 module.exports = (config) => {
   const basePackageValues = {
     ...packageConfig,
-    version: `${version}-beta9`,
+    version: `${version}-beta10`,
     name: `@${name}/openapi-generator-cli`,
     description: 'A npm package wrapper for OpenAPI Generator (https://github.com/OpenAPITools/openapi-generator), generates which API client libraries (SDK generation), server stubs, documentation and configuration automatically given an OpenAPI Spec (v2, v3)',
     main: "./main.js",
