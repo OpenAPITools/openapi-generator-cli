@@ -18,7 +18,7 @@ configuration automatically given an OpenAPI Spec (both 2.0 and 3.0 are supporte
 
 You need to execute `openapi-generator-cli` instead of `openapi-generator` from now on.
 
-#### [added] [semver](https://semver.org/) is support! 🎉
+#### [added] [semver](https://semver.org/) support! 🎉
 
 <p align="center"><img src="/img/vm.gif?raw=true"/></p>
 
