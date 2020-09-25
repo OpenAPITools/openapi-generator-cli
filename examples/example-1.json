@@ -7,7 +7,7 @@
       "v2Generator": {
         "generatorName": "typescript-angular",
         "output": "#{cwd}/output/#{ext}/#{name}",
-        "glob": "**/v2.0/**/*.(json|yaml)"
+        "glob": "examples/v2.0/**/*.(json|yaml)"
       }
     }
   }
