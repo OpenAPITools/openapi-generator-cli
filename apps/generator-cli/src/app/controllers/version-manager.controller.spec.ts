@@ -274,7 +274,7 @@ describe('VersionManagerController', () => {
     describe('set', () => {
 
       beforeEach(() => {
-        cmd = commandMock.commands['set [versionTags...]']
+        cmd = commandMock.commands['set <versionTags...>']
       })
 
       it('sets version[0] from the list', async () => {

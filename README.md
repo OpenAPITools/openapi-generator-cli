@@ -1,90 +1,172 @@
-# Openapitools
+# @openapitools/openapi-generator-cli
 
-This project was generated using [Nx](https://nx.dev).
+[![Join the Slack chat room](https://img.shields.io/badge/Slack-Join%20the%20chat%20room-orange)](https://join.slack.com/t/openapi-generator/shared_invite/enQtNzAyNDMyOTU0OTE1LTY5ZDBiNDI5NzI5ZjQ1Y2E5OWVjMjZkYzY1ZGM2MWQ4YWFjMzcyNDY5MGI4NjQxNDBiMTlmZTc5NjY2ZTQ5MGM)
 
-<p align="center"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="450"></p>
+[![Renovate enabled](https://img.shields.io/badge/renovate-enabled-brightgreen.svg)](https://renovateapp.com/)
+[![Build Status](https://travis-ci.org/openapitools/openapi-generator-cli.svg?branch=master)](https://travis-ci.org/OpenAPITools/openapi-generator-cli)
+[![HitCount](http://hits.dwyl.io/openapitools/openapi-generator-cli.svg)](http://hits.dwyl.com/openapitools/openapi-generator-cli)
 
-🔎 **Nx is a set of Extensible Dev Tools for Monorepos.**
+OpenAPI Generator allows generation of API client libraries (SDK generation), server stubs, documentation and 
+configuration automatically given an OpenAPI Spec (both 2.0 and 3.0 are supported). Please see
+[OpenAPITools/openapi-generator](https://github.com/OpenAPITools/openapi-generator)
 
-## Adding capabilities to your workspace
+---
 
-Nx supports many plugins which add capabilities for developing different types of applications and different tools.
+## Version 2.x.x
 
-These capabilities include generating applications, libraries, etc as well as the devtools to test, and build projects as well.
+#### **[added] [semver](https://semver.org/) is support! 🎉**
 
-Below are our core plugins:
+To make that happen, a version management was added to the package.
+The first time you run the command `openapi-generator-cli` the last stable version 
+of [OpenAPITools/openapi-generator](https://github.com/OpenAPITools/openapi-generator) is downloaded by default. 
 
-- [React](https://reactjs.org)
-  - `npm install --save-dev @nrwl/react`
-- Web (no framework frontends)
-  - `npm install --save-dev @nrwl/web`
-- [Angular](https://angular.io)
-  - `npm install --save-dev @nrwl/angular`
-- [Nest](https://nestjs.com)
-  - `npm install --save-dev @nrwl/nest`
-- [Express](https://expressjs.com)
-  - `npm install --save-dev @nrwl/express`
-- [Node](https://nodejs.org)
-  - `npm install --save-dev @nrwl/node`
+That version is saved in the file *openapitools.json*. Therefore you should include this file in your version control, 
+to ensure that the correct version is being used next time you call the command.
 
-There are also many [community plugins](https://nx.dev/nx-community) you could add.
+If you would like to use a different version of the [OpenAPITools/openapi-generator](https://github.com/OpenAPITools/openapi-generator), 
+you could change it by using one of the following commands:
+ 
+- `openapi-generator-cli version-manager list` 
+- `openapi-generator-cli version-manager set  <versionTags...>`
 
-## Generate an application
+####**[added] generator config**
 
-Run `nx g @nrwl/react:app my-app` to generate an application.
+You will now be able to configure the code generation in *openapitools.json*. 
+This makes it more convenient to generate code for every file that matches the given glob expression.
+For more information, [please check out the configuration documentation blow](#configuration).
 
-> You can use any of the plugins above to generate applications as well.
+## Installation
 
-When using Nx, you can create multiple applications and libraries in the same workspace.
+### Locally (recommended)
 
-## Generate a library
+```sh
+npm install @openapitools/openapi-generator-cli
+```
 
-Run `nx g @nrwl/react:lib my-lib` to generate a library.
+or using yarn
 
-> You can also use any of the plugins above to generate libraries as well.
+```sh
+yarn add @openapitools/openapi-generator-cli
+```
 
-Libraries are sharable across libraries and applications. They can be imported from `@openapitools/mylib`.
+After the installation has finished you can add a script like this:
 
-## Development server
+```json
+{
+  "name": "my-cool-package",
+  "version": "0.0.0",
+  "scripts": {
+    "my-awesome-script-name": "openapi-generator-cli generate -i docs/openapi.yaml -g typescript-angular -o generated-sources/openapi --additional-properties=ngVersion=6.1.7,npmName=restClient,supportsES6=true,npmVersion=6.9.0,withInterfaces=true",
+  }
+}
+```
 
-Run `nx serve my-app` for a dev server. Navigate to http://localhost:4200/. The app will automatically reload if you change any of the source files.
+Note the whitespace sensitivity when using multiple additional-properties:
 
-## Code scaffolding
+`--additional-properties=ngVersion=6.1.7,npmName=restClient,supportsES6=true,npmVersion=6.9.0,withInterfaces=true`
 
-Run `nx g @nrwl/react:component my-component --project=my-app` to generate a new component.
+### Globally
 
-## Build
+```sh
+npm install -g @openapitools/openapi-generator-cli
+```
 
-Run `nx build my-app` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+or using yarn
 
-## Running unit tests
+```sh
+yarn global add @openapitools/openapi-generator-cli
+```
 
-Run `nx test my-app` to execute the unit tests via [Jest](https://jestjs.io).
+After the installation has finished you can run `openapi-generator-cli`
 
-Run `nx affected:test` to execute the unit tests affected by a change.
+## Usage
 
-## Running end-to-end tests
+Mac/Linux:
+```
+openapi-generator-cli generate -g ruby -i https://raw.githubusercontent.com/OpenAPITools/openapi-generator/master/modules/openapi-generator/src/test/resources/3_0/petstore.yaml -o /var/tmp/ruby-client
+```
 
-Run `ng e2e my-app` to execute the end-to-end tests via [Cypress](https://www.cypress.io).
+Windows:
+```
+openapi-generator-cli generate -g ruby -i https://raw.githubusercontent.com/OpenAPITools/openapi-generator/master/modules/openapi-generator/src/test/resources/3_0/petstore.yaml -o C:\temp\ruby-client
+```
 
-Run `nx affected:e2e` to execute the end-to-end tests affected by a change.
+## Configuration
 
-## Understand your workspace
+If you have installed the package locally and executed the command `openapi-generator-cli` at least once, 
+you will find a new file called *openapitools.json* along with the *package.json*. **Please add this file to your VCS.** 
 
-Run `nx dep-graph` to see a diagram of the dependencies of your projects.
+Initially the file has the following content:
 
-## Further help
+```json
+{
+  "$schema": "node_modules/@openapitools/openapi-generator-cli/config.schema.json",
+  "spaces": 2,
+  "generator-cli": {
+    "version": "4.3.1" // or the current latest version ;)
+  }
+}
+```
 
-Visit the [Nx Documentation](https://nx.dev) to learn more.
+This configuration indicates the following:
 
-## ☁ Nx Cloud
+- the json file shall be formatted using **2 spaces**
+- the generator-cli version 4.3.1 is used
 
-### Computation Memoization in the Cloud
+Further it is also possible to configure generators, for example:
 
-<p align="center"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-cloud-card.png"></p>
+```json
+{
+  "$schema": "node_modules/@openapitools/openapi-generator-cli/config.schema.json",
+  "spaces": 2,
+  "generator-cli": {
+    "version": "4.3.1",
+    "generators": {
+      "v2.0": { // any name you like (just printed to the console log) 
+        "generatorName": "typescript-angular",
+        "output": "#{cwd}/output/v2.0/#{ext}/#{name}",
+        "glob": "examples/v2.0/{json,yaml}/*.{json,yaml}",
+        "additionalProperties": {
+          "ngVersion": "6.1.7",
+          "npmName": "restClient",
+          "supportsES6": "true",
+          "npmVersion": "6.9.0",
+          "withInterfaces": true
+        }
+      },
+      "v3.0": { // any name you like (just printed to the console log) 
+        "generatorName": "typescript-fetch",
+        "output": "#{cwd}/output/v3.0/#{ext}/#{name}",
+        "glob": "examples/v3.0/petstore.{json,yaml}"
+      }
+    }
+  }
+}
+```
 
-Nx Cloud pairs with Nx in order to enable you to build and test code more rapidly, by up to 10 times. Even teams that are new to Nx can connect to Nx Cloud and start saving time instantly.
+If `openapi-generator-cli generate` is called without further arguments, then the configuration 
+is automatically used to generate your code. 🎉
 
-Teams using Nx gain the advantage of building full-stack applications with their preferred framework alongside Nx’s advanced code generation and project dependency graph, plus a unified experience for both frontend and backend developers.
 
-Visit [Nx Cloud](https://nx.app/) to learn more.
+##### Available placeholders
+     
+| placeholder  | description                                                   | example                                               |
+|--------------|---------------------------------------------------------------|-------------------------------------------------------|
+| name         | just file name                                                | auth                                                  |
+| Name         | just file name, but starting with a capital letter            | Auth                                                  |
+| cwd          | the current cwd                                               | /Users/some-user/projects/some-project                |
+| base         | file name and extension                                       | auth.yaml                                             |
+| path         | full path and filename                                        | /Users/some-user/projects/some-project/docs/auth.yaml |
+| dir          | path without the filename                                     | /Users/some-user/projects/some-project/docs           |
+| relDir       | directory name of file relative to the glob provided          | docs                                                  |
+| relPath      | file name and extension of file relative to the glob provided | docs/auth.yaml                                        |
+| ext          | just file extension                                           | yaml                                                  |
+
+## Further Documentation
+
+Please refer to the [official openapi-generator docs](https://github.com/OpenAPITools/openapi-generator#3---usage) for
+more information about the possible arguments and a detailed usage manual of the command line interface.
+
+## You like the package?
+
+Please leave a star.

@@ -19,7 +19,7 @@ export class VersionManagerController {
     .action(tags => this.list(tags))
 
   private readonly setCommand = this.mainCommand
-    .command('set [versionTags...]')
+    .command('set <versionTags...>')
     .description('set version to use')
     .action(tags => this.set(tags))
 
