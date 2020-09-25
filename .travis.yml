@@ -30,7 +30,7 @@ jobs:
         - (./node_modules/.bin/openapi-generator-cli version-manager set 4.0 && node ./node_modules/.bin/openapi-generator-cli version | grep -q '4.0.3') || exit 1
         - (./node_modules/.bin/openapi-generator-cli version-manager set 4.3.1 && node ./node_modules/.bin/openapi-generator-cli version | grep -q '4.3.1') || exit 1
         - cp -r $TRAVIS_BUILD_DIR/examples ./examples
-        - rm openapitools.json && mv ./examples/example-1.json ./openapitools.json && ./node_modules/.bin/openapi-generator-cli generate
+        - rm openapitools.json && mv ./examples/openapitools.json ./openapitools.json && ./node_modules/.bin/openapi-generator-cli generate
 
     - stage: deploy
       if: type IN (push) and branch IN (master)
