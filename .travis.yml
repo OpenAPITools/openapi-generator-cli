@@ -29,10 +29,8 @@ jobs:
         - (./node_modules/.bin/openapi-generator-cli version-manager set 3.0.0 && node ./node_modules/.bin/openapi-generator-cli version | grep -q '3.0.0') || exit 1
         - (./node_modules/.bin/openapi-generator-cli version-manager set 4.0 && node ./node_modules/.bin/openapi-generator-cli version | grep -q '4.0.3') || exit 1
         - (./node_modules/.bin/openapi-generator-cli version-manager set 4.3.1 && node ./node_modules/.bin/openapi-generator-cli version | grep -q '4.3.1') || exit 1
-        - ls -la
-        - ls -la $TRAVIS_BUILD_DIR
         - cp -r $TRAVIS_BUILD_DIR/examples ./examples
-        - ls -la
+        - ls -la ./examples
         - rm openapitools.json && mv ./examples/openapitools.json ./openapitools.json && ./node_modules/.bin/openapi-generator-cli generate
 
     - stage: deploy
