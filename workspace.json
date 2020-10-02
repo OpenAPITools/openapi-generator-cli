@@ -16,7 +16,8 @@
             "tsConfig": "apps/generator-cli/tsconfig.app.json",
             "webpackConfig": "apps/generator-cli/webpack.config.js",
             "assets": [
-              "apps/generator-cli/src/config.schema.json"
+              "apps/generator-cli/src/config.schema.json",
+              "apps/generator-cli/src/README.md"
             ]
           },
           "configurations": {
