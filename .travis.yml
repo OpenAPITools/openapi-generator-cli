@@ -26,8 +26,10 @@ jobs:
         - ./node_modules/.bin/openapi-generator-cli help
         - ./node_modules/.bin/openapi-generator-cli help generate
         - ./node_modules/.bin/openapi-generator-cli version-manager help
+        - ./node_modules/.bin/openapi-generator-cli generate -g ruby -i https://raw.githubusercontent.com/OpenAPITools/openapi-generator/master/modules/openapi-generator/src/test/resources/3_0/petstore.yaml -o $TRAVIS_BUILD_DIR/tmp/ruby-client
         - (./node_modules/.bin/openapi-generator-cli version-manager set 3.0.0 && node ./node_modules/.bin/openapi-generator-cli version | grep -q '3.0.0') || exit 1
         - (./node_modules/.bin/openapi-generator-cli version-manager set 4.0 && node ./node_modules/.bin/openapi-generator-cli version | grep -q '4.0.3') || exit 1
+        - (./node_modules/.bin/openapi-generator-cli version-manager set 4.3.1 && node ./node_modules/.bin/openapi-generator-cli version | grep -q '4.3.1') || exit 1
         - (./node_modules/.bin/openapi-generator-cli version-manager set 4.3.1 && node ./node_modules/.bin/openapi-generator-cli version | grep -q '4.3.1') || exit 1
         - cp -r $TRAVIS_BUILD_DIR/examples ./examples
         - rm openapitools.json && mv ./examples/openapitools.json ./openapitools.json && ./node_modules/.bin/openapi-generator-cli generate

@@ -26,7 +26,7 @@ export class PassTroughService {
       .map(trim)
       .map(line => line.match(/^([a-z-]+)\s+(.+)/i).slice(1))
       .forEach(([command, desc]) => {
-        this.program.command(command).description(desc).action(async (cmd: Command) => {
+        this.program.command(command).allowUnknownOption().description(desc).action(async (cmd: Command) => {
 
           if (cmd.args.length === 0) {
             switch (cmd.name()) {

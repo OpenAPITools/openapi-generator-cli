@@ -117,6 +117,10 @@ describe('PassTroughService', () => {
             expect(commandMock.commands[cmd].description).toEqual(desc)
           })
 
+          it('allows unknown options', () => {
+            expect(commandMock.commands[cmd].allowUnknownOption).toBeTruthy()
+          })
+
           it('can delegate with JAVA_OPTS', () => {
             process.env['JAVA_OPTS'] = 'java-opt-1=1'
             commandMock.commands[cmd].action(cmdMock)

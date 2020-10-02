@@ -14,6 +14,7 @@ module.exports = (config) => {
     },
     files: [
       'config.schema.json',
+      'README.md',
       'main.js',
     ],
   }
