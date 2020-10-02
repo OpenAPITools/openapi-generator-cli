@@ -175,6 +175,20 @@ is automatically used to generate your code. 🎉
 Please refer to the [official openapi-generator docs](https://github.com/OpenAPITools/openapi-generator#3---usage) for
 more information about the possible arguments and a detailed usage manual of the command line interface.
 
+## Install previous version
+
+```sh
+npm install @openapitools/openapi-generator-cli@previous
+npm i @openapitools/openapi-generator-cli@1.0.18-4.3.1                                         
+```
+
+or using yarn
+
+```sh
+yarn add @openapitools/openapi-generator-cli@previous
+yarn add @openapitools/openapi-generator-cli@1.0.18-4.3.1
+```
+
 ## You like the package?
 
 Please leave a star.
