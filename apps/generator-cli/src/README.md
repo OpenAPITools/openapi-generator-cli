@@ -20,7 +20,7 @@ You need to execute `openapi-generator-cli` instead of `openapi-generator` from 
 
 #### [added] [semver](https://semver.org/) support! 🎉
 
-<p align="center"><img src="https://github.com/OpenAPITools/openapi-generator-cli/blob/master/img/vm.gif"/></p>
+<p align="center"><img src="https://github.com/OpenAPITools/openapi-generator-cli/blob/master/img/vm.gif?raw=true"/></p>
 
 To make that happen, a version management was added to the package.
 The first time you run the command `openapi-generator-cli` the last stable version 
