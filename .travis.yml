@@ -1,25 +1,39 @@
+os: linux
+cache: yarn
+dist: xenial
 language: node_js
 
-node_js:
-  - stable
+jobs:
+  include:
+    - stage: test
+      name: "Lint"
+      script: yarn run lint
 
-before_install:
-  - echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" > .npmrc
+    - # stage name not required, will continue to use `test`
+      name: "Unit test"
+      script: yarn test
 
-install:
-  - npm install
+    - # stage name not required, will continue to use `test`
+      name: "Integration test (simple)"
+      script:
+        - yarn run build
+        - cd dist/apps/generator-cli
+        - yarn pack -f ../generator-cli.tgz
+        - mkdir ~/generator-cli-integration-test && cd "$_"
+        - yarn init -y
+        - yarn cache clean && yarn add $TRAVIS_BUILD_DIR/dist/apps/generator-cli.tgz
+        - ./node_modules/.bin/openapi-generator-cli version
+        - ./node_modules/.bin/openapi-generator-cli help
+        - ./node_modules/.bin/openapi-generator-cli help generate
+        - ./node_modules/.bin/openapi-generator-cli version-manager help
+        - (./node_modules/.bin/openapi-generator-cli version-manager set 3.0.0 && node ./node_modules/.bin/openapi-generator-cli version | grep -q '3.0.0') || exit 1
+        - (./node_modules/.bin/openapi-generator-cli version-manager set 4.0 && node ./node_modules/.bin/openapi-generator-cli version | grep -q '4.0.3') || exit 1
+        - (./node_modules/.bin/openapi-generator-cli version-manager set 4.3.1 && node ./node_modules/.bin/openapi-generator-cli version | grep -q '4.3.1') || exit 1
+        - cp -r $TRAVIS_BUILD_DIR/examples ./examples
+        - rm openapitools.json && mv ./examples/openapitools.json ./openapitools.json && ./node_modules/.bin/openapi-generator-cli generate
 
-script:
-  # publish the package
-  - npm run build:new
-  - npm run publish
-  # install the latest version of "openapi-generator-cli"
-  - npm install @openapitools/openapi-generator-cli -g
-  - openapi-generator version
-  - npm uninstall @openapitools/openapi-generator-cli -g
-  # install a specific version of "openapi-generator-cli"
-  - npm install @openapitools/openapi-generator-cli@cli-3.2.1 -g
-  - openapi-generator version
-  - npm uninstall @openapitools/openapi-generator-cli@cli-3.2.1 -g
-  # install the latest version of "openapi-generator-cli" (package mode)
-  - cd /tmp/ && npm install @openapitools/openapi-generator-cli -D
+    - stage: deploy
+      if: type IN (push) and branch IN (master)
+      name: "Build & Deploy"
+      script:
+        - yarn run build
