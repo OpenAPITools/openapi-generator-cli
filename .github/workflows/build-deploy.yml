@@ -1,15 +1,5 @@
 name: Build
-
 on: push
-
-env:
-  GOOGLE_APPLICATION_CREDENTIALS: "sa.json"
-
-  TF_WORKSPACE: "prod"
-  TF_VALIDATION_CLI_OPTIONS: ""
-  TF_INIT_CLI_OPTIONS: "-input=false"
-  TF_PLAN_CLI_OPTIONS: "-lock=false -input=false"
-  TF_APPLY_CLI_OPTIONS: "-auto-approve -input=false"
 
 jobs:
   build:
