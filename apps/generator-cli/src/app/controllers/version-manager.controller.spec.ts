@@ -37,7 +37,7 @@ describe('VersionManagerController', () => {
       ...Object.values(versionManagerServiceMock),
     ].forEach(spy => spy.mockReset())
 
-    const moduleRef = await Test.createTestingModule({
+    await Test.createTestingModule({
       controllers: [
         VersionManagerController,
       ],
@@ -48,8 +48,6 @@ describe('VersionManagerController', () => {
         {provide: LOGGER, useValue: {log}},
       ]
     }).compile();
-
-    fixture = moduleRef.get(VersionManagerController);
   });
 
   it('adds 3 commands, but 2 actions', () => {
