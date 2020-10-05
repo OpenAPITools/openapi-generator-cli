@@ -74,37 +74,34 @@ jobs:
           (npm run oa version-manager set 4.3.1 && npm run oa version | grep -q '4.3.1') || exit 1
           npm run oa:generate && mkdir ./foo && cd ./foo && npm run oa:generate
 
-  e2eGLobal:
-    name: "E2E global: (${{ matrix.os }})"
-    needs: build
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ ubuntu-latest, macos-latest ]
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v1
-
-      - name: Use Node.js ${{matrix.node-version }}
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{matrix.node-version }}
-
-      - uses: actions/download-artifact@v2
-        with:
-          name: package.tgz
-
-      - name: Test
-        run: |
-          yarn cache clean && yarn global add $GITHUB_WORKSPACE/package.tgz
-          openapi-generator-cli version
-          openapi-generator-cli completion
-          openapi-generator-cli help
-          openapi-generator-cli help generate
-          openapi-generator-cli version-manager help
-          openapi-generator-cli generate -g ruby -i https://raw.githubusercontent.com/OpenAPITools/openapi-generator/master/modules/openapi-generator/src/test/resources/3_0/petstore.yaml -o $GITHUB_WORKSPACE/tmp/ruby-client
-          (openapi-generator-cli version-manager set 3.0.0 && openapi-generator-cli version | grep -q '3.0.0') || exit 1
-          (openapi-generator-cli version-manager set 4.0 && openapi-generator-cli version | grep -q '4.0.3') || exit 1
-          (openapi-generator-cli version-manager set 4.3.1 && openapi-generator-cli version | grep -q '4.3.1') || exit 1
-          (openapi-generator-cli version-manager set 4.3.1 && openapi-generator-cli version | grep -q '4.3.1') || exit 1
+#  e2eGLobal:
+#    name: "E2E global: (${{ matrix.os }})"
+#    needs: build
+#    runs-on: ${{ matrix.os }}
+#    strategy:
+#      matrix:
+#        os: [ ubuntu-latest, macos-latest ]
+#
+#    steps:
+#      - name: Use Node.js ${{matrix.node-version }}
+#        uses: actions/setup-node@v1
+#        with:
+#          node-version: ${{matrix.node-version }}
+#
+#      - uses: actions/download-artifact@v2
+#        with:
+#          name: package.tgz
+#
+#      - name: Test
+#        run: |
+#          yarn cache clean && yarn global add $GITHUB_WORKSPACE/package.tgz
+#          openapi-generator-cli version
+#          openapi-generator-cli completion
+#          openapi-generator-cli help
+#          openapi-generator-cli help generate
+#          openapi-generator-cli version-manager help
+#          openapi-generator-cli generate -g ruby -i https://raw.githubusercontent.com/OpenAPITools/openapi-generator/master/modules/openapi-generator/src/test/resources/3_0/petstore.yaml -o $GITHUB_WORKSPACE/tmp/ruby-client
+#          (openapi-generator-cli version-manager set 3.0.0 && openapi-generator-cli version | grep -q '3.0.0') || exit 1
+#          (openapi-generator-cli version-manager set 4.0 && openapi-generator-cli version | grep -q '4.0.3') || exit 1
+#          (openapi-generator-cli version-manager set 4.3.1 && openapi-generator-cli version | grep -q '4.3.1') || exit 1
+#          (openapi-generator-cli version-manager set 4.3.1 && openapi-generator-cli version | grep -q '4.3.1') || exit 1
