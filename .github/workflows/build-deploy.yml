@@ -92,7 +92,7 @@ jobs:
         run: |
           ls -la
           tar -xf package.tgz
-          ls -la
+          cd package && ls -la
           npm version prerelease --preid=snapshot
 
 #    - run: yarn publish package.tgz --new-version $GITHUB_SHA --tag snapshot
