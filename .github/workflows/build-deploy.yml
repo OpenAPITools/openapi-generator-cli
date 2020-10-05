@@ -1,0 +1,67 @@
+name: Build
+
+on: push
+
+env:
+  GOOGLE_APPLICATION_CREDENTIALS: "sa.json"
+
+  TF_WORKSPACE: "prod"
+  TF_VALIDATION_CLI_OPTIONS: ""
+  TF_INIT_CLI_OPTIONS: "-input=false"
+  TF_PLAN_CLI_OPTIONS: "-lock=false -input=false"
+  TF_APPLY_CLI_OPTIONS: "-auto-approve -input=false"
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v1
+
+      - name: Use Node.js ${{matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{matrix.node-version }}
+
+      - name: Install
+        run: npm i --from-lockfile
+
+      - name: Lint
+        run: yarn run lint
+
+      - name: Unit Test
+        run: yarn run test
+
+      - name: Build
+        run: yarn run build
+
+      - name: Build Package
+        run: |
+          cd dist/apps/generator-cli
+          yarn pack -f ../package.tgz
+
+      - name: Integration Test (simple)
+        run: |
+          mkdir ~/generator-cli-integration-test && cd "$_"
+          yarn init -y
+          yarn cache clean && yarn add $GITHUB_WORKSPACE/dist/apps/package.tgz
+          ./node_modules/.bin/openapi-generator-cli version
+          ./node_modules/.bin/openapi-generator-cli completion
+          ./node_modules/.bin/openapi-generator-cli help
+          ./node_modules/.bin/openapi-generator-cli help generate
+          ./node_modules/.bin/openapi-generator-cli version-manager help
+          ./node_modules/.bin/openapi-generator-cli generate -g ruby -i https://raw.githubusercontent.com/OpenAPITools/openapi-generator/master/modules/openapi-generator/src/test/resources/3_0/petstore.yaml -o $GITHUB_WORKSPACE/tmp/ruby-client
+          (./node_modules/.bin/openapi-generator-cli version-manager set 3.0.0 && node ./node_modules/.bin/openapi-generator-cli version | grep -q '3.0.0') || exit 1
+          (./node_modules/.bin/openapi-generator-cli version-manager set 4.0 && node ./node_modules/.bin/openapi-generator-cli version | grep -q '4.0.3') || exit 1
+          (./node_modules/.bin/openapi-generator-cli version-manager set 4.3.1 && node ./node_modules/.bin/openapi-generator-cli version | grep -q '4.3.1') || exit 1
+          (./node_modules/.bin/openapi-generator-cli version-manager set 4.3.1 && node ./node_modules/.bin/openapi-generator-cli version | grep -q '4.3.1') || exit 1
+          cp -r $GITHUB_WORKSPACE/examples ./examples
+          rm openapitools.json && mv ./examples/openapitools.json ./openapitools.json && ./node_modules/.bin/openapi-generator-cli generate
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: package.tgz
+          path: dist/apps/package.tgz
