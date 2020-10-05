@@ -48,7 +48,7 @@ jobs:
           path: dist/apps/package.tgz
 
   integration:
-    name: Integration Test (simple)
+    name: ${{ matrix.os }} - Integration Test (simple)
     needs: build
     runs-on: ${{ matrix.os }}
     strategy:
@@ -73,7 +73,7 @@ jobs:
         run: |
           mkdir ~/generator-cli-integration-test && cd "$_"
           yarn init -y
-          yarn cache clean && yarn add $GITHUB_WORKSPACE/dist/apps/package.tgz
+          yarn cache clean && yarn add $GITHUB_WORKSPACE/package.tgz
           ./node_modules/.bin/openapi-generator-cli version
           ./node_modules/.bin/openapi-generator-cli completion
           ./node_modules/.bin/openapi-generator-cli help
