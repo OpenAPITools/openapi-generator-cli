@@ -10,7 +10,6 @@ jest.mock('fs-extra');
 
 describe('VersionManagerController', () => {
 
-  let fixture: VersionManagerController;
   let commandMock: CommandMock;
 
   const log = jest.fn()
@@ -189,7 +188,7 @@ describe('VersionManagerController', () => {
 
         describe('the selection is installed and in use', () => {
 
-          let choices: Array<{ name: {}, value: () => any }>
+          let choices: Array<{ name: {}, value: () => unknown }>
 
           beforeEach(async () => {
             whatsNextSpy.mockReset()
@@ -213,7 +212,7 @@ describe('VersionManagerController', () => {
 
         describe('the selection is installed but not in use', () => {
 
-          let choices: Array<{ name: {}, value: () => any }>
+          let choices: Array<{ name: {}, value: () => unknown }>
 
           beforeEach(async () => {
             whatsNextSpy.mockReset()
@@ -241,7 +240,7 @@ describe('VersionManagerController', () => {
 
         describe('the selection is not installed and not in use', () => {
 
-          let choices: Array<{ name: {}, value: () => any }>
+          let choices: Array<{ name: {}, value: () => unknown }>
 
           beforeEach(async () => {
             whatsNextSpy.mockReset()

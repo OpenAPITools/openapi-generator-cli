@@ -1,5 +1,5 @@
 import {Inject, Injectable} from '@nestjs/common';
-import {flatten, isString, upperFirst, kebabCase, sortBy} from 'lodash';
+import {flatten, isString, upperFirst, kebabCase, sortBy, omit} from 'lodash';
 
 import * as concurrently from 'concurrently';
 import * as path from 'path';
@@ -38,7 +38,7 @@ export class GeneratorService {
     const globsWithNoMatches = []
 
     const commands = flatten(enabledGenerators.map(([name, config]) => {
-      const {glob: globPattern, disabled, ...params} = config
+      const {glob: globPattern, ...params} = omit(config, 'disabled')
       const specFiles = glob.sync(globPattern, {cwd})
 
       if (specFiles.length < 1) {
