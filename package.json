@@ -20,7 +20,7 @@
   "readme": "README.md",
   "repository": {
     "type": "git",
-    "url": "https://github.com/OpenAPITools/openapi-generator-cli.git"
+    "url": "git@github.com:OpenAPITools/openapi-generator-cli.git"
   },
   "husky": {
     "hooks": {
