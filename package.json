@@ -1,6 +1,6 @@
 {
   "name": "openapitools",
-  "version": "2.0.3",
+  "version": "0.0.0-development",
   "license": "Apache-2.0",
   "private": false,
   "author": {
@@ -68,7 +68,8 @@
     "update": "nx migrate latest",
     "workspace-schematic": "nx workspace-schematic",
     "dep-graph": "nx dep-graph",
-    "help": "nx help"
+    "help": "nx help",
+    "semantic-release": "semantic-release"
   },
   "dependencies": {
     "@nestjs/common": "^7.0.0",
@@ -97,6 +98,7 @@
     "@nrwl/nest": "10.2.1",
     "@nrwl/node": "10.2.1",
     "@nrwl/workspace": "10.2.1",
+    "@semantic-release/changelog": "^5.0.1",
     "@types/concurrently": "^5.2.1",
     "@types/fs-extra": "^9.0.1",
     "@types/inquirer": "^7.3.1",
