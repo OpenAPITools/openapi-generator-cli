@@ -54,17 +54,11 @@ export class PassTroughService {
     shell: true
   }).on('exit', process.exit);
 
-  private run = (subCmd: string) => new Promise<string>((resolve, reject) => {
-    exec(`${this.cmd()} ${subCmd}`, (error, stdout, stderr) => {
-      error ? reject(new Error(stderr)) : resolve(stdout);
-    });
-  });
-
   private getCommands = async (): Promise<[string, string | undefined][]> => {
 
     const [help, completion] = (await Promise.all([
       this.run('help'),
-      this.run('completion')
+      this.run('completion').catch(() => '')
     ]));
 
     const commands = help.split('\n')
@@ -84,6 +78,12 @@ export class PassTroughService {
     return Object.entries(commands);
 
   };
+
+  private run = (subCmd: string) => new Promise<string>((resolve, reject) => {
+    exec(`${this.cmd()} ${subCmd}`, (error, stdout, stderr) => {
+      error ? reject(new Error(stderr)) : resolve(stdout);
+    });
+  });
 
   private cmd() {
     return ['java', process.env['JAVA_OPTS'], `-jar "${this.versionManager.filePath()}"`].filter(isString).join(' ');
