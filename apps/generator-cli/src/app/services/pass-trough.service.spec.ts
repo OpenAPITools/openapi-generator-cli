@@ -84,15 +84,37 @@ describe('PassTroughService', () => {
           'command.'
         ].join('\n')
 
+        const completionText = [
+          '  list',
+          '  generate',
+          '  meta',
+          '  help',
+          '  config-help',
+          '  validate',
+          '  version',
+          '  completion',
+          '  batch',
+          '  --version',
+          '  --help',
+        ].join('\n')
+
         beforeEach(async () => {
-          childProcess.exec.mockImplementation((cmd: string, cb) => cb(undefined, helpText))
+          childProcess.exec.mockImplementation((cmd: string, cb) => {
+            if(cmd.endsWith('"/some/path/to/4.2.1.jar" help')) {
+              cb(undefined, helpText)
+            }
+
+            if(cmd.endsWith('"/some/path/to/4.2.1.jar" completion')) {
+              cb(undefined, completionText)
+            }
+          })
           await fixture.init()
         })
 
-        it('adds 6 commands', () => {
-          expect(commandMock.action).toBeCalledTimes(8)
-          expect(commandMock.command).toBeCalledTimes(8)
-          expect(commandMock.description).toBeCalledTimes(8)
+        it('adds 19 commands', () => {
+          expect(commandMock.action).toBeCalledTimes(10)
+          expect(commandMock.command).toBeCalledTimes(10)
+          expect(commandMock.description).toBeCalledTimes(10)
         })
 
         describe.each([
@@ -104,6 +126,8 @@ describe('PassTroughService', () => {
           ['meta', 'MetaGenerator. Generator for creating a new template set and configuration for Codegen.  The output will be based on the language you specify, and includes default templates to include.'],
           ['validate', 'Validate specification'],
           ['version', 'Show version information used in tooling'],
+          ['batch', ''],
+          ['completion', ''],
         ])('%s', (cmd, desc) => {
 
           const cmdMock = {name: () => cmd, args: ['foo', 'baz']};
