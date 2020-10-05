@@ -7,7 +7,7 @@ import * as fs from 'fs-extra';
 @Injectable()
 export class ConfigService {
 
-  public readonly cwd = process.env.INIT_CWD || process.cwd()
+  public readonly cwd = process.env.PWD || process.env.INIT_CWD || process.cwd()
   public readonly configFile = path.resolve(this.cwd, 'openapitools.json')
 
   private readonly defaultConfig = {
