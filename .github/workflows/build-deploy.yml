@@ -63,6 +63,8 @@ jobs:
         run: |
           cd ./examples
           yarn cache clean && yarn add $GITHUB_WORKSPACE/package.tgz
+          ls -la
+          npm run oa:generate && mkdir ./foo && cd ./foo && npm run oa:generate
           npm run oa version
           npm run oa completion
           npm run oa help
@@ -73,7 +75,6 @@ jobs:
           (npm run oa version-manager set 4.0 && npm run oa version | grep -q '4.0.3') || exit 1
           (npm run oa version-manager set 4.3.1 && npm run oa version | grep -q '4.3.1') || exit 1
           (npm run oa version-manager set 4.3.1 && npm run oa version | grep -q '4.3.1') || exit 1
-          npm run oa:generate && mkdir ./foo && cd ./foo && npm run oa:generate
 
 #  e2eGLobal:
 #    name: "E2E global: (${{ matrix.os }})"
@@ -105,7 +106,7 @@ jobs:
 #          openapi-generator-cli help generate
 #          openapi-generator-cli version-manager help
 #          openapi-generator-cli generate -g ruby -i https://raw.githubusercontent.com/OpenAPITools/openapi-generator/master/modules/openapi-generator/src/test/resources/3_0/petstore.yaml -o $GITHUB_WORKSPACE/tmp/ruby-client
-#          (openapi-generator-cli version-manager set 3.0.0 && node openapi-generator-cli version | grep -q '3.0.0') || exit 1
-#          (openapi-generator-cli version-manager set 4.0 && node openapi-generator-cli version | grep -q '4.0.3') || exit 1
-#          (openapi-generator-cli version-manager set 4.3.1 && node openapi-generator-cli version | grep -q '4.3.1') || exit 1
-#          (openapi-generator-cli version-manager set 4.3.1 && node openapi-generator-cli version | grep -q '4.3.1') || exit 1
+#          (openapi-generator-cli version-manager set 3.0.0 && openapi-generator-cli version | grep -q '3.0.0') || exit 1
+#          (openapi-generator-cli version-manager set 4.0 && openapi-generator-cli version | grep -q '4.0.3') || exit 1
+#          (openapi-generator-cli version-manager set 4.3.1 && openapi-generator-cli version | grep -q '4.3.1') || exit 1
+#          (openapi-generator-cli version-manager set 4.3.1 && openapi-generator-cli version | grep -q '4.3.1') || exit 1
