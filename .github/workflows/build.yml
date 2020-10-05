@@ -1,8 +1,5 @@
 name: Build
-on:
-  push:
-    branches:
-      - master
+on: [push, pull_request]
 
 jobs:
   build:
@@ -78,7 +75,7 @@ jobs:
 #          npm run oa:generate && mkdir ./foo && cd ./foo && npm run oa:generate
 
   release:
-    name: Release
+    name: Release (Dry)
     # needs: e2e # DONT FORGET TO ENABLE ME !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     runs-on: ubuntu-18.04
     steps:
