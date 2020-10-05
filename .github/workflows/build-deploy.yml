@@ -86,7 +86,7 @@ build:
     - uses: actions/setup-node@v1
       with:
         registry-url: 'https://npm.pkg.github.com'
-        scope: @openapitools
+        scope: "@openapitools"
 
     - name: Publish Snapshot
       run: |
