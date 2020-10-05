@@ -38,7 +38,8 @@ export class GeneratorService {
     const globsWithNoMatches = []
 
     const commands = flatten(enabledGenerators.map(([name, config]) => {
-      const {glob: globPattern, ...params} = omit(config, 'disabled')
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const {glob: globPattern, disabled, ...params} = config
       const specFiles = glob.sync(globPattern, {cwd})
 
       if (specFiles.length < 1) {
