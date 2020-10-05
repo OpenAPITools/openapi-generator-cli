@@ -20,11 +20,9 @@ export class PassTroughService {
 
   public async init() {
 
-    (await this.help())
+    (await this.completion())
       .split('\n')
-      .filter(line => startsWith(line, ' '))
       .map(trim)
-      .map(line => line.match(/^([a-z-]+)\s+(.+)/i).slice(1))
       .forEach(([command, desc]) => {
         this.program.command(command).allowUnknownOption().description(desc).action(async (cmd: Command) => {
 
@@ -55,8 +53,8 @@ export class PassTroughService {
     shell: true
   }).on('exit', process.exit);
 
-  private help = () => new Promise<string>((resolve, reject) => {
-    exec(`${this.cmd()} help`, (error, stdout, stderr) => {
+  private completion = () => new Promise<string>((resolve, reject) => {
+    exec(`${this.cmd()} completion`, (error, stdout, stderr) => {
       error ? reject(new Error(stderr)) : resolve(stdout)
     })
   });
