@@ -73,28 +73,3 @@ jobs:
           (npm run oa version-manager set 4.3.1 && npm run oa version | grep -q '4.3.1') || exit 1
           (npm run oa version-manager set 4.3.1 && npm run oa version | grep -q '4.3.1') || exit 1
           npm run oa:generate && mkdir ./foo && cd ./foo && npm run oa:generate
-
-  snapshot:
-    name: Build
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/download-artifact@v2
-        with:
-          name: package.tgz
-
-      - uses: actions/setup-node@v1
-        with:
-          registry-url: 'https://npm.pkg.github.com'
-          scope: "@openapitools"
-
-      - name: Publish Snapshot
-        run: |
-          ls -la
-          tar -xf package.tgz
-          cd package && ls -la
-          npm version prerelease --preid=snapshot
-
-#    - run: yarn publish package.tgz --new-version $GITHUB_SHA --tag snapshot
-#      env:
-#        NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
