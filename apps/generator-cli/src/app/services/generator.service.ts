@@ -1,13 +1,13 @@
-import {Inject, Injectable} from '@nestjs/common';
-import {flatten, isString, upperFirst, kebabCase, sortBy, omit} from 'lodash';
+import { Inject, Injectable } from '@nestjs/common';
+import { flatten, isString, kebabCase, sortBy, upperFirst } from 'lodash';
 
 import * as concurrently from 'concurrently';
 import * as path from 'path';
 import * as glob from 'glob';
 import * as chalk from 'chalk';
-import {VersionManagerService} from './version-manager.service';
-import {ConfigService} from './config.service';
-import {LOGGER} from '../constants';
+import { VersionManagerService } from './version-manager.service';
+import { ConfigService } from './config.service';
+import { LOGGER } from '../constants';
 
 interface GeneratorConfig {
   glob: string
