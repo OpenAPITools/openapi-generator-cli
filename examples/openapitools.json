@@ -7,12 +7,12 @@
       "v2.0": {
         "generatorName": "typescript-angular",
         "output": "#{cwd}/output/v2.0/#{ext}/#{name}",
-        "glob": "examples/v2.0/{json,yaml}/*.{json,yaml}"
+        "glob": "**/v2.0/{json,yaml}/*.{json,yaml}"
       },
       "v3.0": {
         "generatorName": "typescript-fetch",
         "output": "#{cwd}/output/v3.0/#{ext}/#{name}",
-        "glob": "examples/v3.0/petstore.{json,yaml}"
+        "glob": "**/v3.0/petstore.{json,yaml}"
       }
     }
   }

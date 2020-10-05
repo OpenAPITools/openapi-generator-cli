@@ -1,0 +1,7 @@
+{
+  "name": "examples",
+  "version": "1.0.0",
+  "scripts": {
+    "oa": "openapi-generator-cli generate"
+  }
+}

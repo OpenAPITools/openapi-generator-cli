@@ -60,18 +60,17 @@ jobs:
 
       - name: Test
         run: |
-          mkdir ~/generator-cli-integration-test && cd "$_"
-          yarn init -y
+          cd ./examples
           yarn cache clean && yarn add $GITHUB_WORKSPACE/package.tgz
-          ./node_modules/.bin/openapi-generator-cli version
-          ./node_modules/.bin/openapi-generator-cli completion
-          ./node_modules/.bin/openapi-generator-cli help
-          ./node_modules/.bin/openapi-generator-cli help generate
-          ./node_modules/.bin/openapi-generator-cli version-manager help
-          ./node_modules/.bin/openapi-generator-cli generate -g ruby -i https://raw.githubusercontent.com/OpenAPITools/openapi-generator/master/modules/openapi-generator/src/test/resources/3_0/petstore.yaml -o $GITHUB_WORKSPACE/tmp/ruby-client
-          (./node_modules/.bin/openapi-generator-cli version-manager set 3.0.0 && node ./node_modules/.bin/openapi-generator-cli version | grep -q '3.0.0') || exit 1
-          (./node_modules/.bin/openapi-generator-cli version-manager set 4.0 && node ./node_modules/.bin/openapi-generator-cli version | grep -q '4.0.3') || exit 1
-          (./node_modules/.bin/openapi-generator-cli version-manager set 4.3.1 && node ./node_modules/.bin/openapi-generator-cli version | grep -q '4.3.1') || exit 1
-          (./node_modules/.bin/openapi-generator-cli version-manager set 4.3.1 && node ./node_modules/.bin/openapi-generator-cli version | grep -q '4.3.1') || exit 1
+          npm run oa version
+          npm run oa completion
+          npm run oa help
+          npm run oa help generate
+          npm run oa version-manager help
+          npm run oa generate -g ruby -i https://raw.githubusercontent.com/OpenAPITools/openapi-generator/master/modules/openapi-generator/src/test/resources/3_0/petstore.yaml -o $GITHUB_WORKSPACE/tmp/ruby-client
+          (npm run oa version-manager set 3.0.0 && node npm run oa version | grep -q '3.0.0') || exit 1
+          (npm run oa version-manager set 4.0 && node npm run oa version | grep -q '4.0.3') || exit 1
+          (npm run oa version-manager set 4.3.1 && node npm run oa version | grep -q '4.3.1') || exit 1
+          (npm run oa version-manager set 4.3.1 && node npm run oa version | grep -q '4.3.1') || exit 1
           cp -r $GITHUB_WORKSPACE/examples ./examples
-          rm openapitools.json && mv ./examples/openapitools.json ./openapitools.json && ./node_modules/.bin/openapi-generator-cli generate
+          rm openapitools.json && mv ./examples/openapitools.json ./openapitools.json && npm run oa generate
