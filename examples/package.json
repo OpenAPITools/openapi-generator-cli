@@ -2,6 +2,7 @@
   "name": "examples",
   "version": "1.0.0",
   "scripts": {
-    "oa": "openapi-generator-cli generate"
+    "oa": "openapi-generator-cli",
+    "oa:generate": "openapi-generator-cli generate"
   }
 }
