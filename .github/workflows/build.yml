@@ -16,7 +16,7 @@ jobs:
           node-version: ${{matrix.node-version }}
 
       - name: Install
-        run: npm i --from-lockfile
+        run: yarn --frozen-lockfile
 
       - name: Lint
         run: yarn run lint
@@ -79,16 +79,20 @@ jobs:
     # needs: e2e # DONT FORGET TO ENABLE ME !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     runs-on: ubuntu-18.04
     steps:
+
       - name: Checkout
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
+
       - name: Setup Node.js
         uses: actions/setup-node@v1
         with:
           node-version: 12
+
       - name: Install dependencies
-        run: yarn ci
+        run: yarn --frozen-lockfile
+
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
