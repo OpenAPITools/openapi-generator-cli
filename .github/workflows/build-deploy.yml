@@ -37,8 +37,8 @@ jobs:
           name: package.tgz
           path: dist/apps/package.tgz
 
-  integration:
-    name: ${{ matrix.os }} - Integration Test (simple)
+  e2e:
+    name: E2E (${{ matrix.os }})
     needs: build
     runs-on: ${{ matrix.os }}
     strategy:
