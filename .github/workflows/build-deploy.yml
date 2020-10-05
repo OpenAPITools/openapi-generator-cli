@@ -17,7 +17,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-
       - name: Checkout
         uses: actions/checkout@v1
 
@@ -43,7 +42,30 @@ jobs:
           cd dist/apps/generator-cli
           yarn pack -f ../package.tgz
 
-      - name: Integration Test (simple)
+      - uses: actions/upload-artifact@v2
+        with:
+          name: package.tgz
+          path: dist/apps/package.tgz
+
+  integration:
+    name: Integration Test (simple)
+    runs-on: [ubuntu-latest, macos-latest, windows-latest]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+
+      - name: Use Node.js ${{matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{matrix.node-version }}
+
+      - uses: actions/download-artifact@v2
+        with:
+          name: package.tgz
+          path: package.tgz
+
+      - name: Test
         run: |
           mkdir ~/generator-cli-integration-test && cd "$_"
           yarn init -y
@@ -60,8 +82,3 @@ jobs:
           (./node_modules/.bin/openapi-generator-cli version-manager set 4.3.1 && node ./node_modules/.bin/openapi-generator-cli version | grep -q '4.3.1') || exit 1
           cp -r $GITHUB_WORKSPACE/examples ./examples
           rm openapitools.json && mv ./examples/openapitools.json ./openapitools.json && ./node_modules/.bin/openapi-generator-cli generate
-
-      - uses: actions/upload-artifact@v2
-        with:
-          name: package.tgz
-          path: dist/apps/package.tgz
