@@ -93,6 +93,9 @@ jobs:
         with:
           node-version: ${{matrix.node-version }}
 
+      - name: Install
+        run: yarn --frozen-lockfile
+
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
