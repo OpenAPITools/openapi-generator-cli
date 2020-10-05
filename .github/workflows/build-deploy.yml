@@ -69,10 +69,14 @@ jobs:
           name: package.tgz
           path: package.tgz
 
+      - name: debug
+        run: ls -la
+
       - name: Test
         run: |
           mkdir ~/generator-cli-integration-test && cd "$_"
           yarn init -y
+          ls -la $GITHUB_WORKSPACE
           yarn cache clean && yarn add $GITHUB_WORKSPACE/package.tgz
           ./node_modules/.bin/openapi-generator-cli version
           ./node_modules/.bin/openapi-generator-cli completion
