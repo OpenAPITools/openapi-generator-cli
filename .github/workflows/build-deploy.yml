@@ -66,6 +66,7 @@ jobs:
         run: |
           mkdir ~/generator-cli-integration-test && cd "$_"
           yarn init -y
+          ls -la
           yarn cache clean && yarn add ~/package.tgz
           ./node_modules/.bin/openapi-generator-cli version
           ./node_modules/.bin/openapi-generator-cli completion
