@@ -85,13 +85,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup Node.js
+      - name: Use Node.js ${{matrix.node-version }}
         uses: actions/setup-node@v1
         with:
-          node-version: 12
-
-      - name: Install dependencies
-        run: yarn --frozen-lockfile
+          node-version: ${{matrix.node-version }}
 
       - name: Release
         env:
