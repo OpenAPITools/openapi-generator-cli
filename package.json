@@ -116,7 +116,7 @@
     "jest": "26.2.2",
     "prettier": "2.1.2",
     "semantic-release": "17.1.2",
-    "ts-jest": "26.1.4",
+    "ts-jest": "26.4.1",
     "ts-node": "7.0.1",
     "tslint": "6.0.0",
     "type-fest": "0.17.0",
