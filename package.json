@@ -110,7 +110,7 @@
     "@typescript-eslint/parser": "2.19.2",
     "dotenv": "6.2.0",
     "eslint": "6.8.0",
-    "eslint-config-prettier": "6.0.0",
+    "eslint-config-prettier": "6.12.0",
     "generate-package-json-webpack-plugin": "1.1.2",
     "husky": "4.3.0",
     "jest": "26.2.2",
