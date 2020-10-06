@@ -119,7 +119,7 @@
     "ts-jest": "26.1.4",
     "ts-node": "7.0.1",
     "tslint": "6.0.0",
-    "type-fest": "0.16.0",
+    "type-fest": "0.17.0",
     "typescript": "3.9.7"
   }
 }
