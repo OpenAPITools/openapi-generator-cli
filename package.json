@@ -111,7 +111,7 @@
     "dotenv": "8.2.0",
     "eslint": "7.10.0",
     "eslint-config-prettier": "6.12.0",
-    "generate-package-json-webpack-plugin": "1.1.2",
+    "generate-package-json-webpack-plugin": "1.2.0",
     "husky": "4.3.0",
     "jest": "26.5.2",
     "prettier": "2.1.2",
