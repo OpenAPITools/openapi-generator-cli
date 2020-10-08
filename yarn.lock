@@ -4791,10 +4791,10 @@ gauge@~2.7.3:
     strip-ansi "^3.0.1"
     wide-align "^1.1.0"
 
-generate-package-json-webpack-plugin@1.1.2:
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/generate-package-json-webpack-plugin/-/generate-package-json-webpack-plugin-1.1.2.tgz#2d8ae7a40a0f5d8c300744eacdf6aef1fabcb269"
-  integrity sha512-m+Iv1uB2nIUTkSzg4NAwOoiG6rapT9hPXAw3FPRNGYQhXE+jC7nIt7WR9M0JH1y/54JX/dYmBx/lLwvra+20jg==
+generate-package-json-webpack-plugin@1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/generate-package-json-webpack-plugin/-/generate-package-json-webpack-plugin-1.2.0.tgz#644048966d858e52e94bdc70b1f597ab28d67f38"
+  integrity sha512-ISbuhuTsps2goVc7ZzUArjr2yxk2j72iLMqJvf+0+N8v9cHEznCHeaDmKXiOPGw+zNPAc/2hIZmotrvmcSn4wQ==
 
 genfun@^5.0.0:
   version "5.0.0"
