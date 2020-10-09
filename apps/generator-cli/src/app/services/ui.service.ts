@@ -1,6 +1,7 @@
 // import ora from 'ora'
 import {Injectable} from '@nestjs/common';
 import {prompt, Separator} from 'inquirer';
+import {getTable} from 'console.table'
 
 @Injectable()
 export class UIService {
@@ -9,11 +10,11 @@ export class UIService {
     name: string,
     message: string,
     printColNum?: boolean,
-    rows: Array<{ row: {}, short: string, value: T }>,
+    rows: Array<{ row: Record<string, unknown>, short: string, value: T }>,
   }): Promise<T> {
 
 
-    const table = require('console.table').getTable(config.rows.map(({row}, index: number) => {
+    const table = getTable(config.rows.map(({row}, index: number) => {
       return config.printColNum === false ? row : ({'#': index + 1, ...row});
     }))
 
@@ -38,7 +39,7 @@ export class UIService {
   public async list<T>(config: {
     name: string,
     message: string,
-    choices: Array<{ name: {}, short?: string, value: T }>,
+    choices: Array<{ name: Record<string, unknown>, short?: string, value: T }>,
   }): Promise<T> {
 
     const separatorCount = config

@@ -77,7 +77,7 @@ export class GeneratorService {
     }).join('\n'))
   }
 
-  private buildCommand(cwd: string, specFile: string, params: {}) {
+  private buildCommand(cwd: string, specFile: string, params: Record<string, unknown>) {
     const absoluteSpecPath = path.resolve(cwd, specFile)
 
     const command = Object.entries({

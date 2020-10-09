@@ -186,7 +186,7 @@ describe('VersionManagerController', () => {
 
         describe('the selection is installed and in use', () => {
 
-          let choices: Array<{ name: {}, value: () => unknown }>
+          let choices: Array<{ name: Record<string, unknown>, value: () => unknown }>
 
           beforeEach(async () => {
             whatsNextSpy.mockReset()
@@ -210,7 +210,7 @@ describe('VersionManagerController', () => {
 
         describe('the selection is installed but not in use', () => {
 
-          let choices: Array<{ name: {}, value: () => unknown }>
+          let choices: Array<{ name: Record<string, unknown>, value: () => unknown }>
 
           beforeEach(async () => {
             whatsNextSpy.mockReset()
@@ -238,7 +238,7 @@ describe('VersionManagerController', () => {
 
         describe('the selection is not installed and not in use', () => {
 
-          let choices: Array<{ name: {}, value: () => unknown }>
+          let choices: Array<{ name: Record<string, unknown>, value: () => unknown }>
 
           beforeEach(async () => {
             whatsNextSpy.mockReset()
