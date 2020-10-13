@@ -61,7 +61,8 @@ jobs:
       - name: Test
         run: |
           cd ./examples
-          yarn global add json && yarn cache clean && yarn add $GITHUB_WORKSPACE/package.tgz
+          yarn global add json && export PATH="$(yarn global bin):$PATH"
+          yarn cache clean && yarn add $GITHUB_WORKSPACE/package.tgz
           npm run oa version
           npm run oa completion
           npm run oa help
