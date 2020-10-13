@@ -69,11 +69,13 @@ jobs:
           npm run oa help generate
           npm run oa version-manager help
           npm run oa generate -- -g ruby -i https://raw.githubusercontent.com/OpenAPITools/openapi-generator/master/modules/openapi-generator/src/test/resources/3_0/petstore.yaml -o $GITHUB_WORKSPACE/tmp/ruby-client
-          json -I -f openapitools.json -e 'this["generator-cli"]["storageDir"]="./my/storage/"'
           (npm run oa version-manager set 3.0.0 && npm run oa version | grep -q '3.0.0') || exit 1
           (npm run oa version-manager set 4.0 && npm run oa version | grep -q '4.0.3') || exit 1
           (npm run oa version-manager set 4.3.1 && npm run oa version | grep -q '4.3.1') || exit 1
           (npm run oa version-manager set 4.3.1 && npm run oa version | grep -q '4.3.1') || exit 1
+          json -I -f openapitools.json -e 'this["generator-cli"]["storageDir"]="./my/storage/"'
+          (npm run oa version-manager set 4.3.1 && npm run oa version | grep -q '4.3.1') || exit 1
+          test -f /my/storage/4.3.1.jar || exit 1
           npm run oa:generate && mkdir ./foo && cd ./foo && npm run oa:generate
 
 #  release:
