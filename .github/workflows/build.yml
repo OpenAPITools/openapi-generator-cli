@@ -76,9 +76,9 @@ jobs:
           json -I -f openapitools.json -e 'this["generator-cli"]["storageDir"]="./my/storage/"'
           (npm run oa version-manager set 4.3.1 && npm run oa version | grep -q '4.3.1') || exit 1
           test -f ./my/storage/4.3.1.jar || exit 1
-          json -I -f openapitools.json -e 'this["generator-cli"]["storageDir"]="$GITHUB_WORKSPACE/my/storage/"'
+          json -I -f openapitools.json -e 'this["generator-cli"]["storageDir"]="~/my/storage/"'
           (npm run oa version-manager set 4.3.1 && npm run oa version | grep -q '4.3.1') || exit 1
-          test -f $GITHUB_WORKSPACE/my/storage/4.3.1.jar || exit 1
+          test -f ~/my/storage/4.3.1.jar || exit 1
           npm run oa:generate && mkdir ./foo && cd ./foo && npm run oa:generate
 
 #  release:
