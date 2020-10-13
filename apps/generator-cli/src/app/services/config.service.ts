@@ -15,7 +15,6 @@ export class ConfigService {
     spaces: 2,
     'generator-cli': {
       version: undefined,
-      storageDir: undefined,
     },
   }
 

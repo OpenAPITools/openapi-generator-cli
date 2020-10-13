@@ -22,7 +22,6 @@ describe('VersionManagerService', () => {
 
   const getVersion = jest.fn().mockReturnValue('4.3.0');
   const getStorageDir = jest.fn().mockReturnValue(undefined);
-  const hasStorageDir = jest.fn().mockReturnValue(false);
   const setVersion = jest.fn();
 
   let testBed: TestingModule
@@ -35,7 +34,6 @@ describe('VersionManagerService', () => {
         {
           provide: ConfigService, useValue: {
             get: (k) => k === 'generator-cli.storageDir' ? getStorageDir(k) : getVersion(k),
-            has: hasStorageDir,
             set: setVersion,
             cwd: '/c/w/d'
           }
@@ -50,7 +48,6 @@ describe('VersionManagerService', () => {
   beforeEach(async () => {
     [get].forEach(fn => fn.mockClear());
     getStorageDir.mockReturnValue(undefined)
-    hasStorageDir.mockReturnValue(false)
     await compile()
     fs.existsSync.mockReset().mockImplementation(filePath => filePath.indexOf('4.2') !== -1);
   });
@@ -397,7 +394,6 @@ describe('VersionManagerService', () => {
               ['/c/w/d/custom/dir', './custom/dir'],
               ['/custom/dir', '/custom/dir'],
             ])('returns %s for %s', async (expected, cfgValue) => {
-              hasStorageDir.mockReturnValue(true)
               getStorageDir.mockReturnValue(cfgValue)
               logMessages = {before: [], after: []};
               log.mockReset().mockImplementation(m => logMessages.before.push(m));
@@ -539,7 +535,6 @@ describe('VersionManagerService', () => {
           ['/c/w/d/custom/dir', './custom/dir'],
           ['/custom/dir', '/custom/dir'],
         ])('returns %s for %s', async (expected, cfgValue) => {
-          hasStorageDir.mockReturnValue(true)
           getStorageDir.mockReturnValue(cfgValue)
           await compile()
           expect(fixture.storage).toEqual(expected);

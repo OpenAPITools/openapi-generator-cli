@@ -27,11 +27,11 @@ const mvn = {
 @Injectable()
 export class VersionManagerService {
 
-  private hasCustomStorageLocation = () => this.configService.has('generator-cli.storageDir')
+  private customStorageDir = this.configService.get<string>('generator-cli.storageDir')
 
-  public readonly storage = this.hasCustomStorageLocation() ? path.resolve(
+  public readonly storage = this.customStorageDir ? path.resolve(
     this.configService.cwd,
-    this.configService.get('generator-cli.storageDir')
+    this.customStorageDir,
   ) : path.resolve(__dirname, './versions')
 
   constructor(
@@ -106,7 +106,7 @@ export class VersionManagerService {
           })
         )).toPromise()
 
-      if (this.hasCustomStorageLocation()) {
+      if (this.customStorageDir) {
         this.logger.log(chalk.green(`Downloaded ${versionName} to custom storage location ${this.storage}`))
       }else {
         this.logger.log(chalk.green(`Downloaded ${versionName}`))
