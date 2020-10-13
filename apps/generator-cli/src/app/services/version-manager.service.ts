@@ -27,7 +27,12 @@ const mvn = {
 @Injectable()
 export class VersionManagerService {
 
-  public readonly storage = path.resolve(__dirname, './versions')
+  private hasCustomStorageLocation = () => this.configService.has('generator-cli.storageDir')
+
+  public readonly storage = this.hasCustomStorageLocation() ? path.resolve(
+    this.configService.cwd,
+    this.configService.get('generator-cli.storageDir')
+  ) : path.resolve(__dirname, './versions')
 
   constructor(
     @Inject(LOGGER) private readonly logger: LOGGER,
@@ -101,7 +106,12 @@ export class VersionManagerService {
           })
         )).toPromise()
 
-      this.logger.log(chalk.green(`Downloaded ${versionName}`))
+      if (this.hasCustomStorageLocation()) {
+        this.logger.log(chalk.green(`Downloaded ${versionName} to custom storage location ${this.storage}`))
+      }else {
+        this.logger.log(chalk.green(`Downloaded ${versionName}`))
+      }
+
       return true
     } catch (e) {
       this.logger.log(chalk.red(`Download failed, because of: "${e.message}"`))

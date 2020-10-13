@@ -24,6 +24,9 @@
         "version": {
           "type": "string"
         },
+        "storageDir": {
+          "type": "string"
+        },
         "generators": {
           "type": "object",
           "additionalProperties": {
