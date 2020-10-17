@@ -105,7 +105,7 @@
     "@types/jest": "26.0.14",
     "@types/jsonpath": "0.2.0",
     "@types/lodash": "4.14.162",
-    "@types/node": "8.10.64",
+    "@types/node": "8.10.65",
     "@typescript-eslint/eslint-plugin": "4.4.1",
     "@typescript-eslint/parser": "4.4.1",
     "dotenv": "8.2.0",
