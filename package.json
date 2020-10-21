@@ -18,6 +18,10 @@
   "homepage": "https://github.com/OpenAPITools/openapi-generator-cli",
   "bugs": "https://github.com/OpenAPITools/openapi-generator-cli/issues",
   "readme": "README.md",
+  "funding": {
+    "type": "opencollective",
+    "url": "https://https://opencollective.com/openapi_generator"
+  },
   "repository": {
     "type": "git",
     "url": "git@github.com:OpenAPITools/openapi-generator-cli.git"
@@ -69,9 +73,18 @@
     "workspace-schematic": "nx workspace-schematic",
     "dep-graph": "nx dep-graph",
     "help": "nx help",
-    "semantic-release": "semantic-release"
+    "semantic-release": "semantic-release",
+    "postinstall": "opencollective || exit 0"
+  },
+  "collective": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/openapi_generator",
+    "donation": {
+      "text": "Please sponsor OpenAPI Generator."
+    }
   },
   "dependencies": {
+    "@nuxtjs/opencollective": "0.2.2",
     "@nestjs/common": "7.4.4",
     "@nestjs/core": "7.4.4",
     "@nestjs/platform-express": "7.4.4",
