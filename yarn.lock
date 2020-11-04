@@ -30,6 +30,17 @@
     rxjs "6.6.2"
     source-map "0.7.3"
 
+"@angular-devkit/core@10.2.0":
+  version "10.2.0"
+  resolved "https://registry.yarnpkg.com/@angular-devkit/core/-/core-10.2.0.tgz#fcde160afc2786d2da0166526f065c6cf98684c0"
+  integrity sha512-XAszFhSF3mZw1VjoOsYGbArr5NJLcStjOvcCGjBPl1UBM2AKpuCQXHxI9XJGYKL3B93Vp5G58d8qkHvamT53OA==
+  dependencies:
+    ajv "6.12.4"
+    fast-json-stable-stringify "2.1.0"
+    magic-string "0.25.7"
+    rxjs "6.6.2"
+    source-map "0.7.3"
+
 "@angular-devkit/core@9.1.12":
   version "9.1.12"
   resolved "https://registry.yarnpkg.com/@angular-devkit/core/-/core-9.1.12.tgz#7cebce51918fe7f3462d8c58c9fbd5a3e2c3b3e7"
@@ -40,6 +51,15 @@
     magic-string "0.25.7"
     rxjs "6.5.4"
     source-map "0.7.3"
+
+"@angular-devkit/schematics@10.2.0":
+  version "10.2.0"
+  resolved "https://registry.yarnpkg.com/@angular-devkit/schematics/-/schematics-10.2.0.tgz#a45f316bbaa54cbabc06e2e54b04e1c8d103bc0b"
+  integrity sha512-TQI5NnE6iM3ChF5gZQ9qb+lZgMWa7aLoF5ksOyT3zrmOuICiQYJhA6SsjV95q7J4M55qYymwBib8KTqU/xuQww==
+  dependencies:
+    "@angular-devkit/core" "10.2.0"
+    ora "5.0.0"
+    rxjs "6.6.2"
 
 "@angular-devkit/schematics@9.1.12":
   version "9.1.12"
@@ -761,13 +781,13 @@
     multer "1.4.2"
     tslib "2.0.3"
 
-"@nestjs/schematics@7.1.3":
-  version "7.1.3"
-  resolved "https://registry.yarnpkg.com/@nestjs/schematics/-/schematics-7.1.3.tgz#381dc65145d3fff81d4004b7d1fb47c71f07e571"
-  integrity sha512-13YU6H8Cw+GwtIfclSBeiswlzdM2Z9tMN4ZWiveyok0Fmi/8t6mxGHDw3bWPv8wGkd1bWz0PVCC2CjUGkHmcGg==
+"@nestjs/schematics@7.2.1":
+  version "7.2.1"
+  resolved "https://registry.yarnpkg.com/@nestjs/schematics/-/schematics-7.2.1.tgz#3454e858bbcf755bb9ce0c42c3f2a95e489f969b"
+  integrity sha512-yTIwiclX65HYIeemJ/ih3SVlj3BhUHS5eeGy/6uFy1EiIujNadsgi/RZxFSwlCIDkSrGUykqoZdvzfdnsD1Itw==
   dependencies:
-    "@angular-devkit/core" "9.1.12"
-    "@angular-devkit/schematics" "9.1.12"
+    "@angular-devkit/core" "10.2.0"
+    "@angular-devkit/schematics" "10.2.0"
     fs-extra "9.0.1"
     pluralize "8.0.0"
 
