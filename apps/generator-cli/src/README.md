@@ -120,6 +120,7 @@ Initially the file has the following content:
 This configuration indicates the following:
 
 - the json file shall be formatted using **2 spaces**
+- the jar files shall be downloaded to *./my/custom/storage/dir*
 - the generator-cli version 4.3.1 is used
 
 Further it is also possible to configure generators, for example:
@@ -130,7 +131,8 @@ Further it is also possible to configure generators, for example:
   "spaces": 2,
   "generator-cli": {
     "version": "4.3.1",
-    "generators": {
+    "storageDir": "~/my/custom/storage/dir", // optional
+    "generators": { // optional
       "v2.0": { // any name you like (just printed to the console log) 
         "generatorName": "typescript-angular",
         "output": "#{cwd}/output/v2.0/#{ext}/#{name}",
