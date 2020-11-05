@@ -90,16 +90,17 @@ export class GeneratorService {
         switch (typeof v) {
           case 'object':
             return `"${Object.entries(v).map(z => z.join('=')).join(',')}"`
-          case 'boolean':
           case 'number':
           case 'bigint':
             return `${v}`
+          case 'boolean':
+            return undefined
           default:
             return `"${v}"`
         }
       })()
 
-      return `--${key}=${value}`
+      return value === undefined ? `--${key}` : `--${key}=${value}`
     }).join(' ')
 
     const ext = path.extname(absoluteSpecPath)
