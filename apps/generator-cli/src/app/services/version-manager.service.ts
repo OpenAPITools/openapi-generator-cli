@@ -4,6 +4,7 @@ import {replace} from 'lodash';
 import {Observable} from 'rxjs';
 import * as fs from 'fs-extra';
 import * as path from 'path';
+import * as os from 'os';
 import * as Stream from 'stream';
 import * as chalk from 'chalk';
 import * as compare from 'compare-versions'
@@ -31,7 +32,7 @@ export class VersionManagerService {
 
   public readonly storage = this.customStorageDir ? path.resolve(
     this.configService.cwd,
-    this.customStorageDir,
+    this.customStorageDir.replace('~', os.homedir()),
   ) : path.resolve(__dirname, './versions')
 
   constructor(

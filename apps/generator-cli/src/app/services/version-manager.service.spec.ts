@@ -7,6 +7,7 @@ import { LOGGER } from '../constants';
 import * as chalk from 'chalk';
 import { ConfigService } from './config.service';
 import { resolve } from 'path';
+import * as os from 'os';
 import { TestingModule } from '@nestjs/testing/testing-module';
 
 jest.mock('fs-extra');
@@ -534,6 +535,9 @@ describe('VersionManagerService', () => {
         it.each([
           ['/c/w/d/custom/dir', './custom/dir'],
           ['/custom/dir', '/custom/dir'],
+          ['/custom/dir', '/custom/dir/'],
+          [`${os.homedir()}/oa`, '~/oa/'],
+          [`${os.homedir()}/oa`, '~/oa'],
         ])('returns %s for %s', async (expected, cfgValue) => {
           getStorageDir.mockReturnValue(cfgValue)
           await compile()
