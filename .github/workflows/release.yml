@@ -30,6 +30,9 @@ jobs:
       - name: Unit Test
         run: yarn run test
 
+      - name: Build
+        run: yarn run build
+
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
