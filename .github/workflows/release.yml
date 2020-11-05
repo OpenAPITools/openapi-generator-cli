@@ -34,9 +34,3 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npx semantic-release
-
-      - name: Print Res
-        run: |
-          cd dist/apps/generator-cli
-          ls -la
-          cat package.json
