@@ -138,7 +138,7 @@ describe('GeneratorService', () => {
             `--rel-dir="def/app"`,
             `--rel-path="def/app/pet.yaml"`,
             `--ext="yaml"`,
-            '--some-bool=true',
+            '--some-bool',
             '--some-int=1',
           ]),
           cmd('[baz] def/app/car.json', [
@@ -152,7 +152,7 @@ describe('GeneratorService', () => {
             `--rel-dir="def/app"`,
             `--rel-path="def/app/car.json"`,
             `--ext="json"`,
-            '--some-bool=true',
+            '--some-bool',
             '--some-int=1',
           ]),
         ]],
@@ -160,12 +160,12 @@ describe('GeneratorService', () => {
           cmd('[bar] api/cat.yaml', [
             `--input-spec="${cwd}/api/cat.yaml"`,
             `--output="bar/cat"`,
-            '--some-bool=false',
+            '--some-bool',
           ]),
           cmd('[bar] api/bird.json', [
             `--input-spec="${cwd}/api/bird.json"`,
             `--output="bar/bird"`,
-            '--some-bool=false',
+            '--some-bool',
           ]),
         ]],
         ['none.json', []],
