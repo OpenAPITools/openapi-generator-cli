@@ -1,3 +1,15 @@
 {
-  "branches": ["master", "next", "chore/setup-semantic"]
+  "branches": ["master", "next", "chore/setup-semantic"],
+  "plugins": [
+    "@semantic-release/commit-analyzer",
+    "@semantic-release/release-notes-generator",
+    ["@semantic-release/npm", {
+      "npmPublish": false,
+      "pkgRoot": "dist/apps/generator-cli",
+      "tarballDir": "dist/apps"
+    }],
+    ["@semantic-release/github", {
+      "assets": "dist/*.tgz"
+    }]
+  ]
 }
