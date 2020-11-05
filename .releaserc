@@ -7,9 +7,6 @@
       "npmPublish": false,
       "pkgRoot": "dist/apps/generator-cli",
       "tarballDir": "dist/apps"
-    }],
-    ["@semantic-release/github", {
-      "assets": "dist/apps/generator-cli/*.tgz"
     }]
   ]
 }
