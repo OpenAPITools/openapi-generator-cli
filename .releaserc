@@ -9,7 +9,7 @@
       "tarballDir": "dist/apps"
     }],
     ["@semantic-release/github", {
-      "assets": "dist/*.tgz"
+      "assets": "dist/apps/generator-cli/*.tgz"
     }]
   ]
 }
