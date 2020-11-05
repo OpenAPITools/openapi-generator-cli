@@ -74,8 +74,11 @@ jobs:
           (npm run oa version-manager set 4.3.1 && npm run oa version | grep -q '4.3.1') || exit 1
           (npm run oa version-manager set 4.3.1 && npm run oa version | grep -q '4.3.1') || exit 1
           json -I -f openapitools.json -e 'this["generator-cli"]["storageDir"]="./my/storage/"'
+          (npm run oa version-manager set 4.3.0 && npm run oa version | grep -q '4.3.0') || exit 1
+          test -f ./my/storage/4.3.0.jar || exit 1
+          json -I -f openapitools.json -e 'this["generator-cli"]["storageDir"]="~/my/storage/"'
           (npm run oa version-manager set 4.3.1 && npm run oa version | grep -q '4.3.1') || exit 1
-          test -f ./my/storage/4.3.1.jar || exit 1
+          test -f ~/my/storage/4.3.1.jar || exit 1
           npm run oa:generate && mkdir ./foo && cd ./foo && npm run oa:generate
 
 #  release:
