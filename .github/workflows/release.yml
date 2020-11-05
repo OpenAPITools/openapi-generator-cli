@@ -1,6 +1,8 @@
 name: Release
 on:
   push:
+    tags-ignore:
+      - '*.*'
     branches:
       - master
       - chore/setup-semantic

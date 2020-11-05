@@ -1,6 +1,8 @@
 name: Build
 on:
   push:
+    tags-ignore:
+      - '*.*'
     branches:
       - !chore/setup-semantic
 
