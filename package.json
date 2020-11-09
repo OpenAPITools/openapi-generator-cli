@@ -76,8 +76,7 @@
     "workspace-schematic": "nx workspace-schematic",
     "dep-graph": "nx dep-graph",
     "help": "nx help",
-    "semantic-release": "semantic-release",
-    "postinstall": "opencollective || exit 0"
+    "semantic-release": "semantic-release"
   },
   "collective": {
     "type": "opencollective",
