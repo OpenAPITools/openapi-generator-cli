@@ -26,6 +26,7 @@ module.exports = (config) => {
     }
   };
 
+
   config.plugins.push(
     new BannerPlugin({ banner: '#!/usr/bin/env node', raw: true }),
     new GeneratePackageJsonPlugin(basePackageValues, {
