@@ -1,7 +1,8 @@
 import { HttpService, Inject, Injectable } from '@nestjs/common';
-import { map, switchMap } from 'rxjs/operators';
+import { catchError, map, switchMap } from 'rxjs/operators';
 import { replace } from 'lodash';
 import { Observable } from 'rxjs';
+import { AxiosError } from 'axios';
 import * as fs from 'fs-extra';
 import * as path from 'path';
 import * as os from 'os';
@@ -47,7 +48,7 @@ export class VersionManagerService {
     const queryUrl = this.replacePlaceholders(
       this.configService.get<string>('generator-cli.repository.queryUrl') ||
       configSchema.properties['generator-cli'].properties.repository.queryUrl.default
-    )
+    );
 
     return this.httpService.get(queryUrl).pipe(
       map(({ data }) => data.response.docs),
@@ -66,6 +67,11 @@ export class VersionManagerService {
           .sort((l, r) => compare(l.version, r.version)).pop();
         latestVersion.versionTags.push('latest'); // works, because it's a reference
         return versions;
+      }),
+      catchError((e) => {
+        this.logger.log(chalk.red(`Unable to query repository, because of: "${e.message}"`));
+        this.printResponseError(e);
+        return [];
       })
     );
   }
@@ -120,6 +126,8 @@ export class VersionManagerService {
       return true;
     } catch (e) {
       this.logger.log(chalk.red(`Download failed, because of: "${e.message}"`));
+      this.printResponseError(e);
+
       return false;
     }
   }
@@ -163,6 +171,15 @@ export class VersionManagerService {
     }
 
     return str;
+  }
+
+  private printResponseError(error: AxiosError) {
+    if (error.isAxiosError) {
+      this.logger.log(chalk.red('\nResponse:'));
+      Object.entries(error.response.headers).forEach(a => this.logger.log(...a));
+      this.logger.log();
+      error.response.data.on('data', data => this.logger.log(data.toString('utf8')));
+    }
   }
 
   public filePath(versionName = this.getSelectedVersion()) {
