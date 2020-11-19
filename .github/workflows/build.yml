@@ -1,6 +1,10 @@
 name: Build
-on: push
-
+on:
+  push:
+    tags-ignore:
+      - '*.*'
+    branches-ignore:
+      - master
 jobs:
   build:
     name: Build
