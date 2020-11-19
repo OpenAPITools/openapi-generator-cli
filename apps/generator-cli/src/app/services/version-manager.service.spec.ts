@@ -34,7 +34,24 @@ describe('VersionManagerService', () => {
         { provide: HttpService, useValue: { get } },
         {
           provide: ConfigService, useValue: {
-            get: (k) => k === 'generator-cli.storageDir' ? getStorageDir(k) : getVersion(k),
+            get: (k) => {
+
+              if (k === 'generator-cli.storageDir') {
+                return getStorageDir(k);
+              }
+
+              if (k === 'generator-cli.repository.queryUrl') {
+                return undefined;
+                // return 'https://search.maven.custom/solrsearch/select?q=g:${repository.groupId}+AND+a:${repository.artifactId}&core=gav&start=0&rows=250';
+              }
+
+              if (k === 'generator-cli.repository.downloadUrl') {
+                return undefined;
+                // return 'https://search.maven.custom/solrsearch/select?q=g:${repository.groupId}+AND+a:${repository.artifactId}&core=gav&start=0&rows=250';
+              }
+
+              return getVersion(k);
+            },
             set: setVersion,
             cwd: '/c/w/d'
           }
@@ -210,8 +227,8 @@ describe('VersionManagerService', () => {
     describe('getSelectedVersion', () => {
 
       it('returns the value from the config service', () => {
-        expect(getVersion).toHaveBeenNthCalledWith(1, 'generator-cli.version');
         expect(fixture.getSelectedVersion()).toEqual('4.3.0');
+        expect(getVersion).toHaveBeenNthCalledWith(1, 'generator-cli.version');
       });
 
     });

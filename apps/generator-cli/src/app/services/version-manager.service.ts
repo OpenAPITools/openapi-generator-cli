@@ -1,15 +1,16 @@
-import {HttpService, Inject, Injectable} from '@nestjs/common';
-import {map, switchMap} from 'rxjs/operators';
-import {replace} from 'lodash';
-import {Observable} from 'rxjs';
+import { HttpService, Inject, Injectable } from '@nestjs/common';
+import { map, switchMap } from 'rxjs/operators';
+import { replace } from 'lodash';
+import { Observable } from 'rxjs';
 import * as fs from 'fs-extra';
 import * as path from 'path';
 import * as os from 'os';
 import * as Stream from 'stream';
 import * as chalk from 'chalk';
-import * as compare from 'compare-versions'
-import {LOGGER} from '../constants';
-import {ConfigService} from './config.service';
+import * as compare from 'compare-versions';
+import { LOGGER } from '../constants';
+import { ConfigService } from './config.service';
+import * as configSchema from '../../config.schema.json';
 
 export interface Version {
   version: string
@@ -21,32 +22,35 @@ export interface Version {
 
 const mvn = {
   repo: 'https://search.maven.org',
-  group: 'org.openapitools',
-  artifact: 'openapi-generator-cli',
-}
+  groupId: 'org.openapitools',
+  artifactId: 'openapi-generator-cli'
+};
 
 @Injectable()
 export class VersionManagerService {
 
-  private customStorageDir = this.configService.get<string>('generator-cli.storageDir')
+  private customStorageDir = this.configService.get<string>('generator-cli.storageDir');
 
   public readonly storage = this.customStorageDir ? path.resolve(
     this.configService.cwd,
-    this.customStorageDir.replace('~', os.homedir()),
-  ) : path.resolve(__dirname, './versions')
+    this.customStorageDir.replace('~', os.homedir())
+  ) : path.resolve(__dirname, './versions');
 
   constructor(
     @Inject(LOGGER) private readonly logger: LOGGER,
     private httpService: HttpService,
-    private configService: ConfigService,
+    private configService: ConfigService
   ) {
   }
 
   getAll(): Observable<Version[]> {
-    const queryUrl = `${mvn.repo}/solrsearch/select?q=g:${mvn.group}+AND+a:${mvn.artifact}&core=gav&start=0&rows=200`;
+    const queryUrl = this.replacePlaceholders(
+      this.configService.get<string>('generator-cli.repository.queryUrl') ||
+      configSchema.properties['generator-cli'].properties.repository.queryUrl.default
+    )
 
     return this.httpService.get(queryUrl).pipe(
-      map(({data}) => data.response.docs),
+      map(({ data }) => data.response.docs),
       map(docs => docs.map((doc) => ({
         version: doc.v,
         versionTags: [
@@ -55,97 +59,114 @@ export class VersionManagerService {
         ],
         releaseDate: new Date(doc.timestamp),
         installed: this.isDownloaded(doc.v),
-        downloadLink: this.createDownloadLink(doc.v),
+        downloadLink: this.createDownloadLink(doc.v)
       }))),
       map(versions => {
         const latestVersion = this.filterVersionsByTags(versions, ['stable'])
-          .sort((l, r) => compare(l.version, r.version)).pop()
-        latestVersion.versionTags.push('latest') // works, because it's a reference
+          .sort((l, r) => compare(l.version, r.version)).pop();
+        latestVersion.versionTags.push('latest'); // works, because it's a reference
         return versions;
       })
-    )
+    );
   }
 
   search(tags: string[]) {
-    return this.getAll().pipe(map(versions => this.filterVersionsByTags(versions, tags)))
+    return this.getAll().pipe(map(versions => this.filterVersionsByTags(versions, tags)));
   }
 
   isSelectedVersion(versionName: string) {
-    return versionName === this.getSelectedVersion()
+    return versionName === this.getSelectedVersion();
   }
 
   getSelectedVersion() {
-    return this.configService.get<string>('generator-cli.version')
+    return this.configService.get<string>('generator-cli.version');
   }
 
   async setSelectedVersion(versionName: string) {
-    const downloaded = await this.downloadIfNeeded(versionName)
+    const downloaded = await this.downloadIfNeeded(versionName);
     if (downloaded) {
-      this.configService.set('generator-cli.version', versionName)
-      this.logger.log(chalk.green(`Did set selected version to ${versionName}`))
+      this.configService.set('generator-cli.version', versionName);
+      this.logger.log(chalk.green(`Did set selected version to ${versionName}`));
     }
   }
 
   async remove(versionName: string) {
-    fs.removeSync(this.filePath(versionName))
-    this.logger.log(chalk.green(`Removed ${versionName}`))
+    fs.removeSync(this.filePath(versionName));
+    this.logger.log(chalk.green(`Removed ${versionName}`));
   }
 
   async download(versionName: string) {
-    this.logger.log(chalk.yellow(`Download ${versionName} ...`))
-    const downloadLink = this.createDownloadLink(versionName)
-    const filePath = this.filePath(versionName)
+    this.logger.log(chalk.yellow(`Download ${versionName} ...`));
+    const downloadLink = this.createDownloadLink(versionName);
+    const filePath = this.filePath(versionName);
 
     try {
       await this.httpService
-        .get<Stream>(downloadLink, {responseType: 'stream'})
+        .get<Stream>(downloadLink, { responseType: 'stream' })
         .pipe(switchMap(res => new Promise(resolve => {
-            fs.ensureDirSync(this.storage)
+            fs.ensureDirSync(this.storage);
             const file = fs.createWriteStream(filePath);
-            res.data.pipe(file)
+            res.data.pipe(file);
             res.data.on('end', resolve);
           })
-        )).toPromise()
+        )).toPromise();
 
       if (this.customStorageDir) {
-        this.logger.log(chalk.green(`Downloaded ${versionName} to custom storage location ${this.storage}`))
-      }else {
-        this.logger.log(chalk.green(`Downloaded ${versionName}`))
+        this.logger.log(chalk.green(`Downloaded ${versionName} to custom storage location ${this.storage}`));
+      } else {
+        this.logger.log(chalk.green(`Downloaded ${versionName}`));
       }
 
-      return true
+      return true;
     } catch (e) {
-      this.logger.log(chalk.red(`Download failed, because of: "${e.message}"`))
-      return false
+      this.logger.log(chalk.red(`Download failed, because of: "${e.message}"`));
+      return false;
     }
   }
 
   async downloadIfNeeded(versionName: string) {
-    return this.isDownloaded(versionName) || this.download(versionName)
+    return this.isDownloaded(versionName) || this.download(versionName);
   }
 
   isDownloaded(versionName: string) {
-    return fs.existsSync(path.resolve(this.storage, `${versionName}.jar`))
+    return fs.existsSync(path.resolve(this.storage, `${versionName}.jar`));
   }
 
   private filterVersionsByTags(versions: Version[], tags: string[]) {
     if (tags.length < 1) {
-      return versions
+      return versions;
     }
 
     return versions.filter(v => tags.every(tag => {
-      return v.versionTags.some(vTag => vTag.indexOf(tag) === 0)
-    }))
+      return v.versionTags.some(vTag => vTag.indexOf(tag) === 0);
+    }));
   }
 
   private createDownloadLink(versionName: string) {
-    const group = replace(mvn.group, '.', '/');
-    const artifact = replace(mvn.artifact, '.', '/');
-    return `https://repo1.maven.org/maven2/${group}/${artifact}/${versionName}/${artifact}-${versionName}.jar`
+    return this.replacePlaceholders((
+      this.configService.get<string>('generator-cli.repository.downloadUrl') ||
+      configSchema.properties['generator-cli'].properties.repository.downloadUrl.default
+    ), { versionName });
+  }
+
+  private replacePlaceholders(str: string, additionalPlaceholders = {}) {
+    const placeholders = {
+      ...additionalPlaceholders,
+      groupId: replace(mvn.groupId, '.', '/'),
+      artifactId: replace(mvn.artifactId, '.', '/'),
+      'group.id': mvn.groupId,
+      'artifact.id': mvn.artifactId
+    };
+
+    for (const [k, v] of Object.entries(placeholders)) {
+      str = str.split(`$\{${k}}`).join(v);
+    }
+
+    return str;
   }
 
   public filePath(versionName = this.getSelectedVersion()) {
-    return path.resolve(this.storage, `${versionName}.jar`)
+    return path.resolve(this.storage, `${versionName}.jar`);
   }
 
 }

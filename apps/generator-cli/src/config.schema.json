@@ -27,6 +27,16 @@
         "storageDir": {
           "type": "string"
         },
+        "repository": {
+          "queryUrl": {
+            "type": "string",
+            "default": "https://search.maven.org/solrsearch/select?q=g:${groupId}+AND+a:${artifactId}&core=gav&start=0&rows=200"
+          },
+          "downloadUrl": {
+            "type": "string",
+            "default": "https://repo1.maven.org/maven2/${groupId}/${artifactId}/${versionName}/${artifactId}-${versionName}.jar"
+          }
+        },
         "generators": {
           "type": "object",
           "additionalProperties": {
