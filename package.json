@@ -54,7 +54,6 @@
   "scripts": {
     "nx": "nx",
     "start": "nx serve",
-    "start:verdaccio": "verdaccio",
     "cli": "node ./dist/apps/generator-cli/main.js",
     "build": "nx build",
     "publish": "npm run build && npm publish ./dist/apps/generator-cli",
@@ -100,8 +99,7 @@
     "jsonpath": "1.0.2",
     "lodash": "4.17.20",
     "reflect-metadata": "0.1.13",
-    "rxjs": "6.6.3",
-    "verdaccio": "4.8.1"
+    "rxjs": "6.6.3"
   },
   "devDependencies": {
     "@commitlint/cli": "11.0.0",
