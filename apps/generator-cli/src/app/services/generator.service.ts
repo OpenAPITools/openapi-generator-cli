@@ -40,6 +40,14 @@ export class GeneratorService {
     const commands = flatten(enabledGenerators.map(([name, config]) => {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const {glob: globPattern, disabled, ...params} = config
+
+      if (!globPattern) {
+        return [{
+          name: `[${name}] ${params.inputSpec}`,
+          command: this.buildCommand(cwd, params)
+        }]
+      }
+
       const specFiles = glob.sync(globPattern, {cwd})
 
       if (specFiles.length < 1) {
@@ -48,7 +56,7 @@ export class GeneratorService {
 
       return glob.sync(globPattern, {cwd}).map(spec => ({
         name: `[${name}] ${spec}`,
-        command: this.buildCommand(cwd, spec, params),
+        command: this.buildCommand(cwd, params, spec)
       }))
     }))
 
@@ -77,11 +85,11 @@ export class GeneratorService {
     }).join('\n'))
   }
 
-  private buildCommand(cwd: string, specFile: string, params: Record<string, unknown>) {
-    const absoluteSpecPath = path.resolve(cwd, specFile)
+  private buildCommand(cwd: string, params: Record<string, unknown>, specFile?: string) {
+    const absoluteSpecPath = specFile ? path.resolve(cwd, specFile) : String(params.inputSpec)
 
     const command = Object.entries({
-      ['input-spec']: absoluteSpecPath,
+      inputSpec: absoluteSpecPath,
       ...params,
     }).map(([k, v]) => {
 
@@ -113,17 +121,19 @@ export class GeneratorService {
       cwd,
 
       base: path.basename(absoluteSpecPath),
-      dir: path.dirname(absoluteSpecPath),
+      dir: specFile && path.dirname(absoluteSpecPath),
       path: absoluteSpecPath,
 
-      relDir: path.dirname(specFile),
+      relDir: specFile && path.dirname(specFile),
       relPath: specFile,
-      ext: ext.split('.').slice(-1).pop(),
+      ext: ext.split('.').slice(-1).pop()
     }
 
-    return this.cmd(Object.entries(placeholders).reduce((cmd, [search, replacement]) => {
-      return cmd.split(`#{${search}}`).join(replacement)
-    }, command))
+    return this.cmd(Object.entries(placeholders)
+      .filter(([, replacement]) => !!replacement)
+      .reduce((cmd, [search, replacement]) => {
+        return cmd.split(`#{${search}}`).join(replacement)
+      }, command))
   }
 
   private cmd = (appendix: string) => [

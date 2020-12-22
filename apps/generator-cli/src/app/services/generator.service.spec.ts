@@ -85,6 +85,21 @@ describe('GeneratorService', () => {
             someBool: false,
           },
         },
+        ['no-glob.json']: {
+          noGlob: {
+            inputSpec: 'http://example.local/openapi.json',
+            output: 'no-glob/#{name}',
+            name: '#{name}',
+            nameUcFirst: '#{Name}',
+            cwd: '#{cwd}',
+            base: '#{base}',
+            dir: '#{dir}',
+            path: '#{path}',
+            relDir: '#{relDir}',
+            relPath: '#{relPath}',
+            ext: '#{ext}'
+          }
+        }
       }
 
       const specFiles = {
@@ -170,6 +185,21 @@ describe('GeneratorService', () => {
         ]],
         ['none.json', []],
         ['also-none.json', []],
+        ['no-glob.json', [
+          cmd('[noGlob] http://example.local/openapi.json', [
+            `--input-spec="http://example.local/openapi.json"`,
+            `--output="no-glob/openapi"`,
+            `--name="openapi"`,
+            `--name-uc-first="Openapi"`,
+            `--cwd="${cwd}"`,
+            `--base="openapi.json"`,
+            `--dir="#{dir}"`,
+            `--path="http://example.local/openapi.json"`,
+            `--rel-dir="#{relDir}"`,
+            `--rel-path="#{relPath}"`,
+            `--ext="json"`,
+          ]),
+        ]],
       ])('%s', (filePath, expectedCommands) => {
 
         let returnValue: boolean
