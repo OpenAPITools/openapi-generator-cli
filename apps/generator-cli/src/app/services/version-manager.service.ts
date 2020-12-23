@@ -113,7 +113,7 @@ export class VersionManagerService {
             fs.ensureDirSync(this.storage);
             const file = fs.createWriteStream(filePath);
             res.data.pipe(file);
-            res.data.on('end', resolve);
+            file.on('finish', resolve);
           })
         )).toPromise();
 

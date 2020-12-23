@@ -365,14 +365,15 @@ describe('VersionManagerService', () => {
 
         const data = {
           pipe: jest.fn(),
+        };
+
+        const file = {
           on: jest.fn().mockImplementation((listener, res) => {
-            if (listener === 'end') {
+            if (listener === 'finish') {
               return res();
             }
           })
-        };
-
-        const file = Symbol();
+        }
 
         beforeEach(async () => {
           data.pipe.mockReset();
