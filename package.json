@@ -96,7 +96,7 @@
     "console.table": "0.10.0",
     "fs-extra": "9.0.1",
     "inquirer": "7.3.3",
-    "jsonpath": "1.0.2",
+    "jsonpath": "1.1.0",
     "lodash": "4.17.20",
     "reflect-metadata": "0.1.13",
     "rxjs": "6.6.3"
