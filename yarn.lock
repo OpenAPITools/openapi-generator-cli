@@ -742,20 +742,20 @@
     "@types/yargs" "^15.0.0"
     chalk "^4.0.0"
 
-"@nestjs/common@7.6.8":
-  version "7.6.8"
-  resolved "https://registry.yarnpkg.com/@nestjs/common/-/common-7.6.8.tgz#1c74636c7ede1b7b006d3f9869d49aea716bb4e2"
-  integrity sha512-w3c0T0kfPSkWf5QDYn2FHrItyBT/vxCohrppK/LmFqcUQ6pXG8Yj1MKqgpG94LFsLMJgAvlYfhQ4dHOu72i0LQ==
+"@nestjs/common@7.6.9":
+  version "7.6.9"
+  resolved "https://registry.yarnpkg.com/@nestjs/common/-/common-7.6.9.tgz#ce8c1dae23360468cb4af88631174b1756e59d57"
+  integrity sha512-6PU5JB6RbRTo3rdq+RFayoIVUcORg7G040RYvKv0JqEZIkTUIFV9rcob8ZeK9NjOWV8ozgiPkQZGJHPHVlpo5A==
   dependencies:
     axios "0.21.1"
     iterare "1.2.1"
     tslib "2.1.0"
     uuid "8.3.2"
 
-"@nestjs/core@7.6.8":
-  version "7.6.8"
-  resolved "https://registry.yarnpkg.com/@nestjs/core/-/core-7.6.8.tgz#c9d38ea87462fc41b4fc9a827997db21ec0eb17c"
-  integrity sha512-BmzRYCS0zp4gFiHlqaHMjWKOCXhAJdUmbSY9VCIaUju5lntRK1m1faTW9z+drNSdsW/1E/zbku8yAqyUeCa+lg==
+"@nestjs/core@7.6.9":
+  version "7.6.9"
+  resolved "https://registry.yarnpkg.com/@nestjs/core/-/core-7.6.9.tgz#78732bd8ef14e84678dfd1ad14770c292b632ee1"
+  integrity sha512-ihuSN4gFNvY5cdcDEoRiH0sQx985tIvc49I4+zxG4IFORtmGKP5O5dfNfc+HrpHKk0Nv1tjZdt2F1YqgBQr8iw==
   dependencies:
     "@nuxtjs/opencollective" "0.3.2"
     fast-safe-stringify "2.0.7"
@@ -765,10 +765,10 @@
     tslib "2.1.0"
     uuid "8.3.2"
 
-"@nestjs/platform-express@7.6.8":
-  version "7.6.8"
-  resolved "https://registry.yarnpkg.com/@nestjs/platform-express/-/platform-express-7.6.8.tgz#7f859684b743c5cc37b48dc6921a105e06842eff"
-  integrity sha512-N/DvK4z3AzAf4LvDhWgfVEyQ4G3Wrijr7UUjUZ0k/h/2M8mSrC1H39iVBTlpbHSS5tYu2OONFg+lRxkJmcmL3w==
+"@nestjs/platform-express@7.6.9":
+  version "7.6.9"
+  resolved "https://registry.yarnpkg.com/@nestjs/platform-express/-/platform-express-7.6.9.tgz#72b96e38fb8eadb06bd961c764d23a46383d9e8f"
+  integrity sha512-Q38mE2YSrZjrVZnuFLFWKKty/gTRvvb+OkOwRs9Paxjt67G+ufCkWl6Z5fQuc1wUfCL/LoRvUb447kKE0zkaXQ==
   dependencies:
     body-parser "1.19.0"
     cors "2.8.5"
@@ -796,10 +796,10 @@
     fs-extra "9.0.1"
     pluralize "8.0.0"
 
-"@nestjs/testing@7.6.8":
-  version "7.6.8"
-  resolved "https://registry.yarnpkg.com/@nestjs/testing/-/testing-7.6.8.tgz#2276b84449cf823d7e343a674614fbda936dc12e"
-  integrity sha512-Jz9LNbgEMDLvijlBfWJnbAfWxj8I838Uk2EKwsDMjOl7plDvaYxmvu2B2QFQyAR7wK7VBZsAv7KiojvvFbHz+g==
+"@nestjs/testing@7.6.9":
+  version "7.6.9"
+  resolved "https://registry.yarnpkg.com/@nestjs/testing/-/testing-7.6.9.tgz#b69f87cbe3ee5af08fe5a46c8e09ebdff5714696"
+  integrity sha512-1nWuW7WHMXoiuhYPeL2+IWtR3742jYUMxduIpPLxjaeHxBmM161ylbPOkinCxgdKzVjFMblwTKXG4xIjEjrD+Q==
   dependencies:
     optional "0.1.4"
     tslib "2.1.0"
