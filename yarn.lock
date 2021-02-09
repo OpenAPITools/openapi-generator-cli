@@ -832,83 +832,83 @@
   dependencies:
     mkdirp "^1.0.4"
 
-"@nrwl/cli@11.2.10":
-  version "11.2.10"
-  resolved "https://registry.yarnpkg.com/@nrwl/cli/-/cli-11.2.10.tgz#7bfa0af46dd37fac3b17be8fa6da1dcadf5cc3cf"
-  integrity sha512-uJa4GA1gQVJIPcgcPC03GdFMCVODRHpmb8QGJzY8+GxwGMqHPpKzqvlwTwKrHEW4n7GsZQ1c+WOFi/xKw63nQw==
+"@nrwl/cli@11.2.11":
+  version "11.2.11"
+  resolved "https://registry.yarnpkg.com/@nrwl/cli/-/cli-11.2.11.tgz#3e60137b716086bf79ab5b73181f7522d3ad8c41"
+  integrity sha512-APQMPB5fJ1/MQoHmLJAKeeZZOHkvFWr7kbB+04c59XGwMX4zmIhWZ6JYE7jegIU1HRMCy4jwyBaaaJd0WJ6NUw==
   dependencies:
-    "@nrwl/tao" "11.2.10"
+    "@nrwl/tao" "11.2.11"
     chalk "4.1.0"
     tmp "0.0.33"
     yargs "15.4.1"
     yargs-parser "20.0.0"
 
-"@nrwl/devkit@11.2.10":
-  version "11.2.10"
-  resolved "https://registry.yarnpkg.com/@nrwl/devkit/-/devkit-11.2.10.tgz#353c15258a66cffa5e8d366d89d9ba3ee8ba75da"
-  integrity sha512-S/zfB0WmsYneiw4pikrHzOu7V46emJTJQQVdRnlRnLYMeNQrbz1HzivgZPnKqPrOsGmZ9cfxg/tUZnFWpf6BKQ==
+"@nrwl/devkit@11.2.11":
+  version "11.2.11"
+  resolved "https://registry.yarnpkg.com/@nrwl/devkit/-/devkit-11.2.11.tgz#666b1e808045a5de7abffc6341a410d75d2adb81"
+  integrity sha512-qNNxBRclLH4ELRJ8ppLvogFMOGRDoOp21D6pn/svstWb3KmUvPF6cb0J/5vNiR5Vejz/mh2hThZbYbuOTclI8w==
   dependencies:
-    "@nrwl/tao" "11.2.10"
+    "@nrwl/tao" "11.2.11"
     ejs "^3.1.5"
     ignore "^5.0.4"
     semver "6.3.0"
     strip-json-comments "2.0.1"
     tslib "^2.0.0"
 
-"@nrwl/eslint-plugin-nx@11.2.10":
-  version "11.2.10"
-  resolved "https://registry.yarnpkg.com/@nrwl/eslint-plugin-nx/-/eslint-plugin-nx-11.2.10.tgz#16f57edcb3a3a88bc0b7afc3a57a594ec2bee487"
-  integrity sha512-wQtsfMMds7KJoZxabr10ppl+nhxYHG5onCpm2nyEuD2oW8NKJmMjWCPuuCAhXTNbw2/X8jhYL45H+spnge6LRg==
+"@nrwl/eslint-plugin-nx@11.2.11":
+  version "11.2.11"
+  resolved "https://registry.yarnpkg.com/@nrwl/eslint-plugin-nx/-/eslint-plugin-nx-11.2.11.tgz#09a9d91a8f452fb5bb8bef5408e44ee0a071f344"
+  integrity sha512-NlAPrSY+AAhFTw/R0CS+Pr7Ig8KSvcYDOun1OnMqBLOzeoOJZ/aPXr6gXZyjqwEzJI9aF4GbOUE/jQg9lW4r8A==
   dependencies:
-    "@nrwl/devkit" "11.2.10"
+    "@nrwl/devkit" "11.2.11"
     "@typescript-eslint/experimental-utils" "^4.3.0"
     confusing-browser-globals "^1.0.9"
 
-"@nrwl/jest@11.2.10":
-  version "11.2.10"
-  resolved "https://registry.yarnpkg.com/@nrwl/jest/-/jest-11.2.10.tgz#26c7eb73a39e280dd2a1b78d176d08e87a52058a"
-  integrity sha512-A7/RbgsG8Sx6Ul7WULpIfLMMoJ4TzdipOrv2MgCc1Mj5PpwqO8jVRWzhtv1bwwM058RmAJXXol2Ni8qoCA5oXQ==
+"@nrwl/jest@11.2.11":
+  version "11.2.11"
+  resolved "https://registry.yarnpkg.com/@nrwl/jest/-/jest-11.2.11.tgz#aaae2a304d62b2d01a15df9e4885fc8502b3a82a"
+  integrity sha512-V+jOM5ToDqB8GvYHOruOUQUsQZpvvhV525hBAnSKnq7w9kYmH3DCKwTfZGmiN15hs0+vHGs4f6c7ZL4jj2PQmw==
   dependencies:
-    "@nrwl/devkit" "11.2.10"
+    "@nrwl/devkit" "11.2.11"
     jest-resolve "^26.6.2"
     rxjs "^6.5.4"
     strip-json-comments "2.0.1"
     tslib "^2.0.0"
 
-"@nrwl/linter@11.2.10":
-  version "11.2.10"
-  resolved "https://registry.yarnpkg.com/@nrwl/linter/-/linter-11.2.10.tgz#9746839ebd1f1636125519c84c44454fb851fa87"
-  integrity sha512-YPa04rYJd8cLrm1s9WRTK9wfeWyW8RYwMwFFOWJUX1RW2F6KPQg5Ih70Czfjta4oma5cv2rWflmOg++lVmXtzw==
+"@nrwl/linter@11.2.11":
+  version "11.2.11"
+  resolved "https://registry.yarnpkg.com/@nrwl/linter/-/linter-11.2.11.tgz#5a119b292b5e3d5d9124bcc203d8d03158edd035"
+  integrity sha512-dvMcriXzvyMFuQ858ICun6VO9WcfDBYYfdq/Xsm/ESvA5Ik6M3g3jpUgPud6utz9jFH8SDBg/gklnNr6rPVR4w==
   dependencies:
-    "@nrwl/devkit" "11.2.10"
+    "@nrwl/devkit" "11.2.11"
     glob "7.1.4"
     minimatch "3.0.4"
     tslib "^2.0.0"
 
-"@nrwl/nest@11.2.10":
-  version "11.2.10"
-  resolved "https://registry.yarnpkg.com/@nrwl/nest/-/nest-11.2.10.tgz#69ccd19f5b925193da87bb3b6e6883a1ee3d0e37"
-  integrity sha512-FIl23Mz7KatV3BxHkFZGmjtaCPmM7Cx72XojuYf/dQrQVuoB1/ARj3PtTRNhqVusAo8FhDBgI1ohZQbMxGdhbg==
+"@nrwl/nest@11.2.11":
+  version "11.2.11"
+  resolved "https://registry.yarnpkg.com/@nrwl/nest/-/nest-11.2.11.tgz#013188949693426527dc3a573472b85f26561798"
+  integrity sha512-5mSril0r9Ch3qWcgzgVq8bG7iSrdiff0PcnuJxR0YlwfgD51WqxeF9gPFQeitJfXfvVFT7hywvtIUdcIndjNbQ==
   dependencies:
     "@angular-devkit/core" "~11.0.1"
     "@angular-devkit/schematics" "~11.0.1"
     "@nestjs/schematics" "^7.0.0"
-    "@nrwl/devkit" "11.2.10"
-    "@nrwl/jest" "11.2.10"
-    "@nrwl/node" "11.2.10"
+    "@nrwl/devkit" "11.2.11"
+    "@nrwl/jest" "11.2.11"
+    "@nrwl/node" "11.2.11"
 
-"@nrwl/node@11.2.10":
-  version "11.2.10"
-  resolved "https://registry.yarnpkg.com/@nrwl/node/-/node-11.2.10.tgz#8a2f0b82d81bae2e2cda7d58752caec46939893b"
-  integrity sha512-5aK5GwUcv3m7WaNi052Sd53jZpVRP00cpeUvhwBop239VauL+nqPojqxqlMlqPrzqvz6MmTjm2HoOdb/W7sqIg==
+"@nrwl/node@11.2.11":
+  version "11.2.11"
+  resolved "https://registry.yarnpkg.com/@nrwl/node/-/node-11.2.11.tgz#4d35a67201f1cec0de1350543e24fc72196649b2"
+  integrity sha512-yblsWqE5J0+lBdxqo/RbeaGGA7yQHJ9sdH2+Uqq6oDq0fKT4+a2nY2h+9Vy+pPRXD5O5MtoZHTrs9ASmmwmKBQ==
   dependencies:
     "@angular-devkit/architect" "~0.1100.1"
     "@angular-devkit/build-webpack" "~0.1100.1"
     "@angular-devkit/core" "~11.0.1"
     "@angular-devkit/schematics" "~11.0.1"
-    "@nrwl/devkit" "11.2.10"
-    "@nrwl/jest" "11.2.10"
-    "@nrwl/linter" "11.2.10"
+    "@nrwl/devkit" "11.2.11"
+    "@nrwl/jest" "11.2.11"
+    "@nrwl/linter" "11.2.11"
     circular-dependency-plugin "5.2.0"
     copy-webpack-plugin "6.0.3"
     fork-ts-checker-webpack-plugin "^3.1.1"
@@ -926,10 +926,10 @@
     webpack-merge "4.2.1"
     webpack-node-externals "1.7.2"
 
-"@nrwl/tao@11.2.10":
-  version "11.2.10"
-  resolved "https://registry.yarnpkg.com/@nrwl/tao/-/tao-11.2.10.tgz#f55b3b39a620615f5d4fd84cbe08af8e9ae871a8"
-  integrity sha512-nOOuMDrdEd678HMlK9w7KhSGQJudN9Jr11k3MeTnroQrtGSzvN4FMW0tVynQWNJKbzLQeV3gQHNh8FsP9Pvo6Q==
+"@nrwl/tao@11.2.11":
+  version "11.2.11"
+  resolved "https://registry.yarnpkg.com/@nrwl/tao/-/tao-11.2.11.tgz#fbf3ee2fc5216582f766b675c0e10627453e021a"
+  integrity sha512-tIj63wxpT3mRKg+GePzjWzOWss+tqW8c85UW5ko0pZWQqEo1JCrcW9Tc59eveCdr89tF9mApMlGpuS6YH9yI0A==
   dependencies:
     "@angular-devkit/architect" "~0.1100.1"
     "@angular-devkit/core" "~11.0.1"
@@ -946,15 +946,15 @@
     tslib "^2.0.0"
     yargs-parser "20.0.0"
 
-"@nrwl/workspace@11.2.10":
-  version "11.2.10"
-  resolved "https://registry.yarnpkg.com/@nrwl/workspace/-/workspace-11.2.10.tgz#5ec6c7a37a1de8bf73050f9ca7ac8048d38aa202"
-  integrity sha512-ih3L0LGqKlYM1e354kq6Lz61hBbcmGLQzdRs6LUWb0mCuI0n3CpC2PiDfyHQAIAhUnCz969InxHqzXa0agGyAA==
+"@nrwl/workspace@11.2.11":
+  version "11.2.11"
+  resolved "https://registry.yarnpkg.com/@nrwl/workspace/-/workspace-11.2.11.tgz#4b0d10db1f1471dc2ea5c427b009fbb320f3de59"
+  integrity sha512-8U3DOzMMrLu+SwDn+dZWCIwbJCpfkyib46cbXqfOqGYwf6R6HsIE7rL8fcg+FpXWRrAPBDbLLEcLFGB0RXls2w==
   dependencies:
-    "@nrwl/cli" "11.2.10"
-    "@nrwl/devkit" "11.2.10"
-    "@nrwl/jest" "11.2.10"
-    "@nrwl/linter" "11.2.10"
+    "@nrwl/cli" "11.2.11"
+    "@nrwl/devkit" "11.2.11"
+    "@nrwl/jest" "11.2.11"
+    "@nrwl/linter" "11.2.11"
     axios "0.21.1"
     chalk "4.1.0"
     cosmiconfig "^4.0.0"
