@@ -111,9 +111,14 @@ export class VersionManagerService {
         .get<Stream>(downloadLink, { responseType: 'stream' })
         .pipe(switchMap(res => new Promise(resolve => {
             fs.ensureDirSync(this.storage);
-            const file = fs.createWriteStream(filePath);
+            const temporaryDirectory = fs.mkdtempSync(path.join(os.tmpdir(), 'generator-cli-'));
+            const temporaryFilePath = path.join(temporaryDirectory, versionName);
+            const file = fs.createWriteStream(temporaryFilePath);
             res.data.pipe(file);
-            file.on('finish', resolve);
+            file.on('finish', content => {
+              fs.moveSync(temporaryFilePath, filePath);
+              resolve(content);
+            });
           })
         )).toPromise();
 
