@@ -8,8 +8,6 @@ on:
   pull_request:
     tags-ignore:
       - '*.*'
-    branches-ignore:
-      - master
 jobs:
   build:
     name: Build
