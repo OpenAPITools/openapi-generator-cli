@@ -1,14 +1,14 @@
-import {Test} from '@nestjs/testing';
-import {Version, VersionManagerService} from './version-manager.service';
-import {HttpService} from '@nestjs/common';
-import {of} from 'rxjs';
-import {mocked} from 'ts-jest/utils';
-import {LOGGER} from '../constants';
+import { Test } from '@nestjs/testing';
+import { Version, VersionManagerService } from './version-manager.service';
+import { HttpService } from '@nestjs/common';
+import { of } from 'rxjs';
+import { mocked } from 'ts-jest/utils';
+import { LOGGER } from '../constants';
 import * as chalk from 'chalk';
-import {ConfigService} from './config.service';
-import {resolve} from 'path';
+import { ConfigService } from './config.service';
+import { resolve } from 'path';
 import * as os from 'os';
-import {TestingModule} from '@nestjs/testing/testing-module';
+import { TestingModule } from '@nestjs/testing/testing-module';
 
 jest.mock('fs-extra');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
