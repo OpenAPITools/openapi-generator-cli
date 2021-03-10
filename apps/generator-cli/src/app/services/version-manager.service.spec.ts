@@ -377,6 +377,7 @@ describe('VersionManagerService', () => {
 
         beforeEach(async () => {
           data.pipe.mockReset();
+          fs.mkdtempSync.mockReset().mockReturnValue('/tmp/generator-cli-abcDEF');
           fs.ensureDirSync.mockReset();
           fs.createWriteStream.mockReset().mockReturnValue(file);
 
@@ -439,8 +440,17 @@ describe('VersionManagerService', () => {
             expect(fs.ensureDirSync).toHaveBeenNthCalledWith(1, fixture.storage);
           });
 
+
+          it('creates a temporary directory', () => {
+            expect(fs.mkdtempSync).toHaveBeenNthCalledWith(1, '/tmp/generator-cli-');
+          });
+
           it('creates the correct write stream', () => {
-            expect(fs.createWriteStream).toHaveBeenNthCalledWith(1, `${fixture.storage}/4.2.0.jar`);
+            expect(fs.createWriteStream).toHaveBeenNthCalledWith(1, '/tmp/generator-cli-abcDEF/4.2.0');
+          });
+
+          it('moves the file to the target location', () => {
+            expect(fs.moveSync).toHaveBeenNthCalledWith(1, '/tmp/generator-cli-abcDEF/4.2.0', `${fixture.storage}/4.2.0.jar`);
           });
 
           it('receives the data piped', () => {
