@@ -1,14 +1,14 @@
-import { Test } from '@nestjs/testing';
-import { Version, VersionManagerService } from './version-manager.service';
-import { HttpService } from '@nestjs/common';
-import { of } from 'rxjs';
-import { mocked } from 'ts-jest/utils';
-import { LOGGER } from '../constants';
+import {Test} from '@nestjs/testing';
+import {Version, VersionManagerService} from './version-manager.service';
+import {HttpService} from '@nestjs/common';
+import {of} from 'rxjs';
+import {mocked} from 'ts-jest/utils';
+import {LOGGER} from '../constants';
 import * as chalk from 'chalk';
-import { ConfigService } from './config.service';
-import { resolve } from 'path';
+import {ConfigService} from './config.service';
+import {resolve} from 'path';
 import * as os from 'os';
-import { TestingModule } from '@nestjs/testing/testing-module';
+import {TestingModule} from '@nestjs/testing/testing-module';
 
 jest.mock('fs-extra');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -450,7 +450,7 @@ describe('VersionManagerService', () => {
           });
 
           it('moves the file to the target location', () => {
-            expect(fs.moveSync).toHaveBeenNthCalledWith(1, '/tmp/generator-cli-abcDEF/4.2.0', `${fixture.storage}/4.2.0.jar`);
+            expect(fs.moveSync).toHaveBeenNthCalledWith(1, '/tmp/generator-cli-abcDEF/4.2.0', `${fixture.storage}/4.2.0.jar`, {overwrite: true});
           });
 
           it('receives the data piped', () => {
