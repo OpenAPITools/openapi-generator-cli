@@ -772,14 +772,15 @@
     multer "1.4.2"
     tslib "2.1.0"
 
-"@nestjs/schematics@7.2.9":
-  version "7.2.9"
-  resolved "https://registry.yarnpkg.com/@nestjs/schematics/-/schematics-7.2.9.tgz#646f21d8d5139dd7a67c9948290820f1d3dacbe6"
-  integrity sha512-C4S4qp6v4JeKYEPNdJVTB1oP+afVdS6JziI8WFa+rMaqXbmU5YzPp/HhckQEvKSKJIWAVB24eNcryE9gttFw4Q==
+"@nestjs/schematics@7.3.0":
+  version "7.3.0"
+  resolved "https://registry.yarnpkg.com/@nestjs/schematics/-/schematics-7.3.0.tgz#e92d820948f73c77a30e51b06db42e9d2a3699a4"
+  integrity sha512-yBlg3HV944CbbrXKFMZWs9KkMjIeBLcbgetZOjaiY2AUljwF4PyNoTbV6ulHLyt6ws9mMTPBYiEoF+7V05Lmcg==
   dependencies:
     "@angular-devkit/core" "11.2.3"
     "@angular-devkit/schematics" "11.2.3"
     fs-extra "9.1.0"
+    jsonc-parser "3.0.0"
     pluralize "8.0.0"
 
 "@nestjs/schematics@^7.0.0":
@@ -6377,6 +6378,11 @@ json5@^1.0.1:
   integrity sha512-aKS4WQjPenRxiQsC93MNfjx+nbF4PAdYzmd/1JIj8HYzqfbu86beTuNgXDzPknWk0n0uARlyewZo4s++ES36Ow==
   dependencies:
     minimist "^1.2.0"
+
+jsonc-parser@3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/jsonc-parser/-/jsonc-parser-3.0.0.tgz#abdd785701c7e7eaca8a9ec8cf070ca51a745a22"
+  integrity sha512-fQzRfAbIBnR0IQvftw9FJveWiHp72Fg20giDrHz6TdfB12UH/uue0D3hm57UB5KgAVuniLMCaS8P1IMj9NR7cA==
 
 jsonfile@^4.0.0:
   version "4.0.0"
