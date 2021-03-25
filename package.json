@@ -113,7 +113,7 @@
     "@nrwl/workspace": "11.5.2",
     "@semantic-release/changelog": "5.0.1",
     "@types/concurrently": "5.2.1",
-    "@types/fs-extra": "9.0.8",
+    "@types/fs-extra": "9.0.9",
     "@types/inquirer": "7.3.1",
     "@types/jest": "26.0.22",
     "@types/jsonpath": "0.2.0",
