@@ -30,10 +30,10 @@
     rxjs "6.6.3"
     source-map "0.7.3"
 
-"@angular-devkit/core@11.2.3":
-  version "11.2.3"
-  resolved "https://registry.yarnpkg.com/@angular-devkit/core/-/core-11.2.3.tgz#322fb08f4e2683a37bd08edecb04ddafa42865d9"
-  integrity sha512-2JEGXzFqjTqVls2uIZEE0sk4VY9a/alxBAq8BFYIVbvzKsL9gAY71Ztf21zrhQrZop9qeuLJtOAbp00QyYUaQA==
+"@angular-devkit/core@11.2.4":
+  version "11.2.4"
+  resolved "https://registry.yarnpkg.com/@angular-devkit/core/-/core-11.2.4.tgz#4404b86d8dbdb41a0e3f94cb08ff8604e0c49a2e"
+  integrity sha512-98mGDV4XtKWiQ/2D6yzvOHrnJovXchaAN9AjscAHd2an8Fkiq72d9m2wREpk+2J40NWTDB6J5iesTh3qbi8+CA==
   dependencies:
     ajv "6.12.6"
     fast-json-stable-stringify "2.1.0"
@@ -52,12 +52,12 @@
     rxjs "6.5.4"
     source-map "0.7.3"
 
-"@angular-devkit/schematics@11.2.3":
-  version "11.2.3"
-  resolved "https://registry.yarnpkg.com/@angular-devkit/schematics/-/schematics-11.2.3.tgz#4f156ff2f723ad5b24a709bf97fe676c9753a544"
-  integrity sha512-x/IKgZDn6z/MzQ28WF2GTP2N+n78iySQhLu6n6bpmdrFp9noi9QASzN+mAFiqSNO8XpO9oyIB5y2ERl8KBrU1g==
+"@angular-devkit/schematics@11.2.4":
+  version "11.2.4"
+  resolved "https://registry.yarnpkg.com/@angular-devkit/schematics/-/schematics-11.2.4.tgz#ba67ee835ceb210777f1feece86195f28c1b2e96"
+  integrity sha512-M9Ike1TYawOIHzenlZS1ufQbsS+Z11/doj5w/UrU0q2OEKc6U375t5qVGgKo3PLHHS8osb9aW9xYwBfVlKrryQ==
   dependencies:
-    "@angular-devkit/core" "11.2.3"
+    "@angular-devkit/core" "11.2.4"
     ora "5.3.0"
     rxjs "6.6.3"
 
@@ -772,13 +772,13 @@
     multer "1.4.2"
     tslib "2.1.0"
 
-"@nestjs/schematics@7.3.0":
-  version "7.3.0"
-  resolved "https://registry.yarnpkg.com/@nestjs/schematics/-/schematics-7.3.0.tgz#e92d820948f73c77a30e51b06db42e9d2a3699a4"
-  integrity sha512-yBlg3HV944CbbrXKFMZWs9KkMjIeBLcbgetZOjaiY2AUljwF4PyNoTbV6ulHLyt6ws9mMTPBYiEoF+7V05Lmcg==
+"@nestjs/schematics@7.3.1":
+  version "7.3.1"
+  resolved "https://registry.yarnpkg.com/@nestjs/schematics/-/schematics-7.3.1.tgz#68b559d2e6a8a9ecf6c984f87eaa7d4e37a910be"
+  integrity sha512-eyBjJstAjecpdzRuBLiqnwomwXIAEV3+kPkpaphOieRUM6nBhjnXCCl3Qf8Dul2QUQK4NOVPd8FFxWtGP5XNlg==
   dependencies:
-    "@angular-devkit/core" "11.2.3"
-    "@angular-devkit/schematics" "11.2.3"
+    "@angular-devkit/core" "11.2.4"
+    "@angular-devkit/schematics" "11.2.4"
     fs-extra "9.1.0"
     jsonc-parser "3.0.0"
     pluralize "8.0.0"
