@@ -175,6 +175,24 @@ describe('PassTroughService', () => {
             )
           })
 
+          it('can delegate with custom jar', () => {
+            delete process.env['JAVA_OPTS']
+            const newCmdMock = {...cmdMock};
+            const args = [...newCmdMock.args];
+            newCmdMock.args = [...newCmdMock.args, '-custom-generator=../some/custom.jar'];
+            commandMock.commands[cmd].action(newCmdMock)
+            const cpDelimiter = process.platform === "win32" ? ';' : ':';
+            expect(childProcess.spawn).toHaveBeenNthCalledWith(
+              1,
+              `java -cp "${['../some/custom.jar', '/some/path/to/4.2.1.jar'].join(cpDelimiter)}" org.openapitools.codegen.OpenAPIGenerator`,
+              [cmd, ...args],
+              {
+                stdio: 'inherit',
+                shell: true
+              }
+            )
+          })
+
           if (cmd === 'help') {
             it('prints the help info and does not delegate, if args length = 0', () => {
               childProcess.spawn.mockReset()

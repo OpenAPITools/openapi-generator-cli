@@ -49,10 +49,15 @@ export class PassTroughService {
 
   }
 
-  public passTrough = (args: string[] = []) => spawn(this.cmd(), args, {
+  public passTrough = (args: string[] = []) => spawn(this.cmd(this.processCustomJarParam(args)), args, {
     stdio: 'inherit',
     shell: true
   }).on('exit', process.exit);
+
+  private processCustomJarParam = (args: string[]): string => {
+    const jarOptionIndex = args.findIndex(e => e.startsWith('-custom-generator'));
+    return jarOptionIndex < 0 ? '' : args.splice(jarOptionIndex, 1)[0].split('=')[1];
+  }
 
   private getCommands = async (): Promise<[string, string | undefined][]> => {
 
@@ -85,8 +90,13 @@ export class PassTroughService {
     });
   });
 
-  private cmd() {
-    return ['java', process.env['JAVA_OPTS'], `-jar "${this.versionManager.filePath()}"`].filter(isString).join(' ');
+  private cmd(customJarPath: string = '') {
+    const cliPath = this.versionManager.filePath();
+    const cpDelimiter = process.platform === "win32" ? ';' : ':';
+    const subCmd = customJarPath
+      ? `-cp "${[customJarPath, cliPath].join(cpDelimiter)}" org.openapitools.codegen.OpenAPIGenerator`
+      : `-jar "${cliPath}"`;
+    return ['java', process.env['JAVA_OPTS'], subCmd].filter(isString).join(' ');
   }
 
 }
