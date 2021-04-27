@@ -175,7 +175,7 @@ is automatically used to generate your code. 🎉
 
 ## Custom Generators
 
-Custom generators can be used by passing the `-custom-generator=/my/custom-generator.jar` argument.
+Custom generators can be used by passing the `--custom-generator=/my/custom-generator.jar` argument.
 
 ## Further Documentation
 
