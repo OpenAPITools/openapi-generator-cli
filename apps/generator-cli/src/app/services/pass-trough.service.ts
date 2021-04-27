@@ -24,13 +24,15 @@ export class PassTroughService {
       this.program
         .command(command, { hidden: !desc })
         .allowUnknownOption()
+        .option("--custom-generator <generator>", "Custom generator to use alongside 'generate'", "")
         .description(desc)
         .action(async (cmd: Command) => {
-
-          if (cmd.args.length === 0) {
+          const args = cmd.parseOptions(cmd.args).unknown;
+          if (args.length === 0) {
             switch (cmd.name()) {
               case 'help':
                 console.log(this.program.helpInformation());
+                console.log(cmd.helpInformation());
                 return;
               case 'generate':
                 if (this.generatorService.enabled) {
@@ -43,21 +45,17 @@ export class PassTroughService {
             }
           }
 
-          this.passTrough([cmd.name(), ...cmd.args]);
+          this.passTrough([cmd.name(), ...args], cmd.opts().customGenerator);
         });
     });
 
   }
 
-  public passTrough = (args: string[] = []) => spawn(this.cmd(this.processCustomJarParam(args)), args, {
-    stdio: 'inherit',
-    shell: true
-  }).on('exit', process.exit);
-
-  private processCustomJarParam = (args: string[]): string => {
-    const jarOptionIndex = args.findIndex(e => e.startsWith('-custom-generator'));
-    return jarOptionIndex < 0 ? '' : args.splice(jarOptionIndex, 1)[0].split('=')[1];
-  }
+  public passTrough = (args: string[] = [], customGenerator: string) =>
+    spawn(this.cmd(customGenerator), args, {
+      stdio: 'inherit',
+      shell: true
+    }).on('exit', process.exit);
 
   private getCommands = async (): Promise<[string, string | undefined][]> => {
 
@@ -94,7 +92,7 @@ export class PassTroughService {
     const cliPath = this.versionManager.filePath();
     const cpDelimiter = process.platform === "win32" ? ';' : ':';
     const subCmd = customJarPath
-      ? `-cp "${[customJarPath, cliPath].join(cpDelimiter)}" org.openapitools.codegen.OpenAPIGenerator`
+      ? `-cp "${[cliPath, customJarPath].join(cpDelimiter)}" org.openapitools.codegen.OpenAPIGenerator`
       : `-jar "${cliPath}"`;
     return ['java', process.env['JAVA_OPTS'], subCmd].filter(isString).join(' ');
   }
