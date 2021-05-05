@@ -121,7 +121,7 @@
     "@types/node": "8.10.66",
     "@typescript-eslint/eslint-plugin": "4.22.1",
     "@typescript-eslint/parser": "4.22.1",
-    "dotenv": "8.5.1",
+    "dotenv": "8.6.0",
     "eslint": "7.25.0",
     "eslint-config-prettier": "7.2.0",
     "generate-package-json-webpack-plugin": "2.1.2",
