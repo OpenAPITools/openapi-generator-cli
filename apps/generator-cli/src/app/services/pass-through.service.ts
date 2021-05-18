@@ -8,7 +8,7 @@ import { exec, spawn } from 'child_process';
 import { GeneratorService } from './generator.service';
 
 @Injectable()
-export class PassTroughService {
+export class PassThroughService {
 
   constructor(
     @Inject(LOGGER) private readonly logger: LOGGER,
@@ -45,13 +45,13 @@ export class PassTroughService {
             }
           }
 
-          this.passTrough([cmd.name(), ...args], cmd.opts().customGenerator);
+          this.passThrough([cmd.name(), ...args], cmd.opts().customGenerator);
         });
     });
 
   }
 
-  public passTrough = (args: string[] = [], customGenerator: string) =>
+  public passThrough = (args: string[] = [], customGenerator: string) =>
     spawn(this.cmd(customGenerator), args, {
       stdio: 'inherit',
       shell: true
@@ -88,7 +88,7 @@ export class PassTroughService {
     });
   });
 
-  private cmd(customJarPath: string = '') {
+  private cmd(customJarPath = '') {
     const cliPath = this.versionManager.filePath();
     const cpDelimiter = process.platform === "win32" ? ';' : ':';
     const subCmd = customJarPath

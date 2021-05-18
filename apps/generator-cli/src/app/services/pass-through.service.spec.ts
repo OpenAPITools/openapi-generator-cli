@@ -1,5 +1,5 @@
 import {Test} from '@nestjs/testing';
-import {PassTroughService} from './pass-trough.service';
+import {PassThroughService} from './pass-through.service';
 import {mocked} from 'ts-jest/utils';
 import {COMMANDER_PROGRAM, LOGGER} from '../constants';
 import {VersionManagerService} from './version-manager.service';
@@ -12,9 +12,9 @@ jest.mock('child_process');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const childProcess = mocked(require('child_process'), true)
 
-describe('PassTroughService', () => {
+describe('PassThroughService', () => {
 
-  let fixture: PassTroughService;
+  let fixture: PassThroughService;
   let commandMock: CommandMock;
 
   const log = jest.fn()
@@ -27,7 +27,7 @@ describe('PassTroughService', () => {
 
     const moduleRef = await Test.createTestingModule({
       providers: [
-        PassTroughService,
+        PassThroughService,
         {provide: VersionManagerService, useValue: {filePath, getSelectedVersion}},
         {provide: GeneratorService, useValue: {generate, enabled: true}},
         {provide: COMMANDER_PROGRAM, useValue: commandMock},
@@ -35,7 +35,7 @@ describe('PassTroughService', () => {
       ],
     }).compile();
 
-    fixture = moduleRef.get(PassTroughService);
+    fixture = moduleRef.get(PassThroughService);
   });
 
   describe('API', () => {
