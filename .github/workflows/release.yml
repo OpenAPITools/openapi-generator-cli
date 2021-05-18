@@ -9,6 +9,7 @@ on:
 jobs:
   release:
     name: Release
+    environment: PROD
     runs-on: ubuntu-latest
 
     steps:
