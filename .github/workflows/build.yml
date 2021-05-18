@@ -5,9 +5,9 @@ on:
       - '*.*'
     branches-ignore:
       - master
+      - renovate/**
   pull_request:
-    tags-ignore:
-      - '*.*'
+    types: [ assigned, opened, synchronize, reopened ]
 jobs:
   build:
     name: Build
