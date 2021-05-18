@@ -95,7 +95,7 @@
     "concurrently": "6.1.0",
     "console.table": "0.10.0",
     "fs-extra": "10.0.0",
-    "inquirer": "7.3.3",
+    "inquirer": "8.0.0",
     "jsonpath": "1.1.1",
     "lodash": "4.17.21",
     "reflect-metadata": "0.1.13",
