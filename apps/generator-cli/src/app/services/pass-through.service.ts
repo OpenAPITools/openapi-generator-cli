@@ -8,7 +8,7 @@ import { exec, spawn } from 'child_process';
 import { GeneratorService } from './generator.service';
 
 @Injectable()
-export class PassTroughService {
+export class PassThroughService {
 
   constructor(
     @Inject(LOGGER) private readonly logger: LOGGER,
@@ -24,13 +24,15 @@ export class PassTroughService {
       this.program
         .command(command, { hidden: !desc })
         .allowUnknownOption()
+        .option("--custom-generator <generator>", "Custom generator to use alongside 'generate'", "")
         .description(desc)
         .action(async (cmd: Command) => {
-
-          if (cmd.args.length === 0) {
+          const args = cmd.parseOptions(cmd.args).unknown;
+          if (args.length === 0) {
             switch (cmd.name()) {
               case 'help':
                 console.log(this.program.helpInformation());
+                console.log(cmd.helpInformation());
                 return;
               case 'generate':
                 if (this.generatorService.enabled) {
@@ -43,16 +45,17 @@ export class PassTroughService {
             }
           }
 
-          this.passTrough([cmd.name(), ...cmd.args]);
+          this.passThrough([cmd.name(), ...args], cmd.opts().customGenerator);
         });
     });
 
   }
 
-  public passTrough = (args: string[] = []) => spawn(this.cmd(), args, {
-    stdio: 'inherit',
-    shell: true
-  }).on('exit', process.exit);
+  public passThrough = (args: string[] = [], customGenerator: string) =>
+    spawn(this.cmd(customGenerator), args, {
+      stdio: 'inherit',
+      shell: true
+    }).on('exit', process.exit);
 
   private getCommands = async (): Promise<[string, string | undefined][]> => {
 
@@ -85,8 +88,13 @@ export class PassTroughService {
     });
   });
 
-  private cmd() {
-    return ['java', process.env['JAVA_OPTS'], `-jar "${this.versionManager.filePath()}"`].filter(isString).join(' ');
+  private cmd(customJarPath = '') {
+    const cliPath = this.versionManager.filePath();
+    const cpDelimiter = process.platform === "win32" ? ';' : ':';
+    const subCmd = customJarPath
+      ? `-cp "${[cliPath, customJarPath].join(cpDelimiter)}" org.openapitools.codegen.OpenAPIGenerator`
+      : `-jar "${cliPath}"`;
+    return ['java', process.env['JAVA_OPTS'], subCmd].filter(isString).join(' ');
   }
 
 }

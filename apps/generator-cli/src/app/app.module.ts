@@ -5,7 +5,7 @@ import * as url from 'url';
 
 import { COMMANDER_PROGRAM, LOGGER } from './constants';
 import { VersionManagerController } from './controllers/version-manager.controller';
-import { ConfigService, GeneratorService, PassTroughService, UIService, VersionManagerService } from './services';
+import { ConfigService, GeneratorService, PassThroughService, UIService, VersionManagerService } from './services';
 
 let proxyConfig: AxiosProxyConfig;
 const proxyUrl = process.env.HTTPS_PROXY || process.env.HTTP_PROXY;
@@ -31,7 +31,7 @@ if (proxyUrl) {
     UIService,
     ConfigService,
     GeneratorService,
-    PassTroughService,
+    PassThroughService,
     VersionManagerService,
     {
       provide: COMMANDER_PROGRAM,
@@ -45,7 +45,7 @@ export class AppModule implements OnApplicationBootstrap {
   constructor(
     @Inject(COMMANDER_PROGRAM) private readonly program: Command,
     private readonly versionManager: VersionManagerService,
-    private readonly passTroughService: PassTroughService
+    private readonly passThroughService: PassThroughService
   ) {
   }
 
@@ -60,7 +60,7 @@ export class AppModule implements OnApplicationBootstrap {
     }
 
     await this.versionManager.downloadIfNeeded(selectedVersion);
-    await this.passTroughService.init();
+    await this.passThroughService.init();
     this.program.parse(process.argv);
 
   };

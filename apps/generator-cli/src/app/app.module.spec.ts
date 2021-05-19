@@ -1,6 +1,6 @@
 import {AppModule} from './app.module';
 import {Test} from '@nestjs/testing';
-import {PassTroughService, VersionManagerService} from './services';
+import {PassThroughService, VersionManagerService} from './services';
 import {of} from 'rxjs';
 import {COMMANDER_PROGRAM} from './constants';
 
@@ -12,7 +12,7 @@ describe('AppModule', () => {
     parse: jest.fn(),
   }
 
-  const passTroughServiceMock = {
+  const passThroughServiceMock = {
     init: jest.fn(),
   }
 
@@ -27,7 +27,7 @@ describe('AppModule', () => {
 
     [
       ...Object.values(versionManagerServiceMock),
-      ...Object.values(passTroughServiceMock),
+      ...Object.values(passThroughServiceMock),
       ...Object.values(programMock),
     ].forEach(spy => spy.mockReset())
 
@@ -35,14 +35,14 @@ describe('AppModule', () => {
       providers: [
         {provide: COMMANDER_PROGRAM, useValue: programMock},
         {provide: VersionManagerService, useValue: versionManagerServiceMock},
-        {provide: PassTroughService, useValue: passTroughServiceMock},
+        {provide: PassThroughService, useValue: passThroughServiceMock},
       ]
     }).compile();
 
     fixture = new AppModule(
       moduleRef.get(COMMANDER_PROGRAM),
       moduleRef.get(VersionManagerService),
-      moduleRef.get(PassTroughService),
+      moduleRef.get(PassThroughService),
     )
   })
 
@@ -55,7 +55,7 @@ describe('AppModule', () => {
         process.argv = ['foo', 'baz']
 
         programMock.parse.mockImplementation(() => {
-          expect(passTroughServiceMock.init).toBeCalledTimes(1)
+          expect(passThroughServiceMock.init).toBeCalledTimes(1)
           expect(versionManagerServiceMock.downloadIfNeeded).toBeCalledTimes(1)
         })
       })

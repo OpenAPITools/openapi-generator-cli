@@ -1,19 +1,20 @@
 import {Test} from '@nestjs/testing';
-import {PassTroughService} from './pass-trough.service';
+import {PassThroughService} from './pass-through.service';
 import {mocked} from 'ts-jest/utils';
 import {COMMANDER_PROGRAM, LOGGER} from '../constants';
 import {VersionManagerService} from './version-manager.service';
 import {noop} from 'rxjs';
 import {CommandMock} from '../mocks/command.mock';
+import {PassthroughCommandMock} from '../mocks/passthrough-command.mock';
 import {GeneratorService} from './generator.service';
 
 jest.mock('child_process');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const childProcess = mocked(require('child_process'), true)
 
-describe('PassTroughService', () => {
+describe('PassThroughService', () => {
 
-  let fixture: PassTroughService;
+  let fixture: PassThroughService;
   let commandMock: CommandMock;
 
   const log = jest.fn()
@@ -26,7 +27,7 @@ describe('PassTroughService', () => {
 
     const moduleRef = await Test.createTestingModule({
       providers: [
-        PassTroughService,
+        PassThroughService,
         {provide: VersionManagerService, useValue: {filePath, getSelectedVersion}},
         {provide: GeneratorService, useValue: {generate, enabled: true}},
         {provide: COMMANDER_PROGRAM, useValue: commandMock},
@@ -34,7 +35,7 @@ describe('PassTroughService', () => {
       ],
     }).compile();
 
-    fixture = moduleRef.get(PassTroughService);
+    fixture = moduleRef.get(PassThroughService);
   });
 
   describe('API', () => {
@@ -130,9 +131,10 @@ describe('PassTroughService', () => {
           ['completion', ''],
         ])('%s', (cmd, desc) => {
 
-          const cmdMock = {name: () => cmd, args: ['foo', 'baz']};
+          let cmdMock: PassthroughCommandMock;
 
           beforeEach(() => {
+            cmdMock = new PassthroughCommandMock(cmd, ['foo', 'baz']);
             const on = jest.fn();
             childProcess.spawn.mockReset().mockReturnValue({on})
           })
@@ -175,15 +177,34 @@ describe('PassTroughService', () => {
             )
           })
 
+          it('can delegate with custom jar', () => {
+            delete process.env['JAVA_OPTS'];
+            const args = [...cmdMock.args];
+            cmdMock.args.push('--custom-generator=../some/custom.jar');
+            commandMock.commands[cmd].action(cmdMock)
+            const cpDelimiter = process.platform === "win32" ? ';' : ':';
+            expect(childProcess.spawn).toHaveBeenNthCalledWith(
+              1,
+              `java -cp "${['/some/path/to/4.2.1.jar', '../some/custom.jar'].join(cpDelimiter)}" org.openapitools.codegen.OpenAPIGenerator`,
+              [cmd, ...args],
+              {
+                stdio: 'inherit',
+                shell: true
+              }
+            )
+          })
+
           if (cmd === 'help') {
             it('prints the help info and does not delegate, if args length = 0', () => {
               childProcess.spawn.mockReset()
               cmdMock.args = []
-              const logSpy = jest.spyOn(console, 'log').mockImplementationOnce(noop)
+              const logSpy = jest.spyOn(console, 'log').mockImplementation(noop)
               commandMock.commands[cmd].action(cmdMock)
               expect(childProcess.spawn).toBeCalledTimes(0)
               expect(commandMock.helpInformation).toBeCalledTimes(1)
-              expect(logSpy).toHaveBeenNthCalledWith(1, 'some help text')
+              expect(logSpy).toHaveBeenCalledTimes(2);
+              expect(logSpy).toHaveBeenNthCalledWith(1, 'some help text');
+              expect(logSpy).toHaveBeenNthCalledWith(2, 'has custom generator');
             })
           }
 

@@ -173,6 +173,10 @@ is automatically used to generate your code. 🎉
 | relPath      | file name and extension of file relative to the glob provided | docs/auth.yaml                                        |
 | ext          | just file extension                                           | yaml                                                  |
 
+## Custom Generators
+
+Custom generators can be used by passing the `--custom-generator=/my/custom-generator.jar` argument.
+
 ## Further Documentation
 
 Please refer to the [official openapi-generator docs](https://github.com/OpenAPITools/openapi-generator#3---usage) for
