@@ -1,6 +1,6 @@
 export class PassthroughCommandMock {
   name = jest.fn().mockReturnValue(this._name);
-  options: { [key: string]: string } = {};
+  options: Record<string, string> = {};
 
   parseOptions = jest.fn().mockImplementation(() => {
     const result = this.args.find(a => a.startsWith('--custom-generator'))?.split('=')[1];
