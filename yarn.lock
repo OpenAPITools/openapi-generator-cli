@@ -1196,10 +1196,10 @@
   dependencies:
     "@babel/types" "^7.3.0"
 
-"@types/concurrently@6.0.1":
-  version "6.0.1"
-  resolved "https://registry.yarnpkg.com/@types/concurrently/-/concurrently-6.0.1.tgz#356ecce069b8dcce73a7895499a4d459ed17292c"
-  integrity sha512-44I9tMSrgX7g39Ie7V/8N0OWG6696UtzPlv2ROsnQWyfyRVUp2Ue8ewxZkHopmX4Zyj6hiPgY1r14FqHsgfO4Q==
+"@types/concurrently@6.2.0":
+  version "6.2.0"
+  resolved "https://registry.yarnpkg.com/@types/concurrently/-/concurrently-6.2.0.tgz#d6b645006edf298cf624ad67d29a06a4d9ce0682"
+  integrity sha512-lWoHMkfoFWdFJ2IZ02PxepWVnGfNYZdblFF1o1gJ2YiUKN1TcEnNwDOrQMZbx0xt2bq09I+dYe9TS+dHf60VXw==
   dependencies:
     "@types/node" "*"
 
