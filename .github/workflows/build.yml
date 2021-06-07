@@ -87,6 +87,8 @@ jobs:
           (npm run oa version-manager set 4.3.1 && npm run oa version | grep -q '4.3.1') || exit 1
           test -f ~/my/storage/4.3.1.jar || exit 1
           npm run oa:generate && mkdir ./foo && cd ./foo && npm run oa:generate
+          (npm run oa version-manager set 5.1.1 && npm run oa version | grep -q '5.1.1') || exit 1
+          npm run oa author template -g java --library webclient
 
 #  release:
 #    if: github.event.pull_request.merged == 'true'
