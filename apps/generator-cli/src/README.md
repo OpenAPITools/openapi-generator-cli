@@ -40,7 +40,7 @@ you could change it by using one of the following commands:
 
 You will now be able to configure the code generation in *openapitools.json*. 
 This makes it more convenient to generate code for every file that matches the given glob expression.
-For more information, [please check out the configuration documentation blow](#configuration).
+For more information, [please check out the configuration documentation below](#configuration).
 
 ## Installation
 
