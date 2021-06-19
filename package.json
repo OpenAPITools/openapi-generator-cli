@@ -90,7 +90,7 @@
     "@nestjs/core": "7.6.18",
     "@nestjs/platform-express": "7.6.18",
     "chalk": "4.1.1",
-    "commander": "6.2.1",
+    "commander": "7.2.0",
     "compare-versions": "3.6.0",
     "concurrently": "6.2.0",
     "console.table": "0.10.0",
