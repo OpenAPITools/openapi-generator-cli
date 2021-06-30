@@ -24,11 +24,10 @@ export class PassThroughService {
       this.program
         .command(command, { hidden: !desc })
         .allowUnknownOption()
-        .option("--custom-generator <generator>", "Custom generator to use alongside 'generate'", "")
+        .option("--custom-generator <generator>", "Custom generator to use alongside 'generate'")
         .description(desc)
         .action(async (cmd: Command) => {
-          const args = cmd.parseOptions(cmd.args).unknown;
-          if (args.length === 0) {
+          if (cmd.args.length === 0) {
             switch (cmd.name()) {
               case 'help':
                 console.log(this.program.helpInformation());
@@ -45,13 +44,13 @@ export class PassThroughService {
             }
           }
 
-          this.passThrough([cmd.name(), ...args], cmd.opts().customGenerator);
+          this.passThrough([cmd.name(), ...cmd.args], cmd.opts().customGenerator);
         });
     });
 
   }
 
-  public passThrough = (args: string[] = [], customGenerator: string) =>
+  public passThrough = (args: string[] = [], customGenerator?: string) =>
     spawn(this.cmd(customGenerator), args, {
       stdio: 'inherit',
       shell: true
@@ -88,7 +87,7 @@ export class PassThroughService {
     });
   });
 
-  private cmd(customJarPath = '') {
+  private cmd(customJarPath?: string) {
     const cliPath = this.versionManager.filePath();
     const cpDelimiter = process.platform === "win32" ? ';' : ':';
     const subCmd = customJarPath
