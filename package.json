@@ -112,7 +112,7 @@
     "@nrwl/node": "12.5.6",
     "@nrwl/workspace": "12.5.6",
     "@semantic-release/changelog": "5.0.1",
-    "@types/concurrently": "6.2.0",
+    "@types/concurrently": "6.2.1",
     "@types/fs-extra": "9.0.11",
     "@types/inquirer": "7.3.2",
     "@types/jest": "26.0.23",
