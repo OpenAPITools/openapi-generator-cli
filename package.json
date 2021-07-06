@@ -114,7 +114,7 @@
     "@semantic-release/changelog": "5.0.1",
     "@types/concurrently": "6.2.1",
     "@types/fs-extra": "9.0.12",
-    "@types/inquirer": "7.3.2",
+    "@types/inquirer": "7.3.3",
     "@types/jest": "26.0.23",
     "@types/jsonpath": "0.2.0",
     "@types/lodash": "4.14.170",
