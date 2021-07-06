@@ -1207,10 +1207,10 @@
   dependencies:
     "@babel/types" "^7.3.0"
 
-"@types/concurrently@6.2.0":
-  version "6.2.0"
-  resolved "https://registry.yarnpkg.com/@types/concurrently/-/concurrently-6.2.0.tgz#d6b645006edf298cf624ad67d29a06a4d9ce0682"
-  integrity sha512-lWoHMkfoFWdFJ2IZ02PxepWVnGfNYZdblFF1o1gJ2YiUKN1TcEnNwDOrQMZbx0xt2bq09I+dYe9TS+dHf60VXw==
+"@types/concurrently@6.2.1":
+  version "6.2.1"
+  resolved "https://registry.yarnpkg.com/@types/concurrently/-/concurrently-6.2.1.tgz#48540055add9d76c55d444aaaf6f4c964c405452"
+  integrity sha512-l+AH7GuHYSgIYoXAufh7P9/oYzRobM+m863XobAARzFiafcGdCjMQQ1grLbVc69+AJTBbO3S8mtt2UPsipk6WA==
   dependencies:
     "@types/node" "*"
 
