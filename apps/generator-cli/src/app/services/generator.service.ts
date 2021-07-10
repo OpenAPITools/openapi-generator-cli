@@ -29,7 +29,7 @@ export class GeneratorService {
   ) {
   }
 
-  public async generate() {
+  public async generate(customJarPath?: string) {
 
     const cwd = this.configService.cwd
     const generators = Object.entries(this.configService.get<{ [name: string]: GeneratorConfig }>(this.configPath, {}))
@@ -85,7 +85,7 @@ export class GeneratorService {
     }).join('\n'))
   }
 
-  private buildCommand(cwd: string, params: Record<string, unknown>, specFile?: string) {
+  private buildCommand(cwd: string, params: Record<string, unknown>, specFile?: string, customJarPath?: string) {
     const absoluteSpecPath = specFile ? path.resolve(cwd, specFile) : String(params.inputSpec)
 
     const command = Object.entries({
@@ -94,6 +94,12 @@ export class GeneratorService {
     }).map(([k, v]) => {
 
       const key = kebabCase(k)
+
+      if (key === 'custom-jar-path') {
+        customJarPath = v
+        return ''
+      }
+
       const value = (() => {
         switch (typeof v) {
           case 'object':
@@ -109,7 +115,7 @@ export class GeneratorService {
       })()
 
       return value === undefined ? `--${key}` : `--${key}=${value}`
-    }).join(' ')
+    }).filter(arg => arg).join(' ')
 
     const ext = path.extname(absoluteSpecPath)
     const name = path.basename(absoluteSpecPath, ext)
@@ -133,15 +139,23 @@ export class GeneratorService {
       .filter(([, replacement]) => !!replacement)
       .reduce((cmd, [search, replacement]) => {
         return cmd.split(`#{${search}}`).join(replacement)
-      }, command))
+      }, command), customJarPath)
   }
 
-  private cmd = (appendix: string) => [
-    'java',
-    process.env['JAVA_OPTS'],
-    `-jar "${this.versionManager.filePath()}"`,
-    'generate',
-    appendix,
-  ].filter(isString).join(' ');
+  private cmd = (appendix: string, customJarPath?: string) => {
+    const cliPath = this.versionManager.filePath();
+    const cpDelimiter = process.platform === "win32" ? ';' : ':';
+    const subCmd = customJarPath
+      ? `-cp "${[cliPath, customJarPath].join(cpDelimiter)}" org.openapitools.codegen.OpenAPIGenerator`
+      : `-jar "${cliPath}"`;
+
+    return [
+      'java',
+      process.env['JAVA_OPTS'],
+      subCmd,
+      'generate',
+      appendix,
+    ].filter(isString).join(' ');
+  }
 
 }

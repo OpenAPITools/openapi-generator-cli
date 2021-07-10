@@ -36,7 +36,7 @@ export class PassThroughService {
                 return;
               case 'generate':
                 if (this.generatorService.enabled) {
-                  if (!await this.generatorService.generate()) {
+                  if (!await this.generatorService.generate(cmd.opts().customGenerator)) {
                     this.logger.log(chalk.red('Code generation failed'));
                     process.exit(1);
                   }
