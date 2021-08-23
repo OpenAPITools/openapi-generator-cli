@@ -27,7 +27,8 @@ export class PassThroughService {
         .option("--custom-generator <generator>", "Custom generator to use alongside 'generate'", "")
         .description(desc)
         .action(async (cmd: Command) => {
-          const args = cmd.parseOptions(cmd.args).unknown;
+
+          const args = cmd.args;
           if (args.length === 0) {
             switch (cmd.name()) {
               case 'help':
