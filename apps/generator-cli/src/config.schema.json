@@ -78,6 +78,9 @@
           "type": "boolean",
           "default": false
         },
+        "customJarPath": {
+          "type": "string"
+        },
         "generatorName": {
           "description": "generator to use (see list command for list)",
           "anyOf": [

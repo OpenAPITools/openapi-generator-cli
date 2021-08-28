@@ -175,7 +175,22 @@ is automatically used to generate your code. 🎉
 
 ## Custom Generators
 
-Custom generators can be used by passing the `--custom-generator=/my/custom-generator.jar` argument.
+Custom generators can be used by passing the `--custom-generator=my/custom-generator.jar` argument. Alternatively, use a `customJarPath` property in *openapitools.json* as shown here.
+
+```json5
+{
+  ...
+  "generators": {
+    ...
+    "myCustom": {
+      "generatorName": "my-custom-generator",
+      "customJarPath": "my/custom-generator.jar",
+      ...
+    }
+  }
+  ...
+}
+```
 
 ## Further Documentation
 

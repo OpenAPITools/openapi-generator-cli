@@ -85,6 +85,13 @@ describe('GeneratorService', () => {
             someBool: false,
           },
         },
+        ['bar-custom-generator.json']: {
+          bar: {
+            glob: 'bar/abc/**/*.yaml',
+            output: 'bar/#{name}',
+            customJarPath: 'path/to/custom-generators.jar',
+          },
+        },
         ['no-glob.json']: {
           noGlob: {
             inputSpec: 'http://example.local/openapi.json',
@@ -123,10 +130,17 @@ describe('GeneratorService', () => {
         })
       })
 
-      const cmd = (name, appendix: string[]) => ({
-        name,
-        command: `java -jar "/path/to/4.2.1.jar" generate ${appendix.join(' ')}`,
-      });
+      const cmd = (name, appendix: string[], customJarPath?: string) => {
+        const cliPath = '/path/to/4.2.1.jar'
+        const cpDelimiter = process.platform === "win32" ? ';' : ':';
+        const subCmd = customJarPath
+          ? `-cp "${[cliPath, customJarPath].join(cpDelimiter)}" org.openapitools.codegen.OpenAPIGenerator`
+          : `-jar "${cliPath}"`
+        return {
+          name,
+          command: `java ${subCmd} generate ${appendix.join(' ')}`,
+        }
+      };
 
       describe.each([
         ['foo.json', [
@@ -182,6 +196,16 @@ describe('GeneratorService', () => {
             `--output="bar/bird"`,
             '--some-bool',
           ]),
+        ]],
+        ['bar-custom-generator.json', [
+          cmd('[bar] api/cat.yaml', [
+            `--input-spec="${cwd}/api/cat.yaml"`,
+            `--output="bar/cat"`,
+          ], 'path/to/custom-generators.jar'),
+          cmd('[bar] api/bird.json', [
+            `--input-spec="${cwd}/api/bird.json"`,
+            `--output="bar/bird"`,
+          ], 'path/to/custom-generators.jar'),
         ]],
         ['none.json', []],
         ['also-none.json', []],

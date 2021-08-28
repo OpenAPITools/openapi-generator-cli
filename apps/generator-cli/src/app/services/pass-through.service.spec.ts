@@ -214,7 +214,7 @@ describe('PassThroughService', () => {
               cmdMock.args = []
               commandMock.commands[cmd].action(cmdMock)
               expect(childProcess.spawn).toBeCalledTimes(0)
-              expect(generate).toHaveBeenNthCalledWith(1)
+              expect(generate).toBeCalledTimes(1);
             })
           }
 

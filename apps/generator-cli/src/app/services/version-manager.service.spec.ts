@@ -6,7 +6,7 @@ import { mocked } from 'ts-jest/utils';
 import { LOGGER } from '../constants';
 import * as chalk from 'chalk';
 import { ConfigService } from './config.service';
-import { resolve } from 'path';
+import { resolve, join } from 'path';
 import * as os from 'os';
 import { TestingModule } from '@nestjs/testing/testing-module';
 
@@ -442,7 +442,7 @@ describe('VersionManagerService', () => {
 
 
           it('creates a temporary directory', () => {
-            expect(fs.mkdtempSync).toHaveBeenNthCalledWith(1, '/tmp/generator-cli-');
+            expect(fs.mkdtempSync).toHaveBeenNthCalledWith(1, join(os.tmpdir(), 'generator-cli-'));
           });
 
           it('creates the correct write stream', () => {
