@@ -1,42 +1,47 @@
-import {Test} from '@nestjs/testing';
-import {PassThroughService} from './pass-through.service';
-import {mocked} from 'ts-jest/utils';
-import {COMMANDER_PROGRAM, LOGGER} from '../constants';
-import {VersionManagerService} from './version-manager.service';
-import {noop} from 'rxjs';
-import {CommandMock} from '../mocks/command.mock';
-import {PassthroughCommandMock} from '../mocks/passthrough-command.mock';
-import {GeneratorService} from './generator.service';
+import { Test } from '@nestjs/testing'
+import * as chalk from 'chalk'
+import { Command, createCommand } from 'commander'
+import { mocked } from 'ts-jest/utils'
+import { COMMANDER_PROGRAM, LOGGER } from '../constants'
+import { GeneratorService } from './generator.service'
+import { PassThroughService } from './pass-through.service'
+import { VersionManagerService } from './version-manager.service'
 
-jest.mock('child_process');
+jest.mock('child_process')
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const childProcess = mocked(require('child_process'), true)
 
 describe('PassThroughService', () => {
 
-  let fixture: PassThroughService;
-  let commandMock: CommandMock;
+  let fixture: PassThroughService
+  let program: Command
 
   const log = jest.fn()
   const generate = jest.fn().mockResolvedValue(true)
-  const getSelectedVersion = jest.fn().mockReturnValue('4.2.1');
-  const filePath = jest.fn().mockReturnValue(`/some/path/to/4.2.1.jar`);
+  const getSelectedVersion = jest.fn().mockReturnValue('4.2.1')
+  const filePath = jest.fn().mockReturnValue(`/some/path/to/4.2.1.jar`)
+
+  const getCommand = (name: string) => program.commands.find(c => c.name() === name);
 
   beforeEach(async () => {
-    commandMock = new CommandMock()
+    program = createCommand()
+    jest.spyOn(program, 'helpInformation')
 
     const moduleRef = await Test.createTestingModule({
       providers: [
         PassThroughService,
-        {provide: VersionManagerService, useValue: {filePath, getSelectedVersion}},
-        {provide: GeneratorService, useValue: {generate, enabled: true}},
-        {provide: COMMANDER_PROGRAM, useValue: commandMock},
-        {provide: LOGGER, useValue: {log}},
+        { provide: VersionManagerService, useValue: { filePath, getSelectedVersion } },
+        { provide: GeneratorService, useValue: { generate, enabled: true } },
+        { provide: COMMANDER_PROGRAM, useValue: program },
+        { provide: LOGGER, useValue: { log } },
       ],
-    }).compile();
+    }).compile()
 
-    fixture = moduleRef.get(PassThroughService);
-  });
+    fixture = moduleRef.get(PassThroughService)
+
+    childProcess.spawn.mockReset().mockReturnValue({ on: jest.fn() })
+
+  })
 
   describe('API', () => {
 
@@ -51,20 +56,18 @@ describe('PassThroughService', () => {
           try {
             await fixture.init()
           } catch (e) {
-            error = e;
+            error = e
           }
         })
 
-        it('throw the error', () => {
+        it('throws the error', () => {
           expect(error.message).toEqual('Some error')
         })
 
         it('adds no commands', () => {
-          expect(commandMock.action).toBeCalledTimes(0)
-          expect(commandMock.command).toBeCalledTimes(0)
-          expect(commandMock.description).toBeCalledTimes(0)
+          expect(program.commands).toHaveLength(0)
         })
-      });
+      })
 
       describe('the help command works', () => {
 
@@ -101,21 +104,19 @@ describe('PassThroughService', () => {
 
         beforeEach(async () => {
           childProcess.exec.mockImplementation((cmd: string, cb) => {
-            if(cmd.endsWith('"/some/path/to/4.2.1.jar" help')) {
+            if (cmd.endsWith('"/some/path/to/4.2.1.jar" help')) {
               cb(undefined, helpText)
             }
 
-            if(cmd.endsWith('"/some/path/to/4.2.1.jar" completion')) {
+            if (cmd.endsWith('"/some/path/to/4.2.1.jar" completion')) {
               cb(undefined, completionText)
             }
           })
           await fixture.init()
         })
 
-        it('adds 19 commands', () => {
-          expect(commandMock.action).toBeCalledTimes(10)
-          expect(commandMock.command).toBeCalledTimes(10)
-          expect(commandMock.description).toBeCalledTimes(10)
+        it('adds 10 commands', () => {
+          expect(program.commands).toHaveLength(10)
         })
 
         describe.each([
@@ -129,47 +130,30 @@ describe('PassThroughService', () => {
           ['version', 'Show version information used in tooling'],
           ['batch', ''],
           ['completion', ''],
-        ])('%s', (cmd, desc) => {
+        ])('%s', (name, desc) => {
 
-          let cmdMock: PassthroughCommandMock;
+          let cmd: Command
+          const argv = ['foo', 'baz']
 
           beforeEach(() => {
-            cmdMock = new PassthroughCommandMock(cmd, ['foo', 'baz']);
-            const on = jest.fn();
-            childProcess.spawn.mockReset().mockReturnValue({on})
+            cmd = getCommand(name);
+            delete process.env['JAVA_OPTS']
           })
 
           it('adds the correct description', () => {
-            expect(commandMock.commands[cmd].description).toEqual(desc)
+            expect(cmd.description()).toEqual(desc)
           })
 
           it('allows unknown options', () => {
-            expect(commandMock.commands[cmd].allowUnknownOption).toBeTruthy()
+            expect(cmd['_allowUnknownOption']).toBeTruthy()
           })
 
-          it('can delegate with JAVA_OPTS', () => {
-            process.env['JAVA_OPTS'] = 'java-opt-1=1'
-            commandMock.commands[cmd].action(cmdMock)
-
-            expect(childProcess.spawn).toHaveBeenNthCalledWith(
-              1,
-              'java java-opt-1=1 -jar "/some/path/to/4.2.1.jar"',
-              [cmd, ...cmdMock.args],
-              {
-                stdio: 'inherit',
-                shell: true
-              }
-            )
-          })
-
-          it('can delegate without JAVA_OPTS', () => {
-            delete process.env['JAVA_OPTS']
-            commandMock.commands[cmd].action(cmdMock)
-
+          it('can delegate', async () => {
+            await program.parseAsync([name, ...argv], { from: 'user' })
             expect(childProcess.spawn).toHaveBeenNthCalledWith(
               1,
               'java -jar "/some/path/to/4.2.1.jar"',
-              [cmd, ...cmdMock.args],
+              [name, ...argv],
               {
                 stdio: 'inherit',
                 shell: true
@@ -177,16 +161,28 @@ describe('PassThroughService', () => {
             )
           })
 
-          it('can delegate with custom jar', () => {
-            delete process.env['JAVA_OPTS'];
-            const args = [...cmdMock.args];
-            cmdMock.args.push('--custom-generator=../some/custom.jar');
-            commandMock.commands[cmd].action(cmdMock)
-            const cpDelimiter = process.platform === "win32" ? ';' : ':';
+          it('can delegate with JAVA_OPTS', async () => {
+            process.env['JAVA_OPTS'] = 'java-opt-1=1'
+            await program.parseAsync([name, ...argv], { from: 'user' })
+            expect(childProcess.spawn).toHaveBeenNthCalledWith(
+              1,
+              'java java-opt-1=1 -jar "/some/path/to/4.2.1.jar"',
+              [name, ...argv],
+              {
+                stdio: 'inherit',
+                shell: true
+              }
+            )
+          })
+
+          it('can delegate with custom jar', async () => {
+            await program.parseAsync([name, ...argv, '--custom-generator=../some/custom.jar'], { from: 'user' })
+            const cpDelimiter = process.platform === 'win32' ? ';' : ':'
+
             expect(childProcess.spawn).toHaveBeenNthCalledWith(
               1,
               `java -cp "${['/some/path/to/4.2.1.jar', '../some/custom.jar'].join(cpDelimiter)}" org.openapitools.codegen.OpenAPIGenerator`,
-              [cmd, ...args],
+              [name, ...argv],
               {
                 stdio: 'inherit',
                 shell: true
@@ -194,29 +190,84 @@ describe('PassThroughService', () => {
             )
           })
 
-          if (cmd === 'help') {
-            it('prints the help info and does not delegate, if args length = 0', () => {
-              childProcess.spawn.mockReset()
-              cmdMock.args = []
-              const logSpy = jest.spyOn(console, 'log').mockImplementation(noop)
-              commandMock.commands[cmd].action(cmdMock)
-              expect(childProcess.spawn).toBeCalledTimes(0)
-              expect(commandMock.helpInformation).toBeCalledTimes(1)
-              expect(logSpy).toHaveBeenCalledTimes(2);
-              expect(logSpy).toHaveBeenNthCalledWith(1, 'some help text');
-              expect(logSpy).toHaveBeenNthCalledWith(2, 'has custom generator');
-            })
-          }
+          // if (name === 'help') {
+          //   it('prints the help info and does not delegate, if args length = 0', async () => {
+          //     childProcess.spawn.mockReset()
+          //     cmd.args = []
+          //     const logSpy = jest.spyOn(console, 'log').mockImplementation(noop)
+          //     await program.parseAsync([name], { from: 'user' })
+          //     expect(childProcess.spawn).toBeCalledTimes(0)
+          //     expect(program.helpInformation).toBeCalledTimes(1)
+          //     // expect(logSpy).toHaveBeenCalledTimes(2)
+          //     expect(logSpy).toHaveBeenNthCalledWith(1, 'some help text')
+          //     expect(logSpy).toHaveBeenNthCalledWith(2, 'has custom generator')
+          //   })
+          // }
+          //
+          // if (name === 'generate') {
+          //   it('generates by using the generator config', async () => {
+          //     childProcess.spawn.mockReset()
+          //     await program.parseAsync([name], { from: 'user' })
+          //     expect(childProcess.spawn).toBeCalledTimes(0)
+          //     expect(generate).toHaveBeenNthCalledWith(1)
+          //   })
+          // }
 
-          if (cmd === 'generate') {
-            it('generates by using the generator config', () => {
-              childProcess.spawn.mockReset()
-              cmdMock.args = []
-              commandMock.commands[cmd].action(cmdMock)
-              expect(childProcess.spawn).toBeCalledTimes(0)
-              expect(generate).toHaveBeenNthCalledWith(1)
+        })
+
+        describe('command behavior', () => {
+
+          describe('help', () => {
+
+            const programHelp = () => chalk.cyanBright(program.helpInformation());
+            const commandHelp = (name: string) => () => chalk.cyanBright(getCommand(name).helpInformation());
+
+            describe.each`
+              cmd                | helpText                         | spawn
+              ${'help'}          | ${programHelp}                   | ${undefined}
+              ${'help generate'} | ${commandHelp('generate')} | ${'a'}
+              ${'help author'}   | ${commandHelp('author')}   | ${'b'}
+              ${'help hidden'}   | ${undefined}                     | ${'c'}
+            `('$cmd', ({ cmd, helpText, spawn }) => {
+
+              let spy: jest.SpyInstance;
+
+              beforeEach(async () => {
+                spy = jest.spyOn(console, 'log').mockClear().mockImplementation();
+                await program.parseAsync(cmd.split(' '), { from: 'user' })
+              })
+
+              describe('help text', () => {
+                it(`logs ${helpText ? 1 : 0} times`, () => {
+                  expect(spy).toHaveBeenCalledTimes(helpText ? 1 : 0);
+                })
+
+                helpText && it('prints the correct help text', () => {
+                  expect(spy).toHaveBeenCalledWith(helpText())
+                })
+              })
+
+              describe('process spawn', () => {
+                it(`spawns ${spawn ? 1 : 0} times`, () => {
+                  expect(childProcess.spawn).toHaveBeenCalledTimes(spawn ? 1 : 0);
+                })
+
+                spawn && it('spawns the correct process', () => {
+
+                  expect(childProcess.spawn).toHaveBeenNthCalledWith(
+                    1,
+                    'java -jar "/some/path/to/4.2.1.jar"',
+                    cmd.split(' '),
+                    {stdio: 'inherit', shell: true}
+                  );
+
+                })
+
+              })
+
             })
-          }
+
+          })
 
         })
 

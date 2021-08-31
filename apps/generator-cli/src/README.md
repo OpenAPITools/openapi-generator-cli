@@ -133,7 +133,7 @@ Further it is also possible to configure generators, for example:
     "version": "4.3.1",
     "storageDir": "~/my/custom/storage/dir", // optional
     "generators": { // optional
-      "v2.0": { // any name you like (just printed to the console log) 
+      "v2.0": { // any name you like (just printed to the console log or reference it using --generator-key) 
         "generatorName": "typescript-angular",
         "output": "#{cwd}/output/v2.0/#{ext}/#{name}",
         "glob": "examples/v2.0/{json,yaml}/*.{json,yaml}",
@@ -145,7 +145,7 @@ Further it is also possible to configure generators, for example:
           "withInterfaces": true
         }
       },
-      "v3.0": { // any name you like (just printed to the console log) 
+      "v3.0": { // any name you like (just printed to the console log or reference it using --generator-key) 
         "generatorName": "typescript-fetch",
         "output": "#{cwd}/output/v3.0/#{ext}/#{name}",
         "glob": "examples/v3.0/petstore.{json,yaml}"
@@ -172,6 +172,14 @@ is automatically used to generate your code. 🎉
 | relDir       | directory name of file relative to the glob provided          | docs                                                  |
 | relPath      | file name and extension of file relative to the glob provided | docs/auth.yaml                                        |
 | ext          | just file extension                                           | yaml                                                  |
+
+## Run specific generators
+
+| cmd                                                      | v3.0 runs | v2.0 runs |
+|----------------------------------------------------------|-----------|-----------|
+| openapi-generator-cli generate --generator-key v3.0      | yes       | no        |
+| openapi-generator-cli generate --generator-key v3.0 v2.0 | yes       | yes       |
+| openapi-generator-cli generate --generator-key foo       | no        | no        |
 
 ## Custom Generators
 

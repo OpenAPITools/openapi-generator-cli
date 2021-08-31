@@ -1,11 +1,11 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { COMMANDER_PROGRAM, LOGGER } from '../constants';
-import { Command } from 'commander';
-import { isString, startsWith, trim } from 'lodash';
-import * as chalk from 'chalk';
-import { VersionManagerService } from './version-manager.service';
-import { exec, spawn } from 'child_process';
-import { GeneratorService } from './generator.service';
+import { Inject, Injectable } from '@nestjs/common'
+import * as chalk from 'chalk'
+import { exec, spawn } from 'child_process'
+import { Command } from 'commander'
+import { isString, startsWith, trim } from 'lodash'
+import { COMMANDER_PROGRAM, LOGGER } from '../constants'
+import { GeneratorService } from './generator.service'
+import { VersionManagerService } from './version-manager.service'
 
 @Injectable()
 export class PassThroughService {
@@ -20,42 +20,66 @@ export class PassThroughService {
 
   public async init() {
 
-    (await this.getCommands()).forEach(([command, desc]) => {
-      this.program
-        .command(command, { hidden: !desc })
+    this.program
         .allowUnknownOption()
-        .option("--custom-generator <generator>", "Custom generator to use alongside 'generate'", "")
-        .description(desc)
-        .action(async (cmd: Command) => {
-          const args = cmd.parseOptions(cmd.args).unknown;
-          if (args.length === 0) {
-            switch (cmd.name()) {
-              case 'help':
-                console.log(this.program.helpInformation());
-                console.log(cmd.helpInformation());
-                return;
-              case 'generate':
-                if (this.generatorService.enabled) {
-                  if (!await this.generatorService.generate()) {
-                    this.logger.log(chalk.red('Code generation failed'));
-                    process.exit(1);
-                  }
-                  return;
-                }
-            }
-          }
+        .option("--custom-generator <generator>", "Custom generator jar")
 
-          this.passThrough([cmd.name(), ...args], cmd.opts().customGenerator);
-        });
+    const commands = (await this.getCommands()).reduce((acc, [name, desc]) => {
+      return acc.set(name, this.program
+        .command(name, { hidden: !desc })
+        .description(desc)
+        .allowUnknownOption()
+        .action((_, c) => this.passThrough(c)))
+    }, new Map<string, ReturnType<Command['createCommand']>>());
+
+    /*
+    * Overwrite help command
+    */
+    commands.get('help').action((_, cmd) => {
+      if (!cmd.args.length) {
+        this.printHelp(this.program)
+        return;
+      }
+
+      const [helpCmd] = cmd.args
+      if (commands.has(helpCmd)) {
+        this.printHelp(commands.get(helpCmd))
+      }
+
+      this.passThrough(cmd);
     });
 
+    /*
+     * Overwrite generate command
+     */
+    commands.get('generate')
+      .option("--generator-key <generator...>", "Run generator by key. Separate by comma to run many generators")
+      .action(async (_, cmd) => {
+        if (cmd.args.length === 0 || cmd.opts().generatorKey) {
+          const generatorKeys = cmd.opts().generatorKey || [];
+
+          if (this.generatorService.enabled) {
+            // @todo cover by unit test
+            if (!await this.generatorService.generate(...generatorKeys)) {
+              this.logger.log(chalk.red('Code generation failed'));
+              process.exit(1);
+            }
+            return;
+          }
+        }
+
+        this.passThrough(cmd);
+      });
   }
 
-  public passThrough = (args: string[] = [], customGenerator: string) =>
-    spawn(this.cmd(customGenerator), args, {
+  public passThrough = (cmd: Command) => {
+    const args = [cmd.name(), ...cmd.args];
+
+    spawn(this.cmd(), args, {
       stdio: 'inherit',
       shell: true
-    }).on('exit', process.exit);
+    }).on('exit', process.exit)
+  };
 
   private getCommands = async (): Promise<[string, string | undefined][]> => {
 
@@ -88,13 +112,21 @@ export class PassThroughService {
     });
   });
 
-  private cmd(customJarPath = '') {
+  private cmd() {
+    const customGenerator = this.program.opts()?.customGenerator;
     const cliPath = this.versionManager.filePath();
-    const cpDelimiter = process.platform === "win32" ? ';' : ':';
-    const subCmd = customJarPath
-      ? `-cp "${[cliPath, customJarPath].join(cpDelimiter)}" org.openapitools.codegen.OpenAPIGenerator`
+
+    const subCmd = customGenerator
+      ? `-cp "${[cliPath, customGenerator].join(this.isWin() ? ';' : ':')}" org.openapitools.codegen.OpenAPIGenerator`
       : `-jar "${cliPath}"`;
+
     return ['java', process.env['JAVA_OPTS'], subCmd].filter(isString).join(' ');
   }
+
+  private printHelp(cmd: Pick<Command, 'helpInformation'>) {
+    console.log(chalk.cyanBright(cmd.helpInformation()));
+  }
+
+  private isWin = () => process.platform === "win32"
 
 }
