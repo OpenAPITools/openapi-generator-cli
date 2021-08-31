@@ -29,11 +29,21 @@ export class GeneratorService {
   ) {
   }
 
-  public async generate() {
+  public async generate(...keys: string[]) {
 
     const cwd = this.configService.cwd
     const generators = Object.entries(this.configService.get<{ [name: string]: GeneratorConfig }>(this.configPath, {}))
-    const enabledGenerators = generators.filter(([, {disabled}]) => disabled !== true)
+    const enabledGenerators = generators
+      .filter(([key, {disabled}]) => {
+        if (!disabled) return true;
+        this.logger.log(chalk.grey(`[info] Skip ${chalk.yellow(key)}, because this generator is disabled`));
+        return false;
+      })
+      .filter(([key]) => {
+        if (!keys.length || keys.includes(key)) return true;
+        this.logger.log(chalk.grey(`[info] Skip ${chalk.yellow(key)}, because only ${keys.map((k) => chalk.yellow(k)).join(', ')} shall run`));
+        return false;
+      })
 
     const globsWithNoMatches = []
 
