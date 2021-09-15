@@ -7,7 +7,7 @@
   ],
   "packageRules": [
     {
-      "updateTypes": [
+      "matchUpdateTypes": [
         "minor",
         "patch",
         "pin",
