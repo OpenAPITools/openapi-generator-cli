@@ -105,7 +105,7 @@
   "devDependencies": {
     "@commitlint/cli": "12.1.4",
     "@commitlint/config-conventional": "12.1.4",
-    "@nestjs/schematics": "7.3.1",
+    "@nestjs/schematics": "8.0.3",
     "@nestjs/testing": "8.0.6",
     "@nrwl/eslint-plugin-nx": "12.9.0",
     "@nrwl/jest": "12.9.0",
