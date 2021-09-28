@@ -3,9 +3,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "OpenAPI Generator CLI - Config",
   "type": "object",
-  "required": [
-    "generator-cli"
-  ],
+  "required": ["generator-cli"],
   "additionalProperties": false,
   "properties": {
     "$schema": {
@@ -17,9 +15,7 @@
     },
     "generator-cli": {
       "type": "object",
-      "required": [
-        "version"
-      ],
+      "required": ["version"],
       "properties": {
         "version": {
           "type": "string"
@@ -60,13 +56,17 @@
     },
     "generator": {
       "type": "object",
-      "required": [
-        "glob",
-        "output",
-        "generatorName"
+      "anyOf": [
+        {
+          "required": ["inputSpec", "output", "generatorName"]
+        },
+        {
+          "required": ["glob", "output", "generatorName"]
+        }
       ],
       "properties": {
         "glob": {
+          "description": "matches local specification files using a glob pattern",
           "type": "string",
           "minLength": 1
         },
