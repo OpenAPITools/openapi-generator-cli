@@ -103,8 +103,8 @@
     "rxjs": "7.3.0"
   },
   "devDependencies": {
-    "@commitlint/cli": "13.1.0",
-    "@commitlint/config-conventional": "13.1.0",
+    "@commitlint/cli": "13.2.0",
+    "@commitlint/config-conventional": "13.2.0",
     "@nestjs/schematics": "8.0.3",
     "@nestjs/testing": "8.0.7",
     "@nrwl/eslint-plugin-nx": "12.9.0",
