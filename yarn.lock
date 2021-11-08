@@ -1049,20 +1049,20 @@
     "@types/yargs" "^16.0.0"
     chalk "^4.0.0"
 
-"@nestjs/common@8.0.9":
-  version "8.0.9"
-  resolved "https://registry.yarnpkg.com/@nestjs/common/-/common-8.0.9.tgz#1db4f1d3970ffdce62a9234bfe5ab9aa8a75bc44"
-  integrity sha512-Y3DQxOD57suyvMURpgqX0IBFliMZZNvp1bhvjzjU376Igh33NIz18xhxV9EKe+F0EHHawyM3cv1ZEGYi0yGrtQ==
+"@nestjs/common@8.2.0":
+  version "8.2.0"
+  resolved "https://registry.yarnpkg.com/@nestjs/common/-/common-8.2.0.tgz#ae1e94b1d459302d3b3673f9fa6b6dd809f55348"
+  integrity sha512-Vska6eEQtnwM9CBnL7QINQUE8Xq+d4s/CXkpxrUab1HgTA9m5LjmkCPdLw7tBFxMQ6Px+kmcXkQI3rKMfq9Wzw==
   dependencies:
-    axios "0.21.4"
+    axios "0.24.0"
     iterare "1.2.1"
     tslib "2.3.1"
     uuid "8.3.2"
 
-"@nestjs/core@8.0.9":
-  version "8.0.9"
-  resolved "https://registry.yarnpkg.com/@nestjs/core/-/core-8.0.9.tgz#49e27b726ec6cd12474d18cd8cafd9e44761468d"
-  integrity sha512-Q8bge+yuFzcuW9iY5fiMz3gydyB3D25dO9/YFGEtHexw2ipQA1QCt94XfIxGqFe1C07k5IDSK/C/l+R33CHrGg==
+"@nestjs/core@8.2.0":
+  version "8.2.0"
+  resolved "https://registry.yarnpkg.com/@nestjs/core/-/core-8.2.0.tgz#4004a8aff4127a0d9f001808d084035d0fef9aad"
+  integrity sha512-TjN705n0DQrcL8hN1021dITol2BgzIT+FFv3RPKJWMwck8y0ebWK0PTI4vXeLial75fPd+4K4LhL6nAO4WyjFw==
   dependencies:
     "@nuxtjs/opencollective" "0.3.2"
     fast-safe-stringify "2.1.1"
@@ -1072,10 +1072,10 @@
     tslib "2.3.1"
     uuid "8.3.2"
 
-"@nestjs/platform-express@8.0.9":
-  version "8.0.9"
-  resolved "https://registry.yarnpkg.com/@nestjs/platform-express/-/platform-express-8.0.9.tgz#ebcec131a34f122db805a87921114968ba872385"
-  integrity sha512-J21FqDZytpMh3NeZFDrBqn8rhcLbySVUNdCqhgFkSPnNCzTDyogbUKDMCIDCo5Y/114T3GFFR+cFbp9aabRd7Q==
+"@nestjs/platform-express@8.2.0":
+  version "8.2.0"
+  resolved "https://registry.yarnpkg.com/@nestjs/platform-express/-/platform-express-8.2.0.tgz#0a3d3882c1d6987535f54e99f665d6738121cffa"
+  integrity sha512-IiYXT1t9hkWWjohHvNWYi/hWk8CCvDY25y8y72zkN5/iyvWWiqwmcGGhji2bENvQx8e/Vlm1d4EkwRFYWfBGjA==
   dependencies:
     body-parser "1.19.0"
     cors "2.8.5"
@@ -1104,10 +1104,10 @@
     fs-extra "9.0.1"
     pluralize "8.0.0"
 
-"@nestjs/testing@8.0.9":
-  version "8.0.9"
-  resolved "https://registry.yarnpkg.com/@nestjs/testing/-/testing-8.0.9.tgz#46a5770fbed19766d0230cc5d8fa3d8746c9befa"
-  integrity sha512-idFhNESD90jUjDfvePgUS5uJzSXEYRhA8xfpv3snWMr3/4ouR5m+o7Wb3Zr+kDbU0Pi+SemKDLv9QoFWatHDeA==
+"@nestjs/testing@8.2.0":
+  version "8.2.0"
+  resolved "https://registry.yarnpkg.com/@nestjs/testing/-/testing-8.2.0.tgz#2e8259e9af6b76cb7469f67fdf6a423a27afb0e3"
+  integrity sha512-8AIZMuPMZ0zIzuR5iOTZ38zH1CjBhhmwQD/thNhIAANWNYKPEpoqNFzol14hiWWsRUpsV9amgljtTf3hzX6KnA==
   dependencies:
     optional "0.1.4"
     tslib "2.3.1"
@@ -2471,12 +2471,12 @@ aws4@^1.8.0:
   resolved "https://registry.yarnpkg.com/aws4/-/aws4-1.10.1.tgz#e1e82e4f3e999e2cfd61b161280d16a111f86428"
   integrity sha512-zg7Hz2k5lI8kb7U32998pRRFin7zJlkfezGJjUc2heaD4Pw2wObakCDVzkKztTm/Ln7eiVvYsjqak0Ed4LkMDA==
 
-axios@0.21.4:
-  version "0.21.4"
-  resolved "https://registry.yarnpkg.com/axios/-/axios-0.21.4.tgz#c67b90dc0568e5c1cf2b0b858c43ba28e2eda575"
-  integrity sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==
+axios@0.24.0:
+  version "0.24.0"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-0.24.0.tgz#804e6fa1e4b9c5288501dd9dff56a7a0940d20d6"
+  integrity sha512-Q6cWsys88HoPgAaFAVUb0WpPk0O8iTeisR9IMqy9G8AbO4NlpVknrnQS03zzF9PGAWgO3cgletO3VjV/P7VztA==
   dependencies:
-    follow-redirects "^1.14.0"
+    follow-redirects "^1.14.4"
 
 babel-jest@^27.2.2:
   version "27.2.5"
@@ -4877,10 +4877,10 @@ flush-write-stream@^1.0.0:
     inherits "^2.0.3"
     readable-stream "^2.3.6"
 
-follow-redirects@^1.14.0:
-  version "1.14.4"
-  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.14.4.tgz#838fdf48a8bbdd79e52ee51fb1c94e3ed98b9379"
-  integrity sha512-zwGkiSXC1MUJG/qmeIFH2HBJx9u0V46QGUe3YR1fXG8bXQxq7fLj0RjLZQ5nubr9qNJUZrH+xUcwXEoXNpfS+g==
+follow-redirects@^1.14.4:
+  version "1.14.5"
+  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.14.5.tgz#f09a5848981d3c772b5392309778523f8d85c381"
+  integrity sha512-wtphSXy7d4/OR+MvIFbCVBDzZ5520qV8XfPklSN5QtxuMUJZ+b0Wnst1e1lCDocfzuCkHqj8k0FpZqO+UIaKNA==
 
 for-in@^1.0.2:
   version "1.0.2"
