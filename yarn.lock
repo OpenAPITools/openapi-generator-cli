@@ -1606,10 +1606,10 @@
   dependencies:
     "@babel/types" "^7.3.0"
 
-"@types/concurrently@6.3.0":
-  version "6.3.0"
-  resolved "https://registry.yarnpkg.com/@types/concurrently/-/concurrently-6.3.0.tgz#ef6956d0e120f78d1da93d4435da6fe872256d04"
-  integrity sha512-R0M9Dt330vtNgNlBYQYniDfI3I3Sk6cu27M1EKS5VFoio2rZqTMuOBGe9DX+ISM0B6y+RGrgtpWCv2k2VBLtbQ==
+"@types/concurrently@6.4.0":
+  version "6.4.0"
+  resolved "https://registry.yarnpkg.com/@types/concurrently/-/concurrently-6.4.0.tgz#de8e9e5f88b8e00d39fd928172f54a6e7029363f"
+  integrity sha512-CYU1eyFHsIa2IZIsb8gfUOdiewfnZcyM2Hg1Zaq95xnmB0Ix/bTRM8SttqZ2Cjy6JGPZLttHjZewVsDg1yvnJg==
   dependencies:
     "@types/node" "*"
     chalk "^4.1.0"
