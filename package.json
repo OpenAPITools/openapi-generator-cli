@@ -127,7 +127,7 @@
     "eslint-config-prettier": "8.3.0",
     "generate-package-json-webpack-plugin": "2.5.0",
     "husky": "7.0.4",
-    "jest": "27.3.1",
+    "jest": "27.4.0",
     "prettier": "2.5.0",
     "semantic-release": "17.4.7",
     "ts-jest": "27.0.7",
