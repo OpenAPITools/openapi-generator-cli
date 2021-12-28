@@ -100,7 +100,7 @@
     "jsonpath": "1.1.1",
     "lodash": "4.17.21",
     "reflect-metadata": "0.1.13",
-    "rxjs": "7.5.0"
+    "rxjs": "7.5.1"
   },
   "devDependencies": {
     "@commitlint/cli": "13.2.1",
