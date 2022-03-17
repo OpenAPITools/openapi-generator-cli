@@ -11,7 +11,7 @@ export class ConfigService {
   public readonly configFile = path.resolve(this.cwd, 'openapitools.json')
 
   private readonly defaultConfig = {
-    $schema: 'node_modules/@openapitools/openapi-generator-cli/config.schema.json',
+    $schema: './node_modules/@openapitools/openapi-generator-cli/config.schema.json',
     spaces: 2,
     'generator-cli': {
       version: undefined,
