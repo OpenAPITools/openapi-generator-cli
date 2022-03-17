@@ -158,6 +158,21 @@ Further it is also possible to configure generators, for example:
 If `openapi-generator-cli generate` is called without further arguments, then the configuration 
 is automatically used to generate your code. 🎉
 
+
+##### Available placeholders
+     
+| placeholder  | description                                                   | example                                               |
+|--------------|---------------------------------------------------------------|-------------------------------------------------------|
+| name         | just file name                                                | auth                                                  |
+| Name         | just file name, but starting with a capital letter            | Auth                                                  |
+| cwd          | the current cwd                                               | /Users/some-user/projects/some-project                |
+| base         | file name and extension                                       | auth.yaml                                             |
+| path         | full path and filename                                        | /Users/some-user/projects/some-project/docs/auth.yaml |
+| dir          | path without the filename                                     | /Users/some-user/projects/some-project/docs           |
+| relDir       | directory name of file relative to the glob provided          | docs                                                  |
+| relPath      | file name and extension of file relative to the glob provided | docs/auth.yaml                                        |
+| ext          | just file extension                                           | yaml                                                  |
+
 ### Using custom / private maven registry 
 
 If you're using a private maven registry you can configure the `downloadUrl` and `queryUrl` like this:
@@ -177,21 +192,6 @@ If you're using a private maven registry you can configure the `downloadUrl` and
 ```
 
 If the `version` property param is set it is not necessary to configure the `queryUrl`.
-
-
-##### Available placeholders
-     
-| placeholder  | description                                                   | example                                               |
-|--------------|---------------------------------------------------------------|-------------------------------------------------------|
-| name         | just file name                                                | auth                                                  |
-| Name         | just file name, but starting with a capital letter            | Auth                                                  |
-| cwd          | the current cwd                                               | /Users/some-user/projects/some-project                |
-| base         | file name and extension                                       | auth.yaml                                             |
-| path         | full path and filename                                        | /Users/some-user/projects/some-project/docs/auth.yaml |
-| dir          | path without the filename                                     | /Users/some-user/projects/some-project/docs           |
-| relDir       | directory name of file relative to the glob provided          | docs                                                  |
-| relPath      | file name and extension of file relative to the glob provided | docs/auth.yaml                                        |
-| ext          | just file extension                                           | yaml                                                  |
 
 ## Run specific generators
 
