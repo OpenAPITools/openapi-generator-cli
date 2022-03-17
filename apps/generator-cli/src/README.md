@@ -158,6 +158,26 @@ Further it is also possible to configure generators, for example:
 If `openapi-generator-cli generate` is called without further arguments, then the configuration 
 is automatically used to generate your code. 🎉
 
+### Using custom / private maven registry 
+
+If you're using a private maven registry you can configure the `downloadUrl` and `queryUrl` like this:
+
+```json
+{
+  "$schema": "node_modules/@openapitools/openapi-generator-cli/config.schema.json",
+  "spaces": 2,
+  "generator-cli": {
+    "version": "5.3.0",
+    "repository": {
+      "queryUrl": "https://private.maven.intern/solrsearch/select?q=g:${group.id}+AND+a:${artifact.id}&core=gav&start=0&rows=200",
+      "downloadUrl": "https://private.maven.intern/maven2/${groupId}/${artifactId}/${versionName}/${artifactId}-${versionName}.jar"
+    }
+  }
+}
+```
+
+If the `version` property param is set it is not necessary to configure the `queryUrl`.
+
 
 ##### Available placeholders
      
