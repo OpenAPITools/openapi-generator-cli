@@ -29,7 +29,7 @@ export class GeneratorService {
   ) {
   }
 
-  public async generate(...keys: string[]) {
+  public async generate(customGenerator?: string, ...keys: string[]) {
 
     const cwd = this.configService.cwd
     const generators = Object.entries(this.configService.get<{ [name: string]: GeneratorConfig }>(this.configPath, {}))
@@ -54,7 +54,7 @@ export class GeneratorService {
       if (!globPattern) {
         return [{
           name: `[${name}] ${params.inputSpec}`,
-          command: this.buildCommand(cwd, params)
+          command: this.buildCommand(cwd, params, customGenerator)
         }]
       }
 
@@ -66,7 +66,7 @@ export class GeneratorService {
 
       return glob.sync(globPattern, {cwd}).map(spec => ({
         name: `[${name}] ${spec}`,
-        command: this.buildCommand(cwd, params, spec)
+        command: this.buildCommand(cwd, params, customGenerator, spec)
       }))
     }))
 
@@ -95,7 +95,7 @@ export class GeneratorService {
     }).join('\n'))
   }
 
-  private buildCommand(cwd: string, params: Record<string, unknown>, specFile?: string) {
+  private buildCommand(cwd: string, params: Record<string, unknown>, customGenerator?: string, specFile?: string) {
     const absoluteSpecPath = specFile ? path.resolve(cwd, specFile) : String(params.inputSpec)
 
     const command = Object.entries({
@@ -139,19 +139,26 @@ export class GeneratorService {
       ext: ext.split('.').slice(-1).pop()
     }
 
-    return this.cmd(Object.entries(placeholders)
+    return this.cmd(customGenerator, Object.entries(placeholders)
       .filter(([, replacement]) => !!replacement)
       .reduce((cmd, [search, replacement]) => {
         return cmd.split(`#{${search}}`).join(replacement)
       }, command))
   }
 
-  private cmd = (appendix: string) => [
-    'java',
-    process.env['JAVA_OPTS'],
-    `-jar "${this.versionManager.filePath()}"`,
-    'generate',
-    appendix,
-  ].filter(isString).join(' ');
+  private cmd = (customGenerator: string | undefined, appendix: string) => {
+    const cliPath = this.versionManager.filePath();
+    const subCmd = customGenerator
+      ? `-cp "${[cliPath, customGenerator].join(this.isWin() ? ';' : ':')}" org.openapitools.codegen.OpenAPIGenerator`
+      : `-jar "${cliPath}"`;
+    return [
+      'java',
+      process.env['JAVA_OPTS'],
+      subCmd,
+      'generate',
+      appendix,
+    ].filter(isString).join(' ');
+  }
 
+  private isWin = () => process.platform === "win32"
 }
