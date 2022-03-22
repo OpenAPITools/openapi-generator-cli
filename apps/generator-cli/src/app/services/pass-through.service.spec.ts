@@ -190,6 +190,18 @@ describe('PassThroughService', () => {
             )
           })
 
+          if (name === 'generate') {
+            it('can delegate with custom jar to generate command', async () => {
+              await program.parseAsync([name, ...argv, '--generator-key=genKey', '--custom-generator=../some/custom.jar'], { from: 'user' })
+  
+              expect(generate).toHaveBeenNthCalledWith(
+                1,
+                '../some/custom.jar',
+                'genKey'
+              )
+            })
+          }
+
           // if (name === 'help') {
           //   it('prints the help info and does not delegate, if args length = 0', async () => {
           //     childProcess.spawn.mockReset()
