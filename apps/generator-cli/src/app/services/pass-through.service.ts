@@ -56,11 +56,12 @@ export class PassThroughService {
       .option("--generator-key <generator...>", "Run generator by key. Separate by comma to run many generators")
       .action(async (_, cmd) => {
         if (cmd.args.length === 0 || cmd.opts().generatorKey) {
+          const customGenerator = this.program.opts()?.customGenerator;
           const generatorKeys = cmd.opts().generatorKey || [];
 
           if (this.generatorService.enabled) {
             // @todo cover by unit test
-            if (!await this.generatorService.generate(...generatorKeys)) {
+            if (!await this.generatorService.generate(customGenerator, ...generatorKeys)) {
               this.logger.log(chalk.red('Code generation failed'));
               process.exit(1);
             }

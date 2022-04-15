@@ -127,6 +127,11 @@ describe('GeneratorService', () => {
         command: `java -jar "/path/to/4.2.1.jar" generate ${appendix.join(' ')}`,
       });
 
+      const cmdWithCustomJar = (name: string, customJar: string, appendix: string[]) => ({
+        name,
+        command: `java -cp "/path/to/4.2.1.jar:${customJar}" org.openapitools.codegen.OpenAPIGenerator generate ${appendix.join(' ')}`,
+      });
+
       describe.each([
         ['foo.json', [
           cmd('[angular] abc/app/pet.yaml', [
@@ -182,6 +187,18 @@ describe('GeneratorService', () => {
             '--some-bool',
           ]),
         ]],
+        ['bar.json', [
+          cmdWithCustomJar('[bar] api/cat.yaml', '../some/custom.jar', [
+            `--input-spec="${cwd}/api/cat.yaml"`,
+            `--output="bar/cat"`,
+            '--some-bool',
+          ]),
+          cmdWithCustomJar('[bar] api/bird.json', '../some/custom.jar', [
+            `--input-spec="${cwd}/api/bird.json"`,
+            `--output="bar/bird"`,
+            '--some-bool',
+          ]),
+        ], '../some/custom.jar'],
         ['none.json', []],
         ['also-none.json', []],
         ['no-glob.json', [
@@ -199,13 +216,13 @@ describe('GeneratorService', () => {
             `--ext="json"`,
           ]),
         ]],
-      ])('%s', (filePath, expectedCommands) => {
+      ])('%s', (filePath, expectedCommands, customGenerator) => {
 
         let returnValue: boolean
 
         beforeEach(async () => {
           configGet.mockImplementation((path, defaultValue) => config[filePath] || defaultValue)
-          returnValue = await fixture.generate()
+          returnValue = await fixture.generate(customGenerator)
         })
 
         it('calls the config get well', () => {
