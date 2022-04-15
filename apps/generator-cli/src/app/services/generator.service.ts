@@ -1,13 +1,14 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { flatten, isString, kebabCase, sortBy, upperFirst } from 'lodash';
+import {Inject, Injectable} from '@nestjs/common';
+import {flatten, isString, kebabCase, sortBy, upperFirst} from 'lodash';
 
 import * as concurrently from 'concurrently';
 import * as path from 'path';
+import * as fs from 'fs-extra';
 import * as glob from 'glob';
 import * as chalk from 'chalk';
-import { VersionManagerService } from './version-manager.service';
-import { ConfigService } from './config.service';
-import { LOGGER } from '../constants';
+import {VersionManagerService} from './version-manager.service';
+import {ConfigService} from './config.service';
+import {LOGGER} from '../constants';
 
 interface GeneratorConfig {
   glob: string
@@ -96,6 +97,7 @@ export class GeneratorService {
   }
 
   private buildCommand(cwd: string, params: Record<string, unknown>, customGenerator?: string, specFile?: string) {
+    const dockerVolumes = {};
     const absoluteSpecPath = specFile ? path.resolve(cwd, specFile) : String(params.inputSpec)
 
     const command = Object.entries({
@@ -114,7 +116,19 @@ export class GeneratorService {
           case 'boolean':
             return undefined
           default:
-            return `"${v}"`
+
+            if (this.configService.useDocker) {
+              if (key === 'output') {
+                fs.ensureDirSync(v);
+              }
+
+              if (fs.existsSync(v)) {
+                dockerVolumes[`/local/${key}`] = path.resolve(cwd, v);
+                return `"/local/${key}"`;
+              }
+            }
+
+            return `"${v}"`;
         }
       })()
 
@@ -139,14 +153,31 @@ export class GeneratorService {
       ext: ext.split('.').slice(-1).pop()
     }
 
-    return this.cmd(customGenerator, Object.entries(placeholders)
-      .filter(([, replacement]) => !!replacement)
-      .reduce((cmd, [search, replacement]) => {
-        return cmd.split(`#{${search}}`).join(replacement)
-      }, command))
+    return this.cmd(
+      customGenerator,
+      Object.entries(placeholders)
+        .filter(([, replacement]) => !!replacement)
+        .reduce((cmd, [search, replacement]) => {
+          return cmd.split(`#{${search}}`).join(replacement)
+        }, command),
+      dockerVolumes,
+    )
   }
 
-  private cmd = (customGenerator: string | undefined, appendix: string) => {
+  private cmd = (customGenerator: string | undefined, appendix: string, dockerVolumes = {}) => {
+
+    if (this.configService.useDocker) {
+      const volumes = Object.entries(dockerVolumes).map(([k, v]) => `-v "${v}:${k}"`).join(' ');
+
+      return [
+        `docker run --rm`,
+        volumes,
+        this.versionManager.getDockerImageName(),
+        'generate',
+        appendix
+      ].join(' ');
+    }
+
     const cliPath = this.versionManager.filePath();
     const subCmd = customGenerator
       ? `-cp "${[cliPath, customGenerator].join(this.isWin() ? ';' : ':')}" org.openapitools.codegen.OpenAPIGenerator`

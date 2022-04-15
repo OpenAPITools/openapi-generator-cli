@@ -1,17 +1,18 @@
-import { HttpService, Inject, Injectable } from '@nestjs/common';
-import { catchError, map, switchMap } from 'rxjs/operators';
-import { replace } from 'lodash';
-import { Observable } from 'rxjs';
-import { AxiosError } from 'axios';
+import {HttpService, Inject, Injectable} from '@nestjs/common';
+import {catchError, map, switchMap} from 'rxjs/operators';
+import {replace} from 'lodash';
+import {Observable} from 'rxjs';
+import {AxiosError} from 'axios';
 import * as fs from 'fs-extra';
 import * as path from 'path';
 import * as os from 'os';
 import * as Stream from 'stream';
 import * as chalk from 'chalk';
 import * as compare from 'compare-versions';
-import { LOGGER } from '../constants';
-import { ConfigService } from './config.service';
+import {LOGGER} from '../constants';
+import {ConfigService} from './config.service';
 import * as configSchema from '../../config.schema.json';
+import {spawn, spawnSync} from 'child_process';
 
 export interface Version {
   version: string
@@ -51,7 +52,7 @@ export class VersionManagerService {
     );
 
     return this.httpService.get(queryUrl).pipe(
-      map(({ data }) => data.response.docs),
+      map(({data}) => data.response.docs),
       map(docs => docs.map((doc) => ({
         version: doc.v,
         versionTags: [
@@ -88,6 +89,10 @@ export class VersionManagerService {
     return this.configService.get<string>('generator-cli.version');
   }
 
+  getDockerImageName(versionName?: string) {
+    return `${this.configService.dockerImageName}:v${versionName || this.getSelectedVersion()}`;
+  }
+
   async setSelectedVersion(versionName: string) {
     const downloaded = await this.downloadIfNeeded(versionName);
     if (downloaded) {
@@ -97,18 +102,41 @@ export class VersionManagerService {
   }
 
   async remove(versionName: string) {
-    fs.removeSync(this.filePath(versionName));
+    if (this.configService.useDocker) {
+      await new Promise<void>(resolve => {
+        spawn('docker', ['rmi', this.getDockerImageName(versionName)], {
+          stdio: 'inherit',
+          shell: true
+        }).on('exit', () => resolve())
+      })
+    } else {
+      fs.removeSync(this.filePath(versionName));
+    }
+
     this.logger.log(chalk.green(`Removed ${versionName}`));
   }
 
   async download(versionName: string) {
     this.logger.log(chalk.yellow(`Download ${versionName} ...`));
+
+    if (this.configService.useDocker) {
+      await new Promise<void>(resolve => {
+        spawn('docker', ['pull', this.getDockerImageName(versionName)], {
+          stdio: 'inherit',
+          shell: true
+        }).on('exit', () => resolve())
+      })
+
+      this.logger.log(chalk.green(`Downloaded ${versionName}`));
+      return;
+    }
+
     const downloadLink = this.createDownloadLink(versionName);
     const filePath = this.filePath(versionName);
 
     try {
       await this.httpService
-        .get<Stream>(downloadLink, { responseType: 'stream' })
+        .get<Stream>(downloadLink, {responseType: 'stream'})
         .pipe(switchMap(res => new Promise(resolve => {
             fs.ensureDirSync(this.storage);
             const temporaryDirectory = fs.mkdtempSync(path.join(os.tmpdir(), 'generator-cli-'));
@@ -142,6 +170,11 @@ export class VersionManagerService {
   }
 
   isDownloaded(versionName: string) {
+    if (this.configService.useDocker) {
+      const {status} = spawnSync('docker', ['image', 'inspect', this.getDockerImageName(versionName)]);
+      return status === 0;
+    }
+
     return fs.existsSync(path.resolve(this.storage, `${versionName}.jar`));
   }
 
@@ -159,7 +192,7 @@ export class VersionManagerService {
     return this.replacePlaceholders((
       this.configService.get<string>('generator-cli.repository.downloadUrl') ||
       configSchema.properties['generator-cli'].properties.repository.downloadUrl.default
-    ), { versionName });
+    ), {versionName});
   }
 
   private replacePlaceholders(str: string, additionalPlaceholders = {}) {

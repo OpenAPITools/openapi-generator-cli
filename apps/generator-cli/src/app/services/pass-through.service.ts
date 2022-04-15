@@ -1,11 +1,12 @@
-import { Inject, Injectable } from '@nestjs/common'
+import {Inject, Injectable} from '@nestjs/common'
 import * as chalk from 'chalk'
-import { exec, spawn } from 'child_process'
-import { Command } from 'commander'
-import { isString, startsWith, trim } from 'lodash'
-import { COMMANDER_PROGRAM, LOGGER } from '../constants'
-import { GeneratorService } from './generator.service'
-import { VersionManagerService } from './version-manager.service'
+import {exec, spawn} from 'child_process'
+import {Command} from 'commander'
+import {isString, startsWith, trim} from 'lodash'
+import {COMMANDER_PROGRAM, LOGGER} from '../constants'
+import {GeneratorService} from './generator.service'
+import {VersionManagerService} from './version-manager.service'
+import {ConfigService} from "./config.service";
 
 @Injectable()
 export class PassThroughService {
@@ -14,6 +15,7 @@ export class PassThroughService {
     @Inject(LOGGER) private readonly logger: LOGGER,
     @Inject(COMMANDER_PROGRAM) private readonly program: Command,
     private readonly versionManager: VersionManagerService,
+    private readonly configService: ConfigService,
     private readonly generatorService: GeneratorService
   ) {
   }
@@ -21,12 +23,12 @@ export class PassThroughService {
   public async init() {
 
     this.program
-        .allowUnknownOption()
-        .option("--custom-generator <generator>", "Custom generator jar")
+      .allowUnknownOption()
+      .option("--custom-generator <generator>", "Custom generator jar")
 
     const commands = (await this.getCommands()).reduce((acc, [name, desc]) => {
       return acc.set(name, this.program
-        .command(name, { hidden: !desc })
+        .command(name, {hidden: !desc})
         .description(desc)
         .allowUnknownOption()
         .action((_, c) => this.passThrough(c)))
@@ -93,7 +95,7 @@ export class PassThroughService {
       .filter(line => startsWith(line, ' '))
       .map<string>(trim)
       .map(line => line.match(/^([a-z-]+)\s+(.+)/i).slice(1))
-      .reduce((acc, [cmd, desc]) => ({ ...acc, [cmd]: desc }), {});
+      .reduce((acc, [cmd, desc]) => ({...acc, [cmd]: desc}), {});
 
     const allCommands = completion.split('\n')
       .map<string>(trim)
@@ -114,6 +116,13 @@ export class PassThroughService {
   });
 
   private cmd() {
+    if (this.configService.useDocker) {
+      return [
+        `docker run --rm -v "${this.configService.cwd}:/local"`,
+        this.versionManager.getDockerImageName(),
+      ].join(' ');
+    }
+
     const customGenerator = this.program.opts()?.customGenerator;
     const cliPath = this.versionManager.filePath();
 

@@ -33,6 +33,14 @@
             "default": "https://repo1.maven.org/maven2/${groupId}/${artifactId}/${versionName}/${artifactId}-${versionName}.jar"
           }
         },
+        "useDocker": {
+          "type": "boolean",
+          "default": false
+        },
+        "dockerImageName": {
+          "type": "string",
+          "default": "openapitools/openapi-generator-cli"
+        },
         "generators": {
           "type": "object",
           "additionalProperties": {
