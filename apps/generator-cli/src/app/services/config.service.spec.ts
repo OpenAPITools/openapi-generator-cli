@@ -1,11 +1,10 @@
 import {Test} from '@nestjs/testing';
 import {ConfigService} from './config.service';
-import {mocked} from 'ts-jest/utils';
 import {LOGGER} from '../constants';
 
 jest.mock('fs-extra');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const fs = mocked(require('fs-extra'), true)
+const fs = jest.mocked(require('fs-extra'), true)
 
 describe('ConfigService', () => {
 
@@ -41,7 +40,7 @@ describe('ConfigService', () => {
         })
 
         it.each([
-          ['$schema', 'node_modules/@openapitools/openapi-generator-cli/config.schema.json'],
+          ['$schema', './node_modules/@openapitools/openapi-generator-cli/config.schema.json'],
           ['spaces', 2],
           ['generator-cli', {version: undefined}],
         ])('the key "%s" returns %s as default', (key, expectedValue) => {

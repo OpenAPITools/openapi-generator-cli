@@ -2,17 +2,17 @@ import { Test } from '@nestjs/testing';
 import { Version, VersionManagerService } from './version-manager.service';
 import { HttpService } from '@nestjs/common';
 import { of } from 'rxjs';
-import { mocked } from 'ts-jest/utils';
 import { LOGGER } from '../constants';
 import * as chalk from 'chalk';
 import { ConfigService } from './config.service';
 import { resolve } from 'path';
 import * as os from 'os';
 import { TestingModule } from '@nestjs/testing/testing-module';
+import * as path from "path";
 
 jest.mock('fs-extra');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const fs = mocked(require('fs-extra'), true);
+const fs = jest.mocked(require('fs-extra'), true);
 
 describe('VersionManagerService', () => {
 
@@ -440,9 +440,8 @@ describe('VersionManagerService', () => {
             expect(fs.ensureDirSync).toHaveBeenNthCalledWith(1, fixture.storage);
           });
 
-
           it('creates a temporary directory', () => {
-            expect(fs.mkdtempSync).toHaveBeenNthCalledWith(1, '/tmp/generator-cli-');
+            expect(fs.mkdtempSync).toHaveBeenNthCalledWith(1, path.join(os.tmpdir(), 'generator-cli-'));
           });
 
           it('creates the correct write stream', () => {

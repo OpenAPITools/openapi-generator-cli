@@ -1,6 +1,5 @@
 import {Test} from '@nestjs/testing';
 import {GeneratorService} from './generator.service';
-import {mocked} from 'ts-jest/utils';
 import {LOGGER} from '../constants';
 import {VersionManagerService} from './version-manager.service';
 import {ConfigService} from './config.service';
@@ -9,11 +8,11 @@ jest.mock('fs-extra');
 jest.mock('glob');
 jest.mock('concurrently');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const fs = mocked(require('fs-extra'), true)
+const fs = jest.mocked(require('fs-extra'), true)
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const glob = mocked(require('glob'), true)
+const glob = jest.mocked(require('glob'), true)
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const concurrently = mocked(require('concurrently'), true)
+const concurrently = jest.mocked(require('concurrently'), true)
 
 describe('GeneratorService', () => {
 

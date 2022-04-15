@@ -1,7 +1,6 @@
 import { Test } from '@nestjs/testing'
 import * as chalk from 'chalk'
 import { Command, createCommand } from 'commander'
-import { mocked } from 'ts-jest/utils'
 import { COMMANDER_PROGRAM, LOGGER } from '../constants'
 import { GeneratorService } from './generator.service'
 import { PassThroughService } from './pass-through.service'
@@ -9,7 +8,7 @@ import { VersionManagerService } from './version-manager.service'
 
 jest.mock('child_process')
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const childProcess = mocked(require('child_process'), true)
+const childProcess = jest.mocked(require('child_process'), true)
 
 describe('PassThroughService', () => {
 
