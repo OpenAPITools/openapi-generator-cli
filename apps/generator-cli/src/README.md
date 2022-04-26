@@ -200,6 +200,18 @@ If the `version` property param is set it is not necessary to configure the `que
 | openapi-generator-cli generate --generator-key v3.0 v2.0 | yes       | yes       |
 | openapi-generator-cli generate --generator-key foo       | no        | no        |
 
+## Use Docker instead of running java locally
+
+```json
+{
+  "$schema": "node_modules/@openapitools/openapi-generator-cli/config.schema.json",
+  "spaces": 2,
+  "generator-cli": {
+    "useDocker": true
+  }
+}
+```
+
 ## Custom Generators
 
 Custom generators can be used by passing the `--custom-generator=/my/custom-generator.jar` argument.

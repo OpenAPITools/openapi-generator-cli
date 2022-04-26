@@ -10,6 +10,14 @@ export class ConfigService {
   public readonly cwd = process.env.PWD || process.env.INIT_CWD || process.cwd()
   public readonly configFile = path.resolve(this.cwd, 'openapitools.json')
 
+  public get useDocker()  {
+    return this.get('generator-cli.useDocker', false);
+  }
+
+  public get dockerImageName()  {
+    return this.get('generator-cli.dockerImageName', 'openapitools/openapi-generator-cli');
+  }
+
   private readonly defaultConfig = {
     $schema: './node_modules/@openapitools/openapi-generator-cli/config.schema.json',
     spaces: 2,

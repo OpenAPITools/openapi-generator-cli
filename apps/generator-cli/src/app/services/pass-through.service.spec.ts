@@ -1,10 +1,11 @@
-import { Test } from '@nestjs/testing'
+import {Test} from '@nestjs/testing'
 import * as chalk from 'chalk'
-import { Command, createCommand } from 'commander'
-import { COMMANDER_PROGRAM, LOGGER } from '../constants'
-import { GeneratorService } from './generator.service'
-import { PassThroughService } from './pass-through.service'
-import { VersionManagerService } from './version-manager.service'
+import {Command, createCommand} from 'commander'
+import {COMMANDER_PROGRAM, LOGGER} from '../constants'
+import {GeneratorService} from './generator.service'
+import {PassThroughService} from './pass-through.service'
+import {VersionManagerService} from './version-manager.service'
+import {ConfigService} from "./config.service";
 
 jest.mock('child_process')
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -19,6 +20,7 @@ describe('PassThroughService', () => {
   const generate = jest.fn().mockResolvedValue(true)
   const getSelectedVersion = jest.fn().mockReturnValue('4.2.1')
   const filePath = jest.fn().mockReturnValue(`/some/path/to/4.2.1.jar`)
+  const configServiceMock = {useDocker: false, get: jest.fn(), cwd: '/foo/bar'};
 
   const getCommand = (name: string) => program.commands.find(c => c.name() === name);
 
@@ -29,17 +31,20 @@ describe('PassThroughService', () => {
     const moduleRef = await Test.createTestingModule({
       providers: [
         PassThroughService,
-        { provide: VersionManagerService, useValue: { filePath, getSelectedVersion } },
-        { provide: GeneratorService, useValue: { generate, enabled: true } },
-        { provide: COMMANDER_PROGRAM, useValue: program },
-        { provide: LOGGER, useValue: { log } },
+        {provide: VersionManagerService, useValue: {filePath, getSelectedVersion, getDockerImageName: (v) => `openapitools/openapi-generator-cli:v${v || getSelectedVersion()}`}},
+        {provide: GeneratorService, useValue: {generate, enabled: true}},
+        {provide: ConfigService, useValue: configServiceMock},
+        {provide: COMMANDER_PROGRAM, useValue: program},
+        {provide: LOGGER, useValue: {log}},
       ],
     }).compile()
 
     fixture = moduleRef.get(PassThroughService)
 
-    childProcess.spawn.mockReset().mockReturnValue({ on: jest.fn() })
-
+    childProcess.spawn.mockReset().mockReturnValue({on: jest.fn()})
+    configServiceMock.get.mockClear()
+    configServiceMock.get.mockReset()
+    configServiceMock.useDocker = false;
   })
 
   describe('API', () => {
@@ -147,8 +152,28 @@ describe('PassThroughService', () => {
             expect(cmd['_allowUnknownOption']).toBeTruthy()
           })
 
+          describe('useDocker is true', () => {
+
+            beforeEach(() => {
+              configServiceMock.useDocker = true;
+            });
+
+            it('delegates to docker', async () => {
+              await program.parseAsync([name, ...argv], {from: 'user'})
+              expect(childProcess.spawn).toHaveBeenNthCalledWith(
+                1,
+                'docker run --rm -v "/foo/bar:/local" openapitools/openapi-generator-cli:v4.2.1',
+                [name, ...argv],
+                {
+                  stdio: 'inherit',
+                  shell: true
+                }
+              )
+            })
+          })
+
           it('can delegate', async () => {
-            await program.parseAsync([name, ...argv], { from: 'user' })
+            await program.parseAsync([name, ...argv], {from: 'user'})
             expect(childProcess.spawn).toHaveBeenNthCalledWith(
               1,
               'java -jar "/some/path/to/4.2.1.jar"',
@@ -162,7 +187,7 @@ describe('PassThroughService', () => {
 
           it('can delegate with JAVA_OPTS', async () => {
             process.env['JAVA_OPTS'] = 'java-opt-1=1'
-            await program.parseAsync([name, ...argv], { from: 'user' })
+            await program.parseAsync([name, ...argv], {from: 'user'})
             expect(childProcess.spawn).toHaveBeenNthCalledWith(
               1,
               'java java-opt-1=1 -jar "/some/path/to/4.2.1.jar"',
@@ -175,7 +200,7 @@ describe('PassThroughService', () => {
           })
 
           it('can delegate with custom jar', async () => {
-            await program.parseAsync([name, ...argv, '--custom-generator=../some/custom.jar'], { from: 'user' })
+            await program.parseAsync([name, ...argv, '--custom-generator=../some/custom.jar'], {from: 'user'})
             const cpDelimiter = process.platform === 'win32' ? ';' : ':'
 
             expect(childProcess.spawn).toHaveBeenNthCalledWith(
@@ -191,8 +216,8 @@ describe('PassThroughService', () => {
 
           if (name === 'generate') {
             it('can delegate with custom jar to generate command', async () => {
-              await program.parseAsync([name, ...argv, '--generator-key=genKey', '--custom-generator=../some/custom.jar'], { from: 'user' })
-  
+              await program.parseAsync([name, ...argv, '--generator-key=genKey', '--custom-generator=../some/custom.jar'], {from: 'user'})
+
               expect(generate).toHaveBeenNthCalledWith(
                 1,
                 '../some/custom.jar',
@@ -200,29 +225,6 @@ describe('PassThroughService', () => {
               )
             })
           }
-
-          // if (name === 'help') {
-          //   it('prints the help info and does not delegate, if args length = 0', async () => {
-          //     childProcess.spawn.mockReset()
-          //     cmd.args = []
-          //     const logSpy = jest.spyOn(console, 'log').mockImplementation(noop)
-          //     await program.parseAsync([name], { from: 'user' })
-          //     expect(childProcess.spawn).toBeCalledTimes(0)
-          //     expect(program.helpInformation).toBeCalledTimes(1)
-          //     // expect(logSpy).toHaveBeenCalledTimes(2)
-          //     expect(logSpy).toHaveBeenNthCalledWith(1, 'some help text')
-          //     expect(logSpy).toHaveBeenNthCalledWith(2, 'has custom generator')
-          //   })
-          // }
-          //
-          // if (name === 'generate') {
-          //   it('generates by using the generator config', async () => {
-          //     childProcess.spawn.mockReset()
-          //     await program.parseAsync([name], { from: 'user' })
-          //     expect(childProcess.spawn).toBeCalledTimes(0)
-          //     expect(generate).toHaveBeenNthCalledWith(1)
-          //   })
-          // }
 
         })
 
@@ -239,13 +241,13 @@ describe('PassThroughService', () => {
               ${'help generate'} | ${commandHelp('generate')} | ${'a'}
               ${'help author'}   | ${commandHelp('author')}   | ${'b'}
               ${'help hidden'}   | ${undefined}                     | ${'c'}
-            `('$cmd', ({ cmd, helpText, spawn }) => {
+            `('$cmd', ({cmd, helpText, spawn}) => {
 
               let spy: jest.SpyInstance;
 
               beforeEach(async () => {
                 spy = jest.spyOn(console, 'log').mockClear().mockImplementation();
-                await program.parseAsync(cmd.split(' '), { from: 'user' })
+                await program.parseAsync(cmd.split(' '), {from: 'user'})
               })
 
               describe('help text', () => {
