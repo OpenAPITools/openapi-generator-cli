@@ -100,41 +100,6 @@ export class GeneratorService {
     const dockerVolumes = {};
     const absoluteSpecPath = specFile ? path.resolve(cwd, specFile) : String(params.inputSpec)
 
-    const command = Object.entries({
-      inputSpec: absoluteSpecPath,
-      ...params,
-    }).map(([k, v]) => {
-
-      const key = kebabCase(k)
-      const value = (() => {
-        switch (typeof v) {
-          case 'object':
-            return `"${Object.entries(v).map(z => z.join('=')).join(',')}"`
-          case 'number':
-          case 'bigint':
-            return `${v}`
-          case 'boolean':
-            return undefined
-          default:
-
-            if (this.configService.useDocker) {
-              if (key === 'output') {
-                fs.ensureDirSync(v);
-              }
-
-              if (fs.existsSync(v)) {
-                dockerVolumes[`/local/${key}`] = path.resolve(cwd, v);
-                return `"/local/${key}"`;
-              }
-            }
-
-            return `"${v}"`;
-        }
-      })()
-
-      return value === undefined ? `--${key}` : `--${key}=${value}`
-    }).join(' ')
-
     const ext = path.extname(absoluteSpecPath)
     const name = path.basename(absoluteSpecPath, ext)
 
@@ -153,15 +118,55 @@ export class GeneratorService {
       ext: ext.split('.').slice(-1).pop()
     }
 
+    const command = Object.entries({
+      inputSpec: absoluteSpecPath,
+      ...params,
+    }).map(([k, v]) => {
+
+      const key = kebabCase(k)
+      const value = (() => {
+        switch (typeof v) {
+          case 'object':
+            return `"${Object.entries(v).map(z => z.join('=')).join(',')}"`
+          case 'number':
+          case 'bigint':
+            return `${v}`
+          case 'boolean':
+            return undefined
+          default:
+            if (this.configService.useDocker) {
+              v = this.replacePlaceholders(placeholders, v);
+
+              if (key === 'output') {
+                fs.ensureDirSync(v);
+              }
+
+              if (fs.existsSync(v)) {
+                dockerVolumes[`/local/${key}`] = path.resolve(cwd, v);
+                return `"/local/${key}"`;
+              }
+            }
+
+            return `"${v}"`;
+        }
+      })()
+
+      return value === undefined ? `--${key}` : `--${key}=${value}`
+    }).join(' ');
+
     return this.cmd(
       customGenerator,
-      Object.entries(placeholders)
-        .filter(([, replacement]) => !!replacement)
-        .reduce((cmd, [search, replacement]) => {
-          return cmd.split(`#{${search}}`).join(replacement)
-        }, command),
+      this.replacePlaceholders(placeholders, command),
       dockerVolumes,
     )
+  }
+
+  private replacePlaceholders(placeholders: Record<string, string>, input: string) {
+    return Object.entries(placeholders)
+      .filter(([, replacement]) => !!replacement)
+      .reduce((acc, [search, replacement]) => {
+        return acc.split(`#{${search}}`).join(replacement)
+      }, input);
   }
 
   private cmd = (customGenerator: string | undefined, appendix: string, dockerVolumes = {}) => {
