@@ -175,7 +175,7 @@ export class GeneratorService {
       const volumes = Object.entries(dockerVolumes).map(([k, v]) => `-v "${v}:${k}"`).join(' ');
 
       return [
-        `docker run --rm`,
+        `docker run --user $(id -u):$(id -g) --rm`,
         volumes,
         this.versionManager.getDockerImageName(),
         'generate',
