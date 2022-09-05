@@ -6,6 +6,7 @@ import * as path from 'path';
 import * as fs from 'fs-extra';
 import * as glob from 'glob';
 import * as chalk from 'chalk';
+import * as os from 'os';
 import {VersionManagerService} from './version-manager.service';
 import {ConfigService} from './config.service';
 import {LOGGER} from '../constants';
@@ -173,9 +174,12 @@ export class GeneratorService {
 
     if (this.configService.useDocker) {
       const volumes = Object.entries(dockerVolumes).map(([k, v]) => `-v "${v}:${k}"`).join(' ');
+      const userInfo = os.userInfo();
+      const userArg = userInfo.uid !== -1 ? `--user ${userInfo.uid}:${userInfo.gid}` : ``;
 
       return [
         `docker run --rm`,
+        userArg,
         volumes,
         this.versionManager.getDockerImageName(),
         'generate',
