@@ -39,7 +39,7 @@ jobs:
           cd dist/apps/generator-cli
           yarn pack -f ../package.tgz
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: package.tgz
           path: dist/apps/package.tgz
