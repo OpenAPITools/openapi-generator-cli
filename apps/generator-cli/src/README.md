@@ -8,7 +8,9 @@
 
 OpenAPI Generator allows generation of API client libraries (SDK generation), server stubs, documentation and 
 configuration automatically given an OpenAPI Spec (both 2.0 and 3.0 are supported). Please see
-[OpenAPITools/openapi-generator](https://github.com/OpenAPITools/openapi-generator)
+[OpenAPITools/openapi-generator](https://github.com/OpenAPITools/openapi-generator).
+
+The OpenAPI Generator is a Java project. `openapi-generator-cli` will download the approprate JAR file and invoke the `java` executable to run the OpenAPI Generator. You must have the `java` binary executable available on your `PATH` for this to work.
 
 ---
 
