@@ -216,6 +216,7 @@
                 "typescript-fetch",
                 "typescript-inversify",
                 "typescript-jquery",
+                "typescript-nestjs",
                 "typescript-node",
                 "typescript-redux-query",
                 "typescript-rxjs"
