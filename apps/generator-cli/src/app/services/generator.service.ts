@@ -191,8 +191,10 @@ export class GeneratorService {
     const subCmd = customGenerator
       ? `-cp "${[cliPath, customGenerator].join(this.isWin() ? ';' : ':')}" org.openapitools.codegen.OpenAPIGenerator`
       : `-jar "${cliPath}"`;
+    const javaHome = process.env['JAVA_HOME'];
+    const javaCmd = javaHome ? `${javaHome}/bin/java` : 'java';
     return [
-      'java',
+      javaCmd,
       process.env['JAVA_OPTS'],
       subCmd,
       'generate',
