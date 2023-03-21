@@ -112,7 +112,7 @@
     "@types/concurrently": "6.4.0",
     "@types/fs-extra": "9.0.13",
     "@types/inquirer": "8.2.6",
-    "@types/jest": "27.4.1",
+    "@types/jest": "27.5.2",
     "@types/jsonpath": "0.2.0",
     "@types/lodash": "4.14.191",
     "@types/node": "16.11.27",
