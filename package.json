@@ -124,7 +124,7 @@
     "generate-package-json-webpack-plugin": "2.6.0",
     "husky": "7.0.4",
     "jest": "27.5.1",
-    "prettier": "2.6.2",
+    "prettier": "2.8.6",
     "semantic-release": "17.4.7",
     "ts-jest": "27.1.5",
     "ts-node": "10.7.0",
