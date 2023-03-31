@@ -50,7 +50,7 @@
     "nx": "nx",
     "start": "nx serve",
     "cli": "node ./dist/apps/generator-cli/main.js",
-    "build": "nx build",
+    "build": "NODE_OPTIONS=--openssl-legacy-provider nx build",
     "publish": "npm run build && npm publish ./dist/apps/generator-cli",
     "test": "nx test",
     "lint": "nx workspace-lint && nx lint",
