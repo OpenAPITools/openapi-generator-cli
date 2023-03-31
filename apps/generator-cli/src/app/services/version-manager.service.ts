@@ -217,7 +217,7 @@ export class VersionManagerService {
       this.logger.log(chalk.red('\nResponse:'));
       Object.entries(error.response.headers).forEach(a => this.logger.log(...a));
       this.logger.log();
-      error.response.data.on('data', data => this.logger.log(data.toString('utf8')));
+      (error.response.data as any).on('data', data => this.logger.log(data.toString('utf8')));
     }
   }
 
