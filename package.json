@@ -81,11 +81,12 @@
     }
   },
   "dependencies": {
-    "@nestjs/axios": "0.0.8",
+    "@nestjs/axios": "2.0.0",
     "@nestjs/common": "9.3.11",
     "@nestjs/core": "9.3.11",
     "@nestjs/platform-express": "8.4.7",
     "@nuxtjs/opencollective": "0.3.2",
+    "axios": "1.4.0",
     "chalk": "4.1.2",
     "commander": "8.3.0",
     "compare-versions": "4.1.4",
