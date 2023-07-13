@@ -1,6 +1,6 @@
 import { Test } from '@nestjs/testing';
 import { Version, VersionManagerService } from './version-manager.service';
-import { HttpService } from '@nestjs/common';
+import { HttpService } from '@nestjs/axios';
 import { of } from 'rxjs';
 import { LOGGER } from '../constants';
 import * as chalk from 'chalk';
