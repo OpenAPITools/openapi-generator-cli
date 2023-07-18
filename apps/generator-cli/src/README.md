@@ -215,6 +215,8 @@ If the `version` property param is set it is not necessary to configure the `que
   }
 }
 ```
+If `useDocker` option is used, the spec file gets mounted to path `/local/<your-spec-file-location>` within container. So, if you would configure spec file as 
+`-i openapi/my-api.yml` if running locally, with useDocker option set, you would have to configure it like this: `-i /local/openapi/my-api.yml`.
 
 ## Custom Generators
 
