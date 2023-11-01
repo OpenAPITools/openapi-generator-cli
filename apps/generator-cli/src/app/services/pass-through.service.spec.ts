@@ -162,7 +162,7 @@ describe('PassThroughService', () => {
               await program.parseAsync([name, ...argv], {from: 'user'})
               expect(childProcess.spawn).toHaveBeenNthCalledWith(
                 1,
-                'docker run --rm -v "/foo/bar:/local" openapitools/openapi-generator-cli:v4.2.1',
+                expect.stringMatching(/docker run --rm -v "\/foo\/bar:\/local" --user \d+:\d+ openapitools\/openapi-generator-cli:v4.2.1/),
                 [name, ...argv],
                 {
                   stdio: 'inherit',

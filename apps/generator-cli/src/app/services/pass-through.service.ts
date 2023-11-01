@@ -3,6 +3,7 @@ import * as chalk from 'chalk'
 import {exec, spawn} from 'child_process'
 import {Command} from 'commander'
 import {isString, startsWith, trim} from 'lodash'
+import * as os from 'os';
 import {COMMANDER_PROGRAM, LOGGER} from '../constants'
 import {GeneratorService} from './generator.service'
 import {VersionManagerService} from './version-manager.service'
@@ -117,8 +118,12 @@ export class PassThroughService {
 
   private cmd() {
     if (this.configService.useDocker) {
+      const userInfo = os.userInfo();
+      const userArg = userInfo.uid !== -1 ? `--user ${userInfo.uid}:${userInfo.gid}` : ``;
+
       return [
         `docker run --rm -v "${this.configService.cwd}:/local"`,
+        userArg,
         this.versionManager.getDockerImageName(),
       ].join(' ');
     }
