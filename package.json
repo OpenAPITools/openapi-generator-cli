@@ -81,10 +81,10 @@
     }
   },
   "dependencies": {
-    "@nestjs/axios": "0.1.0",
-    "@nestjs/common": "9.3.11",
-    "@nestjs/core": "9.3.11",
-    "@nestjs/platform-express": "8.4.7",
+    "@nestjs/axios": "3.0.1",
+    "@nestjs/common": "10.2.9",
+    "@nestjs/core": "10.2.9",
+    "@nestjs/platform-express": "10.2.9",
     "@nuxtjs/opencollective": "0.3.2",
     "chalk": "4.1.2",
     "commander": "8.3.0",
@@ -102,7 +102,7 @@
     "@commitlint/cli": "16.3.0",
     "@commitlint/config-conventional": "16.2.4",
     "@nestjs/schematics": "8.0.11",
-    "@nestjs/testing": "9.3.11",
+    "@nestjs/testing": "10.2.9",
     "@nrwl/eslint-plugin-nx": "12.10.1",
     "@nrwl/jest": "12.10.1",
     "@nrwl/nest": "12.10.1",
