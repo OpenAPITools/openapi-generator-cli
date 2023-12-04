@@ -6,4 +6,7 @@ module.exports = {
   resolver: '@nrwl/jest/plugins/resolver',
   moduleFileExtensions: ['ts', 'js', 'html'],
   coverageReporters: ['html'],
+  moduleNameMapper: {
+    'axios': '@nestjs/axios/dist/http.service.js'
+  },
 };

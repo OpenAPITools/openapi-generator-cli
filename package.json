@@ -86,6 +86,7 @@
     "@nestjs/core": "10.2.9",
     "@nestjs/platform-express": "10.2.9",
     "@nuxtjs/opencollective": "0.3.2",
+    "axios": "^1.6.2",
     "chalk": "4.1.2",
     "commander": "8.3.0",
     "compare-versions": "4.1.4",
