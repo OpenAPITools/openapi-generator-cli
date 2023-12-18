@@ -7,6 +7,6 @@ module.exports = {
   moduleFileExtensions: ['ts', 'js', 'html'],
   coverageReporters: ['html'],
   moduleNameMapper: {
-    'axios': '@nestjs/axios/dist/http.service.js'
+    '^axios$': 'axios/dist/axios.js'
   },
 };
