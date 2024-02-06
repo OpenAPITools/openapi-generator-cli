@@ -5,9 +5,20 @@ import {Command} from 'commander';
 import {COMMANDER_PROGRAM, LOGGER} from './constants';
 import {VersionManagerController} from './controllers/version-manager.controller';
 import {ConfigService, GeneratorService, PassThroughService, UIService, VersionManagerService} from './services';
+import { ProxyAgent } from 'proxy-agent';
+
+// The correct proxy `Agent` implementation to use will be determined
+// via the `http_proxy` / `https_proxy` / `no_proxy` / etc. env vars
+const agent = new ProxyAgent();
 
 @Module({
-  imports: [HttpModule],
+  imports: [
+    HttpModule.register({
+      proxy: false,
+      httpAgent: agent,
+      httpsAgent: agent
+    })
+  ],
   controllers: [
     VersionManagerController
   ],
