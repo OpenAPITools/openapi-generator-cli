@@ -1,14 +1,26 @@
 import {Inject, Injectable} from '@nestjs/common';
 import * as path from 'path';
-import {LOGGER} from '../constants';
+import {COMMANDER_PROGRAM, LOGGER} from '../constants';
 import {set, get, has, merge} from 'lodash';
 import * as fs from 'fs-extra';
+import { Command } from 'commander';
 
 @Injectable()
 export class ConfigService {
 
   public readonly cwd = process.env.PWD || process.env.INIT_CWD || process.cwd()
-  public readonly configFile = path.resolve(this.cwd, 'openapitools.json')
+  public readonly configFile = this.configFileOrDefault();
+
+  private configFileOrDefault() {
+    this.program.parseOptions(process.argv);
+    const conf = this.program.opts().openapitools;
+
+    if(!conf) {
+      return path.resolve(this.cwd, 'openapitools.json');
+    }
+
+    return path.isAbsolute(conf) ? conf : path.resolve(this.cwd, conf);
+  }
 
   public get useDocker()  {
     return this.get('generator-cli.useDocker', false);
@@ -28,6 +40,7 @@ export class ConfigService {
 
   constructor(
     @Inject(LOGGER) private readonly logger: LOGGER,
+    @Inject(COMMANDER_PROGRAM) private readonly program: Command,
   ) {
   }
 
