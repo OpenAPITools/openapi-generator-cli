@@ -10,7 +10,9 @@ OpenAPI Generator allows generation of API client libraries (SDK generation), se
 configuration automatically given an OpenAPI Spec (both 2.0 and 3.0 are supported). Please see
 [OpenAPITools/openapi-generator](https://github.com/OpenAPITools/openapi-generator).
 
-The OpenAPI Generator is a Java project. `openapi-generator-cli` will download the approprate JAR file and invoke the `java` executable to run the OpenAPI Generator. You must have the `java` binary executable available on your `PATH` for this to work.
+The OpenAPI Generator is a Java project. `openapi-generator-cli` will download the appropriate JAR file and invoke the `java` executable to run the OpenAPI Generator. You must have the `java` binary executable available on your `PATH` for this to work.
+
+If you find this tool useful, please consider sponsoring this project financially via https://opencollective.com/openapi_generator or directly to [Kay Schecker](https://github.com/sponsors/kay-schecker) (the author of this tool) :pray:
 
 ---
 
@@ -213,6 +215,8 @@ If the `version` property param is set it is not necessary to configure the `que
   }
 }
 ```
+If `useDocker` option is used, the spec file gets mounted to path `/local/<your-spec-file-location>` within container. So, if you would configure spec file as 
+`-i openapi/my-api.yml` if running locally, with useDocker option set, you would have to configure it like this: `-i /local/openapi/my-api.yml`.
 
 ## Custom Generators
 
