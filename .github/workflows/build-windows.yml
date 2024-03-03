@@ -11,7 +11,7 @@ on:
 jobs:
   build:
     name: Build
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     strategy:
       matrix:
         node-version: [ 18.x ]
@@ -39,13 +39,13 @@ jobs:
 
       - name: Build Package
         run: |
-          cd dist/apps/generator-cli
-          yarn pack -f ../package.tgz
+          cd dist\apps\generator-cli
+          yarn pack -f ..\package.tgz
 
       - uses: actions/upload-artifact@v3
         with:
           name: package.tgz
-          path: dist/apps/package.tgz
+          path: dist\apps\package.tgz
 
   e2e:
     name: "E2E local: (${{ matrix.os }})"
@@ -53,7 +53,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ ubuntu-latest, macos-latest ]
+        os: [  windows-latest ]
         node-version: [ 18.x ]
 
     steps:
@@ -71,15 +71,16 @@ jobs:
 
       - name: Test
         run: |
-          cd ./examples
-          yarn global add json && export PATH="$(yarn global bin):$PATH"
-          yarn cache clean && yarn add $GITHUB_WORKSPACE/package.tgz
+          cd examples
+          #yarn global add json && export PATH="$(yarn global bin):$PATH"
+          yarn global add json
+          yarn cache clean && yarn add %GITHUB_WORKSPACE%\package.tgz
           npm run oa version
           npm run oa completion
           npm run oa help
           npm run oa help generate
           npm run oa version-manager help
-          npm run oa generate -- -g ruby -i https://raw.githubusercontent.com/OpenAPITools/openapi-generator/master/modules/openapi-generator/src/test/resources/3_0/petstore.yaml -o $GITHUB_WORKSPACE/tmp/ruby-client
+          npm run oa generate -- -g ruby -i https://raw.githubusercontent.com/OpenAPITools/openapi-generator/master/modules/openapi-generator/src/test/resources/3_0/petstore.yaml -o %GITHUB_WORKSPACE%\tmp\ruby-client
           (npm run oa version-manager set 3.0.0 && npm run oa version | grep -q '3.0.0') || exit 1
           (npm run oa version-manager set 4.0 && npm run oa version | grep -q '4.0.3') || exit 1
           (npm run oa version-manager set 4.3.1 && npm run oa version | grep -q '4.3.1') || exit 1
@@ -90,7 +91,7 @@ jobs:
           json -I -f openapitools.json -e 'this["generator-cli"]["storageDir"]="~/my/storage/"'
           (npm run oa version-manager set 4.3.1 && npm run oa version | grep -q '4.3.1') || exit 1
           test -f ~/my/storage/4.3.1.jar || exit 1
-          npm run oa:generate && mkdir ./foo && cd ./foo && npm run oa:generate
+          npm run oa:generate && mkdir foo && cd foo && npm run oa:generate
 
 #  release:
 #    if: github.event.pull_request.merged == 'true'
