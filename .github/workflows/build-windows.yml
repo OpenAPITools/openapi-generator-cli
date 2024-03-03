@@ -1,4 +1,4 @@
-name: Build
+name: Build (Windows)
 on:
   push:
     tags-ignore:
@@ -53,7 +53,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [  windows-latest ]
+        os: [ windows-latest ]
         node-version: [ 18.x ]
 
     steps:
