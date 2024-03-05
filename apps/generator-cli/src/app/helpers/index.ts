@@ -1,3 +1,5 @@
+import path from 'path';
+
 const isWin = () => process.platform === 'win32';
 
 /**
@@ -6,6 +8,6 @@ const isWin = () => process.platform === 'win32';
  */
 export const javaCmd: string = process.env['JAVA_HOME']
   ? isWin()
-    ? `"${process.env['JAVA_HOME']}/bin/java"`
-    : `${process.env['JAVA_HOME']}/bin/java`
+    ? `"${path.join(process.env['JAVA_HOME'], 'bin', 'java')}"`
+    : `${path.join(process.env['JAVA_HOME'], 'bin', 'java')}`
   : 'java';
