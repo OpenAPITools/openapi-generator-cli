@@ -243,17 +243,17 @@ export class GeneratorService {
         )}" org.openapitools.codegen.OpenAPIGenerator`
       : `-jar "${cliPath}"`;
 
-    return [
-      `"`,
+    const command = [
       javaCmd,
       process.env['JAVA_OPTS'],
       subCmd,
       'generate',
       appendix,
-      `"`,
     ]
       .filter(isString)
       .join(' ');
+
+    return this.isWin() ? `"${command}"` : command;
   };
 
   private isWin = () => process.platform === 'win32';
