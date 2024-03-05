@@ -72,7 +72,7 @@ jobs:
       - if: ${{matrix.os  == 'windows-latest'}}
         name: Test Windows
         run: |
-          $env:JAVA_HOME = $env:JAVA_HOME_17_X64
+          $env:JAVA_HOME = $env:JAVA_HOME_11_X64
           cd .\examples
           yarn global add json; $yarn_global_bin=yarn global bin; $env:PATH += ";$yarn_global_bin"
           yarn cache clean; yarn add $env:GITHUB_WORKSPACE\package.tgz
@@ -93,6 +93,9 @@ jobs:
           npm run oa version-manager set 4.3.1; $version=npm run oa version; if (-not ($version.Contains('4.3.1'))) { exit 1 }
           if (-not (Test-Path ~\my\storage\4.3.1.jar)) { exit 1 }
           npm run oa:generate; mkdir .\foo; cd .\foo; npm run oa:generate
+          cd ..
+          $env:JAVA_HOME =
+          npm run oa:generate; mkdir .\bar; cd .\bar; npm run oa:generate
       - if: ${{matrix.os  != 'windows-latest'}}
         name: Test Ubuntu/MacOS
         run: |
@@ -116,6 +119,9 @@ jobs:
           (npm run oa version-manager set 4.3.1 && npm run oa version | grep -q '4.3.1') || exit 1
           test -f ~/my/storage/4.3.1.jar || exit 1
           npm run oa:generate && mkdir ./foo && cd ./foo && npm run oa:generate
+          cd ..
+          unset JAVA_HOME
+          npm run oa:generate && mkdir ./bar && cd ./bar && npm run oa:generate
 
 #  release:
 #    if: github.event.pull_request.merged == 'true'
