@@ -3,11 +3,12 @@ import * as path from 'path';
 import {LOGGER} from '../constants';
 import {set, get, has, merge} from 'lodash';
 import * as fs from 'fs-extra';
+import { isWin } from '../helpers';
 
 @Injectable()
 export class ConfigService {
 
-  public readonly cwd = process.env.PWD || process.env.INIT_CWD || process.cwd()
+  public readonly cwd = isWin() ? process.cwd() : process.env.PWD || process.env.INIT_CWD || process.cwd()
   public readonly configFile = path.resolve(this.cwd, 'openapitools.json')
 
   public get useDocker()  {
