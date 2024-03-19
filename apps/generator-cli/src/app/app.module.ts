@@ -19,7 +19,7 @@ import {ConfigService, GeneratorService, PassThroughService, UIService, VersionM
     VersionManagerService,
     {
       provide: COMMANDER_PROGRAM,
-      useValue: new Command('openapi-generator-cli').helpOption(false).usage('<command> [<args>]')
+      useValue: new Command('openapi-generator-cli').helpOption(false).usage('<command> [<args>]').option( '--openapitools <openapitools.json>', 'Use the specified openapi-generator-cli configuration file')
     },
     {provide: LOGGER, useValue: console}
   ]

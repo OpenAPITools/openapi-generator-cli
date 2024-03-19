@@ -1,6 +1,7 @@
 import { Test } from '@nestjs/testing';
+import { Command, createCommand } from 'commander';
 import { ConfigService } from './config.service';
-import { LOGGER } from '../constants';
+import { LOGGER, COMMANDER_PROGRAM } from '../constants';
 
 jest.mock('fs-extra');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -8,12 +9,20 @@ const fs = jest.mocked(require('fs-extra'));
 
 describe('ConfigService', () => {
   let fixture: ConfigService;
+  let program: Command;
 
   const log = jest.fn();
 
   beforeEach(async () => {
+    program = createCommand();
+    jest.spyOn(program, 'helpInformation');
+
     const moduleRef = await Test.createTestingModule({
-      providers: [ConfigService, { provide: LOGGER, useValue: { log } }],
+      providers: [
+        ConfigService,
+        { provide: LOGGER, useValue: { log } },
+        { provide: COMMANDER_PROGRAM, useValue: program },
+      ],
     }).compile();
 
     fixture = moduleRef.get(ConfigService);
@@ -139,6 +148,40 @@ describe('ConfigService', () => {
             spaces: 4,
           }
         );
+      });
+    });
+
+    describe('configFileOrDefault()', () => {
+      describe('--openapitools set', () => {
+        beforeEach(async () => {
+          program = createCommand();
+          program.opts().openapitools = '/tmp/myopenapitools.json';
+
+          const moduleRef = await Test.createTestingModule({
+            providers: [
+              ConfigService,
+              { provide: LOGGER, useValue: { log } },
+              { provide: COMMANDER_PROGRAM, useValue: program },
+            ],
+          }).compile();
+
+          fixture = moduleRef.get(ConfigService);
+          fs.writeJSONSync.mockReset();
+          fs.readJSONSync.mockReset();
+          fs.ensureFileSync.mockReset();
+        });
+        it('returns path set at cli, if openapitools argument provided', () => {
+          expect(fixture.configFile).toEqual('/tmp/myopenapitools.json');
+        });
+      });
+      describe('--openapitools not set', () => {
+        it('returns default path, if openapitools argument not provided', () => {
+          expect(
+            fixture.configFile.endsWith(
+              'openapi-generator-cli/openapitools.json'
+            )
+          ).toBeTruthy();
+        });
       });
     });
   });
