@@ -1,0 +1,62 @@
+{
+  "name": "generator-cli",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/generator-cli/src",
+  "projectType": "application",
+  "prefix": "generator-cli",
+  "generators": {},
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "target": "node",
+        "compiler": "tsc",
+        "outputPath": "dist/apps/generator-cli",
+        "main": "apps/generator-cli/src/main.ts",
+        "tsConfig": "apps/generator-cli/tsconfig.app.json",
+        "assets": [
+          "apps/generator-cli/src/config.schema.json",
+          "apps/generator-cli/src/README.md"
+        ],
+        "webpackConfig": "apps/generator-cli/webpack.config.js"
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "extractLicenses": true,
+          "inspect": false,
+          "fileReplacements": [
+            {
+              "replace": "apps/generator-cli/src/environments/environment.ts",
+              "with": "apps/generator-cli/src/environments/environment.prod.ts"
+            }
+          ]
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "production",
+      "options": {
+        "buildTarget": "generator-cli:build"
+      },
+      "configurations": {
+        "production": {
+          "buildTarget": "generator-cli:build:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "options": {
+        "jestConfig": "apps/generator-cli/jest.config.ts"
+      }
+    }
+  }
+}
