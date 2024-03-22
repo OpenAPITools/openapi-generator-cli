@@ -134,7 +134,7 @@ Further it is also possible to configure generators, for example:
   "spaces": 2,
   "generator-cli": {
     "version": "4.3.1",
-    "storageDir": "~/my/custom/storage/dir", // optional
+    "storageDir": "~/my/custom/storage/dir", // optional, where the JAR file will be located/downloaded
     "generators": { // optional
       "v2.0": { // any name you like (just printed to the console log or reference it using --generator-key) 
         "generatorName": "typescript-angular",
@@ -175,6 +175,12 @@ is automatically used to generate your code. 🎉
 | relDir       | directory name of file relative to the glob provided          | docs                                                  |
 | relPath      | file name and extension of file relative to the glob provided | docs/auth.yaml                                        |
 | ext          | just file extension                                           | yaml                                                  |
+
+### Environment variables
+
+The following environment variables can be provided to override the config file:
+
+- `OPENAPI_GENERATOR_STORAGE_DIR`: Overrides the storageDir property.
 
 ### Using custom / private maven registry 
 
