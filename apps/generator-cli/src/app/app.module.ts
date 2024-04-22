@@ -11,14 +11,22 @@ import {
   UIService,
   VersionManagerService,
 } from './services';
-import { HttpsProxyAgent } from 'https-proxy-agent';
+import { ProxyAgent } from 'proxy-agent';
 
-const proxyUrl = process.env.HTTP_PROXY || process.env.HTTPS_PROXY;
+const hasHttpProxyEnvs = process.env.HTTP_PROXY || process.env.http_proxy;
+const hasHttpsProxyEnvs = process.env.HTTPS_PROXY || process.env.https_proxy;
 const httpModuleConfig: HttpModuleOptions = {};
 
-if (proxyUrl) {
+const proxyAgent = new ProxyAgent();
+
+if (hasHttpProxyEnvs) {
   httpModuleConfig.proxy = false;
-  httpModuleConfig.httpsAgent = new HttpsProxyAgent(proxyUrl);
+  httpModuleConfig.httpAgent = proxyAgent;
+}
+
+if (hasHttpsProxyEnvs) {
+  httpModuleConfig.proxy = false;
+  httpModuleConfig.httpsAgent = proxyAgent;
 }
 
 @Module({
