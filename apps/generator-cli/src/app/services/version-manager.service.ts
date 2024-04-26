@@ -31,21 +31,21 @@ const mvn = {
 
 @Injectable()
 export class VersionManagerService {
-  private customStorageDir = this.configService.get<string>(
-    'generator-cli.storageDir'
-  );
+  private customStorageDir =
+    process.env.OPENAPI_GENERATOR_STORAGE_DIR ||
+    this.configService.get<string>('generator-cli.storageDir');
 
   public readonly storage = this.customStorageDir
     ? path.resolve(
         this.configService.cwd,
-        this.customStorageDir.replace('~', os.homedir())
+        this.customStorageDir.replace('~', os.homedir()),
       )
     : path.resolve(__dirname, './versions');
 
   constructor(
     @Inject(LOGGER) private readonly logger: LOGGER,
     private httpService: HttpService,
-    private configService: ConfigService
+    private configService: ConfigService,
   ) {}
 
   getAll(): Observable<Version[]> {
