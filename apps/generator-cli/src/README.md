@@ -196,6 +196,44 @@ If you're using a private maven registry you can configure the `downloadUrl` and
 
 If the `version` property param is set it is not necessary to configure the `queryUrl`.
 
+### Use locally built JAR
+In order to use a locally built jar of the generator CLI, you can copy the jar from your local build (i.e. if you were to `build` the [OpenAPITools/openapi-generator](https://github.com/OpenAPITools/openapi-generator) repository it would be in `~/openapi-generator/modules/openapi-generator-cli/target/openapi-generator-cli.jar`) into `./node_modules/@openapitools/openapi-generator-cli/versions/` and change the `version` in the `openapitools.json` file to the base name of the jar file.
+E.g.:
+```sh
+cd openapi-generator
+./mvnw clean package
+cp ./modules/openapi-generator-cli/target/openapi-generator-cli.jar /your/project/node_modules/@openapitools/openapi-generator-cli/versions/my-local-snapshot.jar
+```
+and then:
+```json
+{
+  "$schema": "./node_modules/@openapitools/openapi-generator-cli/config.schema.json",
+  "spaces": 2,
+  "generator-cli": {
+    "version": "my-local-snapshot",
+  }
+}
+```
+
+### Use nightly `SNAPSHOT` build
+Change your `openapitools.json` to:
+
+```json
+{
+  "$schema": "node_modules/@openapitools/openapi-generator-cli/config.schema.json",
+  "spaces": 2,
+  "generator-cli": {
+    "version": "7.9.0-20240829.123431-22",
+    "repository": {
+      "downloadUrl": "https://oss.sonatype.org/content/repositories/snapshots/org/openapitools/openapi-generator-cli/7.9.0-SNAPSHOT/openapi-generator-cli-${versionName}.jar"
+    }
+  }
+}
+```
+
+Example is with a snapshot of `7.9.0`, please change the `version` and `downloadUrl` accordingly.
+You can find all snapshots [here](https://oss.sonatype.org/content/repositories/snapshots/org/openapitools/openapi-generator-cli/).
+
 ## Run specific generators
 
 | cmd                                                      | v3.0 runs | v2.0 runs |
