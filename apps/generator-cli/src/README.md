@@ -115,7 +115,7 @@ Initially the file has the following content:
   "$schema": "node_modules/@openapitools/openapi-generator-cli/config.schema.json",
   "spaces": 2,
   "generator-cli": {
-    "version": "4.3.1" // or the current latest version ;)
+    "version": "7.8.0" // or the current latest version ;)
   }
 }
 ```
@@ -124,7 +124,7 @@ This configuration indicates the following:
 
 - the json file shall be formatted using **2 spaces**
 - the jar files shall be downloaded to *./my/custom/storage/dir*
-- the generator-cli version 4.3.1 is used
+- the generator-cli version 7.8.0 is used
 
 Further it is also possible to configure generators, for example:
 
@@ -133,7 +133,7 @@ Further it is also possible to configure generators, for example:
   "$schema": "node_modules/@openapitools/openapi-generator-cli/config.schema.json",
   "spaces": 2,
   "generator-cli": {
-    "version": "4.3.1",
+    "version": "7.8.0",
     "storageDir": "~/my/custom/storage/dir", // optional
     "generators": { // optional
       "v2.0": { // any name you like (just printed to the console log or reference it using --generator-key) 
@@ -185,7 +185,7 @@ If you're using a private maven registry you can configure the `downloadUrl` and
   "$schema": "node_modules/@openapitools/openapi-generator-cli/config.schema.json",
   "spaces": 2,
   "generator-cli": {
-    "version": "5.3.0",
+    "version": "7.8.0",
     "repository": {
       "queryUrl": "https://private.maven.intern/solrsearch/select?q=g:${group.id}+AND+a:${artifact.id}&core=gav&start=0&rows=200",
       "downloadUrl": "https://private.maven.intern/maven2/${groupId}/${artifactId}/${versionName}/${artifactId}-${versionName}.jar"
@@ -231,7 +231,7 @@ more information about the possible arguments and a detailed usage manual of the
 
 ```sh
 npm install @openapitools/openapi-generator-cli@previous
-npm i @openapitools/openapi-generator-cli@1.0.18-4.3.1                                         
+npm i @openapitools/openapi-generator-cli@1.0.18-4.3.1
 ```
 
 or using yarn
