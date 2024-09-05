@@ -74,25 +74,24 @@ jobs:
         run: |
           cd .\examples
           yarn global add json; $yarn_global_bin=yarn global bin; $env:PATH += ";$yarn_global_bin"
-          $env:PATH
-          yarn cache clean && yarn add $env:GITHUB_WORKSPACE\package.tgz
+          yarn cache clean; yarn add $env:GITHUB_WORKSPACE\package.tgz
           npm run oa version
           npm run oa completion
           npm run oa help
           npm run oa help generate
           npm run oa version-manager help
-          npm run oa generate -- -g ruby -i https://raw.githubusercontent.com/OpenAPITools/openapi-generator/master/modules/openapi-generator/src/test/resources/3_0/petstore.yaml -o $GITHUB_WORKSPACE\tmp\ruby-client
-          (npm run oa version-manager set 3.0.0 && npm run oa version | grep -q '3.0.0') || exit 1
-          (npm run oa version-manager set 4.0 && npm run oa version | grep -q '4.0.3') || exit 1
-          (npm run oa version-manager set 4.3.1 && npm run oa version | grep -q '4.3.1') || exit 1
-          (npm run oa version-manager set 4.3.1 && npm run oa version | grep -q '4.3.1') || exit 1
-          json -I -f openapitools.json -e 'this["generator-cli"]["storageDir"]="./my/storage/"'
-          (npm run oa version-manager set 4.3.0 && npm run oa version | grep -q '4.3.0') || exit 1
-          test -f ./my/storage/4.3.0.jar || exit 1
-          json -I -f openapitools.json -e 'this["generator-cli"]["storageDir"]="~/my/storage/"'
-          (npm run oa version-manager set 4.3.1 && npm run oa version | grep -q '4.3.1') || exit 1
-          test -f ~/my/storage/4.3.1.jar || exit 1
-          npm run oa:generate && mkdir ./foo && cd ./foo && npm run oa:generate
+          npm run oa generate -- -g ruby -i https://raw.githubusercontent.com/OpenAPITools/openapi-generator/master/modules/openapi-generator/src/test/resources/3_0/petstore.yaml -o $env:GITHUB_WORKSPACE\tmp\ruby-client
+          npm run oa version-manager set 3.0.0; $version=npm run oa version; if (-not ($version.Contains('3.0.0'))) { exit 1 }
+          npm run oa version-manager set 4.0; $version=npm run oa version; if (-not ($version.Contains('4.0.3'))) { exit 1 }
+          npm run oa version-manager set 4.3.1; $version=npm run oa version; if (-not ($version.Contains('4.3.1'))) { exit 1 }
+          npm run oa version-manager set 4.3.1; $version=npm run oa version; if (-not ($version.Contains('4.3.1'))) { exit 1 }
+          json -I -f openapitools.json -e "this['generator-cli']['storageDir']='./my/storage/'"
+          npm run oa version-manager set 4.3.0; $version=npm run oa version; if (-not ($version.Contains('4.3.0'))) { exit 1 }
+          if (-not (Test-Path .\my\storage\4.3.0.jar)) { exit 1 }
+          json -I -f openapitools.json -e "this['generator-cli']['storageDir']='~/my/storage/'"
+          npm run oa version-manager set 4.3.1; $version=npm run oa version; if (-not ($version.Contains('4.3.1'))) { exit 1 }
+          if (-not (Test-Path ~\my\storage\4.3.1.jar)) { exit 1 }
+          npm run oa:generate; mkdir .\foo; cd .\foo; npm run oa:generate
       - if: ${{matrix.os  != 'windows-latest'}}
         name: Test Ubuntu/MacOS
         run: |
