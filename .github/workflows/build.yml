@@ -72,6 +72,7 @@ jobs:
       - if: ${{matrix.os  == 'windows-latest'}}
         name: Test Windows
         run: |
+          $env:JAVA_HOME = $env:JAVA_HOME_17_X64
           cd .\examples
           yarn global add json; $yarn_global_bin=yarn global bin; $env:PATH += ";$yarn_global_bin"
           yarn cache clean; yarn add $env:GITHUB_WORKSPACE\package.tgz
