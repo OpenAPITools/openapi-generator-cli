@@ -1,6 +1,7 @@
 import { Test } from '@nestjs/testing';
 import { GeneratorService } from './generator.service';
 import { LOGGER } from '../constants';
+import { javaCmd } from '../helpers';
 import { VersionManagerService } from './version-manager.service';
 import { ConfigService } from './config.service';
 
@@ -144,9 +145,6 @@ describe('GeneratorService', () => {
           ' '
         )}`,
       });
-
-      const javaHome = process.env['JAVA_HOME'];
-      const javaCmd = javaHome ? `${javaHome}/bin/java` : 'java';
 
       describe.each([
         [
