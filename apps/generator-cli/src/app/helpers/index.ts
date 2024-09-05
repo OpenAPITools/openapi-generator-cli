@@ -1,6 +1,6 @@
 import path from 'path';
 
-const isWin = () => process.platform === 'win32';
+export const isWin = () => process.platform === 'win32';
 
 /**
  * If JAVA_HOME is set, it returns `$JAVA_HOME/bin/java`
