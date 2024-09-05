@@ -243,7 +243,15 @@ export class GeneratorService {
         )}" org.openapitools.codegen.OpenAPIGenerator`
       : `-jar "${cliPath}"`;
 
-    return [javaCmd, process.env['JAVA_OPTS'], subCmd, 'generate', appendix]
+    return [
+      `"`,
+      javaCmd,
+      process.env['JAVA_OPTS'],
+      subCmd,
+      'generate',
+      appendix,
+      `"`,
+    ]
       .filter(isString)
       .join(' ');
   };
