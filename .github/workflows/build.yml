@@ -7,14 +7,14 @@ on:
       - master
       - renovate/**
   pull_request:
-    types: [ assigned, opened, synchronize, reopened ]
+    types: [assigned, opened, synchronize, reopened]
 jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [ 18.x ]
+        node-version: [18.x]
 
     steps:
       - name: Checkout
@@ -48,13 +48,13 @@ jobs:
           path: dist/apps/package.tgz
 
   e2e:
-    name: "E2E local: (${{ matrix.os }})"
+    name: 'E2E local: (${{ matrix.os }})'
     needs: build
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ ubuntu-latest, macos-latest, windows-latest ]
-        node-version: [ 18.x ]
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        node-version: [18.x]
 
     steps:
       - name: Checkout
@@ -70,9 +70,12 @@ jobs:
           name: package.tgz
 
       - name: Test
-        run: |
-          cd ./examples
-          yarn global add json && export PATH="$(yarn global bin):$PATH"
+        run: cd ./examples
+      - if: ${{matrix.os  == 'windows-latest'}}
+        run: yarn global add json && set PATH="$(yarn global bin):$PATH"
+      - if: ${{matrix.os  != 'windows-latest'}}
+        run: yarn global add json && export PATH="$(yarn global bin):$PATH"
+      - run: |
           yarn cache clean && yarn add $GITHUB_WORKSPACE/package.tgz
           npm run oa version
           npm run oa completion
