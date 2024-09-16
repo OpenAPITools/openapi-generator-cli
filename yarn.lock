@@ -1659,10 +1659,10 @@
   resolved "https://registry.yarnpkg.com/@lukeed/csprng/-/csprng-1.1.0.tgz#1e3e4bd05c1cc7a0b2ddbd8a03f39f6e4b5e6cfe"
   integrity sha512-Z7C/xXCiGWsg0KuKsHTKJxbWhpI3Vs5GwLfOean7MGyVFGqdRgBbAjOCh6u4bbjPc/8MJ2pZmK/0DLdCbivLDA==
 
-"@nestjs/axios@3.0.2":
-  version "3.0.2"
-  resolved "https://registry.yarnpkg.com/@nestjs/axios/-/axios-3.0.2.tgz#0078c101a29fb46f5c566d68a4315fddabc083ed"
-  integrity sha512-Z6GuOUdNQjP7FX+OuV2Ybyamse+/e0BFdTWBX5JxpBDKA+YkdLynDgG6HTF04zy6e9zPa19UX0WA2VDoehwhXQ==
+"@nestjs/axios@3.0.3":
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/@nestjs/axios/-/axios-3.0.3.tgz#a663cb13cff07ea6b9a7107263de2ae472d41118"
+  integrity sha512-h6TCn3yJwD6OKqqqfmtRS5Zo4E46Ip2n+gK1sqwzNBC+qxQ9xpCu+ODVRFur6V3alHSCSBxb3nNtt73VEdluyA==
 
 "@nestjs/common@10.3.0":
   version "10.3.0"
