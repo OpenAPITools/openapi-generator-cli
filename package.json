@@ -116,7 +116,7 @@
     "@types/concurrently": "6.4.0",
     "@types/fs-extra": "9.0.13",
     "@types/inquirer": "8.2.10",
-    "@types/jest": "29.5.12",
+    "@types/jest": "29.5.13",
     "@types/jsonpath": "0.2.4",
     "@types/lodash": "4.17.7",
     "@types/node": "18.16.9",
