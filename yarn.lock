@@ -1664,19 +1664,19 @@
   resolved "https://registry.yarnpkg.com/@nestjs/axios/-/axios-3.0.2.tgz#0078c101a29fb46f5c566d68a4315fddabc083ed"
   integrity sha512-Z6GuOUdNQjP7FX+OuV2Ybyamse+/e0BFdTWBX5JxpBDKA+YkdLynDgG6HTF04zy6e9zPa19UX0WA2VDoehwhXQ==
 
-"@nestjs/common@10.4.2":
-  version "10.4.2"
-  resolved "https://registry.yarnpkg.com/@nestjs/common/-/common-10.4.2.tgz#6146411a7b7f6123f557fbaa89cfb951966be39a"
-  integrity sha512-7uLRj/1WBX93qM78keTE8b5SqIgz5Rhe0BPnOdCL1QnA7mLVcj0aEyLuHryeZJfx26FDoeAEMrLCC/RAdmIHog==
+"@nestjs/common@10.4.3":
+  version "10.4.3"
+  resolved "https://registry.yarnpkg.com/@nestjs/common/-/common-10.4.3.tgz#b9059313d928aea335a4a185a621e32c1858c845"
+  integrity sha512-4hbLd3XIJubHSylYd/1WSi4VQvG68KM/ECYpMDqA3k3J1/T17SAg40sDoq3ZoO5OZgU0xuNyjuISdOTjs11qVg==
   dependencies:
     uid "2.0.2"
     iterare "1.2.1"
     tslib "2.7.0"
 
-"@nestjs/core@10.4.2":
-  version "10.4.2"
-  resolved "https://registry.yarnpkg.com/@nestjs/core/-/core-10.4.2.tgz#87a13112d61db0d69832643d5b0b29086f154282"
-  integrity sha512-h2sjNzFHzoxOHU5Ag/pCVn0CrYHKTa0HfjGAa6GOrffRAsIa1H2nJaUzg89yHZXkHgWi+UynRsp8A4HJ1JVg9w==
+"@nestjs/core@10.4.3":
+  version "10.4.3"
+  resolved "https://registry.yarnpkg.com/@nestjs/core/-/core-10.4.3.tgz#b2a3dcfc6a948a74618feeee8affc3186afe52da"
+  integrity sha512-6OQz+5C8mT8yRtfvE5pPCq+p6w5jDot+oQku1KzQ24ABn+lay1KGuJwcKZhdVNuselx+8xhdMxknZTA8wrGLIg==
   dependencies:
     uid "2.0.2"
     "@nuxtjs/opencollective" "0.3.2"
@@ -1685,10 +1685,10 @@
     path-to-regexp "3.3.0"
     tslib "2.7.0"
 
-"@nestjs/platform-express@10.4.2":
-  version "10.4.2"
-  resolved "https://registry.yarnpkg.com/@nestjs/platform-express/-/platform-express-10.4.2.tgz#1b81ed9fbde9b61b80feeb377e6172af4adb609e"
-  integrity sha512-WQVfUyAgMZqDXWc+sIdfWZRl6+CLZhS/GB70ZiKbMNiOETbfBisQoZ1S95o+ztXZC527HnPxvwiF3GPjG/trmg==
+"@nestjs/platform-express@10.4.3":
+  version "10.4.3"
+  resolved "https://registry.yarnpkg.com/@nestjs/platform-express/-/platform-express-10.4.3.tgz#a8530c65a28963fe2f53322e75484ab6b04c64c9"
+  integrity sha512-ss7gkofVm3eO+1P9iRhmGq6Xcjg+mIN3dWisKJZYelSV+msb0QpJmqChLvWjLkWtlqDnx915FKUk0IzCa0TVzw==
   dependencies:
     body-parser "1.20.3"
     cors "2.8.5"
