@@ -96,7 +96,7 @@ export class VersionManagerService {
         this.logger.log(
           chalk.red(`Unable to query repository, because of: "${e.message}". Return default versions instead.`)
         );
-        this.printResponseError(e);
+        //this.printResponseError(e);
         return this.getObservableVersions();
       })
     );
@@ -265,16 +265,20 @@ export class VersionManagerService {
   }
 
   private printResponseError(error: AxiosError) {
-    if (error.isAxiosError) {
-      this.logger.log(chalk.red('\nResponse:'));
-      Object.entries(error.response.headers).forEach((a) =>
-        this.logger.log(...a)
-      );
-      this.logger.log();
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (error.response.data as any).on('data', (data) =>
-        this.logger.log(data.toString('utf8'))
-      );
+    try {
+      if (error.isAxiosError) {
+        this.logger.log(chalk.red('\nResponse:'));
+        Object.entries(error.response.headers).forEach((a) =>
+          this.logger.log(...a)
+        );
+        this.logger.log();
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (error.response.data as any).on('data', (data) =>
+          this.logger.log(data.toString('utf8'))
+        );
+      }
+    } catch(e){
+      this.logger.log('Errors: ', e as Error);
     }
   }
 
