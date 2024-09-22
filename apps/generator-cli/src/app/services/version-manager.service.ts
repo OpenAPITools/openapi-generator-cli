@@ -277,8 +277,9 @@ export class VersionManagerService {
           this.logger.log(data.toString('utf8'))
         );
       }
-    } catch(e){
-      this.logger.log('Errors: ', e as Error);
+    } catch(e) {
+      // simply show the original error if the above code block fails
+      this.logger.log('Errors: ', error);
     }
   }
 
