@@ -14,10 +14,8 @@
           {
             buildInputs = with pkgs;[
               # These dependencies match the github workflows
-              # yarn 1.x
               yarn
-              # nodejs without npm
-              nodejs-slim_18
+              nodejs_18
             ];
           };
       }
