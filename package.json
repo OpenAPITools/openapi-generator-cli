@@ -44,7 +44,7 @@
     "rest"
   ],
   "engines": {
-    "node": ">=10.0.0"
+    "node": ">=16"
   },
   "scripts": {
     "nx": "nx",
@@ -91,6 +91,7 @@
     "concurrently": "6.5.1",
     "console.table": "0.10.0",
     "fs-extra": "10.1.0",
+    "glob": "9.x",
     "https-proxy-agent": "^7.0.4",
     "inquirer": "8.2.6",
     "jsonpath": "1.1.1",
