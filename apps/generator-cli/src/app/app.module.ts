@@ -11,15 +11,8 @@ import {
   UIService,
   VersionManagerService,
 } from './services';
-import { HttpsProxyAgent } from 'https-proxy-agent';
 
-const proxyUrl = process.env.HTTP_PROXY || process.env.HTTPS_PROXY;
 const httpModuleConfig: HttpModuleOptions = {};
-
-if (proxyUrl) {
-  httpModuleConfig.proxy = false;
-  httpModuleConfig.httpsAgent = new HttpsProxyAgent(proxyUrl);
-}
 
 @Module({
   imports: [
