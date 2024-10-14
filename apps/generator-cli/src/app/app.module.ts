@@ -11,16 +11,27 @@ import {
   UIService,
   VersionManagerService,
 } from './services';
+import { Agent } from 'https';
 
-const httpModuleConfig: HttpModuleOptions = {};
+export const httpModuleConfigFactory = async (configService: ConfigService): Promise<HttpModuleOptions> => {
+  const httpsAgent = !configService.get('generator-cli.http.rejectUnauthorized', true) ? new Agent({
+    rejectUnauthorized: false,
+  }) : undefined;
+  return {
+    httpsAgent: httpsAgent,
+  };
+};
 
 @Module({
   imports: [
-    HttpModule.register({
-      ...httpModuleConfig,
+    HttpModule.registerAsync({
+      imports: [AppModule],
+      useFactory: httpModuleConfigFactory,
+      inject: [ConfigService],
     }),
   ],
   controllers: [VersionManagerController],
+  exports: [ConfigService],
   providers: [
     UIService,
     ConfigService,

@@ -41,6 +41,12 @@
           "type": "string",
           "default": "openapitools/openapi-generator-cli"
         },
+        "http": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/http"
+          }
+        },
         "generators": {
           "type": "object",
           "additionalProperties": {
@@ -61,6 +67,16 @@
           "additionalProperties": true
         }
       ]
+    },
+    "http": {
+      "type": "object",
+      "properties": {
+        "rejectUnauthorized": {
+          "description": "rejectUnauthorized option is used in HTTPS requests to determine whether the client should reject connections to servers with invalid or self-signed SSL certificates. Defaults to true.",
+          "type": "boolean",
+          "default": true
+        }
+      }
     },
     "generator": {
       "type": "object",
