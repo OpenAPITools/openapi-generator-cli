@@ -53,21 +53,45 @@ export class ConfigService {
   }
 
   set(path: string, value: unknown) {
-    this.write(set(this.read(), path, value))
+    this.write(set(this.read(false), path, value))
     return this
   }
 
-  private read() {
+  private read(replaceEnvVars: boolean = true) {
     fs.ensureFileSync(this.configFile)
 
-    return merge(
+    const config =  merge(
       this.defaultConfig,
       fs.readJSONSync(this.configFile, {throws: false, encoding: 'utf8'}),
     )
+
+    return replaceEnvVars ? replaceEnvPlaceholders(config) : config
   }
 
   private write(config) {
     fs.writeJSONSync(this.configFile, config, {encoding: 'utf8', spaces: config.spaces || 2})
   }
 
+}
+
+function replaceEnvPlaceholders(config: any): any {
+  const envPlaceholderPattern = /\${(\w+)}/g;
+
+  const replacePlaceholders = (value: any): any => {
+    if (typeof value === 'string') {
+      return value.replace(envPlaceholderPattern, (_, varName) => {
+        return process.env[varName] || `\${${varName}}`;
+      });
+    } else if (Array.isArray(value)) {
+      return value.map(replacePlaceholders);
+    } else if (typeof value === 'object' && value !== null) {
+      return Object.keys(value).reduce((acc, key) => {
+        acc[key] = replacePlaceholders(value[key]);
+        return acc;
+      }, {});
+    }
+    return value;
+  };
+
+  return replacePlaceholders(config);
 }
