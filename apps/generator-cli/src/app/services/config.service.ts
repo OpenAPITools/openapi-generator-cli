@@ -30,6 +30,10 @@ export class ConfigService {
     return this.get('generator-cli.dockerImageName', 'openapitools/openapi-generator-cli');
   }
 
+  public useNpmrc()  {
+    return this.get('generator-cli.useNpmrc', false);
+  }
+
   private readonly defaultConfig = {
     $schema: './node_modules/@openapitools/openapi-generator-cli/config.schema.json',
     spaces: 2,

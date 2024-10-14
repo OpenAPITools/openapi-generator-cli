@@ -9,6 +9,7 @@ import { resolve } from 'path';
 import * as os from 'os';
 import { TestingModule } from '@nestjs/testing/testing-module';
 import * as path from 'path';
+import { NpmrcService } from './npmrc.service';
 
 jest.mock('fs-extra');
 
@@ -24,6 +25,10 @@ describe('VersionManagerService', () => {
   const getVersion = jest.fn().mockReturnValue('4.3.0');
   const getStorageDir = jest.fn().mockReturnValue(undefined);
   const setVersion = jest.fn();
+
+  const getStrictSsl = jest.fn().mockReturnValue(true);
+  const getAuthToken = jest.fn().mockReturnValue(undefined);
+  const useNpmrc = jest.fn().mockReturnValue(false);
 
   let testBed: TestingModule;
 
@@ -54,8 +59,10 @@ describe('VersionManagerService', () => {
             },
             set: setVersion,
             cwd: '/c/w/d',
+            useNpmrc,
           },
         },
+        { provide: NpmrcService, useValue: { getStrictSsl, getAuthToken } },
         { provide: LOGGER, useValue: { log } },
       ],
     }).compile();
@@ -604,5 +611,60 @@ describe('VersionManagerService', () => {
         });
       });
     });
+
+    describe.each([
+       [
+        'useNpmrc with getAll()',
+        () => fixture.getAll(),
+        'https://search.maven.org/solrsearch/select?q=g:org.openapitools+AND+a:openapi-generator-cli&core=gav&start=0&rows=200',
+        {}
+      ],
+      [
+        'useNpmrc with download()',
+        () => fixture.download('4.2.0'),
+        'https://repo1.maven.org/maven2/org/openapitools/openapi-generator-cli/4.2.0/openapi-generator-cli-4.2.0.jar',
+        {responseType: "stream"}
+      ]
+    ])('%s', (_, action, expectedUrl, additionalHeaders) => {
+      it('should send authToken when useNpmrc=true npmrc contains a matching token', async () => {
+        useNpmrc.mockReturnValue(true);
+        getAuthToken.mockReturnValue('token-01');
+
+        await action();
+
+        expect(get).toHaveBeenNthCalledWith(
+          1,
+          expectedUrl,
+          { headers: {Authorization: 'Bearer token-01'}, ...additionalHeaders }
+        );
+        expect(getAuthToken).toHaveBeenCalledWith(expectedUrl);
+      });
+
+      it('should not send authToken when useNpmrc=true npmrc does not contain a matching token', async () => {
+        useNpmrc.mockReturnValue(true);
+        getAuthToken.mockReturnValue(null);
+
+        await action();
+
+        expect(get).toHaveBeenNthCalledWith(
+          1,
+          expectedUrl,
+          { headers: {}, ...additionalHeaders }
+        );
+      });
+
+      it('should not send authToken when useNpmrc=false', async () => {
+        useNpmrc.mockReturnValue(false);
+
+        await action();
+
+        expect(get).toHaveBeenNthCalledWith(
+          1,
+          expectedUrl,
+          { headers: {}, ...additionalHeaders }
+        );
+      });
+    });
+
   });
 });

@@ -7,14 +7,17 @@ import { VersionManagerController } from './controllers/version-manager.controll
 import {
   ConfigService,
   GeneratorService,
+  NpmrcService,
   PassThroughService,
   UIService,
   VersionManagerService,
 } from './services';
 import { Agent } from 'https';
 
-export const httpModuleConfigFactory = async (configService: ConfigService): Promise<HttpModuleOptions> => {
-  const httpsAgent = !configService.get('generator-cli.http.rejectUnauthorized', true) ? new Agent({
+export const httpModuleConfigFactory = async (configService: ConfigService, npmrcService: NpmrcService): Promise<HttpModuleOptions> => {
+  const strictSsl = configService.useNpmrc() ? npmrcService.getStrictSsl() : true;
+  const rejectUnauthorized = configService.get('generator-cli.http.rejectUnauthorized', true);
+  const httpsAgent = !strictSsl || !rejectUnauthorized ? new Agent({
     rejectUnauthorized: false,
   }) : undefined;
   return {
@@ -27,15 +30,16 @@ export const httpModuleConfigFactory = async (configService: ConfigService): Pro
     HttpModule.registerAsync({
       imports: [AppModule],
       useFactory: httpModuleConfigFactory,
-      inject: [ConfigService],
+      inject: [ConfigService, NpmrcService],
     }),
   ],
   controllers: [VersionManagerController],
-  exports: [ConfigService],
+  exports: [ConfigService, NpmrcService],
   providers: [
     UIService,
     ConfigService,
     GeneratorService,
+    NpmrcService,
     PassThroughService,
     VersionManagerService,
     {
