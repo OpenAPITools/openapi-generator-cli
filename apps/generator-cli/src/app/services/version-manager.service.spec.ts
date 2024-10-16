@@ -142,7 +142,8 @@ describe('VersionManagerService', () => {
       it('executes one get request', () => {
         expect(get).toHaveBeenNthCalledWith(
           1,
-          'https://search.maven.org/solrsearch/select?q=g:org.openapitools+AND+a:openapi-generator-cli&core=gav&start=0&rows=200'
+          'https://search.maven.org/solrsearch/select?q=g:org.openapitools+AND+a:openapi-generator-cli&core=gav&start=0&rows=200',
+          { headers: {} }
         );
       });
 
@@ -184,7 +185,8 @@ describe('VersionManagerService', () => {
         it('executes one get request', () => {
           expect(get).toHaveBeenNthCalledWith(
             1,
-            'https://search.maven.org/solrsearch/select?q=g:org.openapitools+AND+a:openapi-generator-cli&core=gav&start=0&rows=200'
+            'https://search.maven.org/solrsearch/select?q=g:org.openapitools+AND+a:openapi-generator-cli&core=gav&start=0&rows=200',
+            { headers: {} }
           );
         });
 
@@ -219,7 +221,8 @@ describe('VersionManagerService', () => {
         it('executes one get request', () => {
           expect(get).toHaveBeenNthCalledWith(
             1,
-            'https://search.maven.org/solrsearch/select?q=g:org.openapitools+AND+a:openapi-generator-cli&core=gav&start=0&rows=200'
+            'https://search.maven.org/solrsearch/select?q=g:org.openapitools+AND+a:openapi-generator-cli&core=gav&start=0&rows=200',
+            { headers: {} }
           );
         });
 
@@ -328,7 +331,7 @@ describe('VersionManagerService', () => {
       it('removes the correct file', () => {
         expect(fs.removeSync).toHaveBeenNthCalledWith(
           1,
-          `${fixture.storage}/4.3.1.jar`
+          path.resolve(fixture.storage, '4.3.1.jar')
         );
       });
 
@@ -431,8 +434,8 @@ describe('VersionManagerService', () => {
 
           describe('there is a custom storage location', () => {
             it.each([
-              ['/c/w/d/custom/dir', './custom/dir'],
-              ['/custom/dir', '/custom/dir'],
+              [path.resolve('/c/w/d', 'custom/dir'), './custom/dir'],
+              [path.resolve('/custom/dir'), '/custom/dir'],
             ])('returns %s for %s', async (expected, cfgValue) => {
               getStorageDir.mockReturnValue(cfgValue);
               logMessages = { before: [], after: [] };
@@ -458,7 +461,7 @@ describe('VersionManagerService', () => {
           expect(get).toHaveBeenNthCalledWith(
             1,
             'https://repo1.maven.org/maven2/org/openapitools/openapi-generator-cli/4.2.0/openapi-generator-cli-4.2.0.jar',
-            { responseType: 'stream' }
+            { responseType: 'stream', headers: {} }
           );
         });
 
@@ -480,15 +483,15 @@ describe('VersionManagerService', () => {
           it('creates the correct write stream', () => {
             expect(fs.createWriteStream).toHaveBeenNthCalledWith(
               1,
-              '/tmp/generator-cli-abcDEF/4.2.0'
+              path.join('/tmp/generator-cli-abcDEF', '4.2.0')
             );
           });
 
           it('moves the file to the target location', () => {
             expect(fs.moveSync).toHaveBeenNthCalledWith(
               1,
-              '/tmp/generator-cli-abcDEF/4.2.0',
-              `${fixture.storage}/4.2.0.jar`,
+              path.join('/tmp/generator-cli-abcDEF', '4.2.0'),
+              path.resolve(fixture.storage, '4.2.0.jar'),
               { overwrite: true }
             );
           });
@@ -563,7 +566,7 @@ describe('VersionManagerService', () => {
         fixture.isDownloaded('4.3.1');
         expect(fs.existsSync).toHaveBeenNthCalledWith(
           1,
-          fixture.storage + '/4.3.1.jar'
+          path.resolve(fixture.storage, '4.3.1.jar')
         );
       });
     });
@@ -571,12 +574,12 @@ describe('VersionManagerService', () => {
     describe('filePath()', () => {
       it('returns the path to the given version name', () => {
         expect(fixture.filePath('1.2.3')).toEqual(
-          `${fixture.storage}/1.2.3.jar`
+          path.resolve(fixture.storage, '1.2.3.jar')
         );
       });
 
       it('returns the path to the selected version name as default', () => {
-        expect(fixture.filePath()).toEqual(`${fixture.storage}/4.3.0.jar`);
+        expect(fixture.filePath()).toEqual(path.resolve(fixture.storage, '4.3.0.jar'));
       });
     });
 
@@ -589,11 +592,11 @@ describe('VersionManagerService', () => {
 
       describe('there is a custom storage location', () => {
         it.each([
-          ['/c/w/d/custom/dir', './custom/dir'],
-          ['/custom/dir', '/custom/dir'],
-          ['/custom/dir', '/custom/dir/'],
-          [`${os.homedir()}/oa`, '~/oa/'],
-          [`${os.homedir()}/oa`, '~/oa'],
+          [path.resolve('/c/w/d', 'custom/dir'), './custom/dir'],
+          [path.resolve('/c/w/d', '/custom/dir'), '/custom/dir'],
+          [path.resolve('/c/w/d', '/custom/dir'), '/custom/dir/'],
+          [path.resolve(os.homedir(), 'oa'), '~/oa/'],
+          [path.resolve(os.homedir(), 'oa'), '~/oa'],
         ])('returns %s for %s', async (expected, cfgValue) => {
           getStorageDir.mockReturnValue(cfgValue);
           await compile();

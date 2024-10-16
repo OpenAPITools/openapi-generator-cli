@@ -2,6 +2,7 @@ import { Test } from '@nestjs/testing';
 import { Command, createCommand } from 'commander';
 import { ConfigService } from './config.service';
 import { LOGGER, COMMANDER_PROGRAM } from '../constants';
+import * as path from 'path';
 
 jest.mock('fs-extra');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -178,7 +179,7 @@ describe('ConfigService', () => {
         it('returns default path, if openapitools argument not provided', () => {
           expect(
             fixture.configFile.endsWith(
-              'openapi-generator-cli/openapitools.json'
+              path.join('openapi-generator-cli', 'openapitools.json')
             )
           ).toBeTruthy();
         });
