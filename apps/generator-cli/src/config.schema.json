@@ -41,6 +41,17 @@
           "type": "string",
           "default": "openapitools/openapi-generator-cli"
         },
+        "useNpmrc": {
+          "type": "boolean",
+          "default": false,
+          "description": "use .npmrc file for using authToken to call the maven repository in case maven and npm repository are handled by the same server"
+        },
+        "http": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/http"
+          }
+        },
         "generators": {
           "type": "object",
           "additionalProperties": {
@@ -61,6 +72,16 @@
           "additionalProperties": true
         }
       ]
+    },
+    "http": {
+      "type": "object",
+      "properties": {
+        "rejectUnauthorized": {
+          "description": "rejectUnauthorized option is used in HTTPS requests to determine whether the client should reject connections to servers with invalid or self-signed SSL certificates. Defaults to true.",
+          "type": "boolean",
+          "default": true
+        }
+      }
     },
     "generator": {
       "type": "object",

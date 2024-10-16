@@ -7,31 +7,39 @@ import { VersionManagerController } from './controllers/version-manager.controll
 import {
   ConfigService,
   GeneratorService,
+  NpmrcService,
   PassThroughService,
   UIService,
   VersionManagerService,
 } from './services';
-import { HttpsProxyAgent } from 'https-proxy-agent';
+import { Agent } from 'https';
 
-const proxyUrl = process.env.HTTP_PROXY || process.env.HTTPS_PROXY;
-const httpModuleConfig: HttpModuleOptions = {};
-
-if (proxyUrl) {
-  httpModuleConfig.proxy = false;
-  httpModuleConfig.httpsAgent = new HttpsProxyAgent(proxyUrl);
-}
+export const httpModuleConfigFactory = async (configService: ConfigService, npmrcService: NpmrcService): Promise<HttpModuleOptions> => {
+  const strictSsl = configService.useNpmrc() ? npmrcService.getStrictSsl() : true;
+  const rejectUnauthorized = configService.get('generator-cli.http.rejectUnauthorized', true);
+  const httpsAgent = !strictSsl || !rejectUnauthorized ? new Agent({
+    rejectUnauthorized: false,
+  }) : undefined;
+  return {
+    httpsAgent: httpsAgent,
+  };
+};
 
 @Module({
   imports: [
-    HttpModule.register({
-      ...httpModuleConfig,
+    HttpModule.registerAsync({
+      imports: [AppModule],
+      useFactory: httpModuleConfigFactory,
+      inject: [ConfigService, NpmrcService],
     }),
   ],
   controllers: [VersionManagerController],
+  exports: [ConfigService, NpmrcService],
   providers: [
     UIService,
     ConfigService,
     GeneratorService,
+    NpmrcService,
     PassThroughService,
     VersionManagerService,
     {

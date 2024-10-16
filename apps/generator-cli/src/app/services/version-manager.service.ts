@@ -14,6 +14,7 @@ import { LOGGER } from '../constants';
 import { ConfigService } from './config.service';
 import * as configSchema from '../../config.schema.json';
 import { spawn, spawnSync } from 'child_process';
+import { NpmrcService } from './npmrc.service';
 
 export interface Version {
   version: string;
@@ -45,7 +46,8 @@ export class VersionManagerService {
   constructor(
     @Inject(LOGGER) private readonly logger: LOGGER,
     private httpService: HttpService,
-    private configService: ConfigService
+    private configService: ConfigService,
+    private npmrcService: NpmrcService
   ) {
     // pre-process intsalled in versions
     this.versions.forEach( (item) => {
@@ -69,7 +71,8 @@ export class VersionManagerService {
           .default
     );
 
-    return this.httpService.get(queryUrl).pipe(
+    const headers = this.getRequestHeaders(queryUrl);
+    return this.httpService.get(queryUrl, { headers }).pipe(
       map(({ data }) => data.response.docs),
       map((docs) =>
         docs.map((doc) => ({
@@ -165,9 +168,10 @@ export class VersionManagerService {
     const downloadLink = this.createDownloadLink(versionName);
     const filePath = this.filePath(versionName);
 
+    const headers = this.getRequestHeaders(downloadLink);
     try {
       await this.httpService
-        .get<Stream>(downloadLink, { responseType: 'stream' })
+        .get<Stream>(downloadLink, { responseType: 'stream', headers: headers })
         .pipe(
           switchMap(
             (res) =>
@@ -225,6 +229,17 @@ export class VersionManagerService {
     }
 
     return fs.existsSync(path.resolve(this.storage, `${versionName}.jar`));
+  }
+
+  private getRequestHeaders(url: string): { [key: string]: string } {
+    let headers = {};
+
+    if (this.configService.useNpmrc()) {
+      const authToken = this.npmrcService.getAuthToken(url);
+      headers = authToken ? { Authorization: `Bearer ${authToken}` } : {};
+    }
+
+    return headers;
   }
 
   private filterVersionsByTags(versions: Version[], tags: string[]) {
