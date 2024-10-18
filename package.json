@@ -92,7 +92,7 @@
     "console.table": "0.10.0",
     "fs-extra": "10.1.0",
     "glob": "9.x",
-    "https-proxy-agent": "^7.0.4",
+    "proxy-agent": "^6.4.0",
     "inquirer": "8.2.6",
     "jsonpath": "1.1.1",
     "lodash": "4.17.21",
