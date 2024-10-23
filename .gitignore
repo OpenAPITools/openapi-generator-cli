@@ -42,6 +42,7 @@ Thumbs.db
 /openapitools.json
 
 .nx/cache
+.nx/workspace-data
 
 # Direnv
 .direnv
