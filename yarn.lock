@@ -1828,10 +1828,10 @@
     "@emnapi/runtime" "^1.1.0"
     "@tybys/wasm-util" "^0.9.0"
 
-"@nestjs/axios@3.1.0":
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/@nestjs/axios/-/axios-3.1.0.tgz#27568c56cd438d43dd8454f27ca1b2f3718859b0"
-  integrity sha512-CpeK2ickH//ml+H7kX+QPIpeTwER4yedVcw6GPe6Nv58cmKTa0sb+3A3It7ChKD4deW4UKNvZIpYkUk18q78YQ==
+"@nestjs/axios@3.1.1":
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/@nestjs/axios/-/axios-3.1.1.tgz#565160180c81b580e4b192792fe506f5db9e1bcc"
+  integrity sha512-ySoxrzqX80P1q6LKLKGcgyBd2utg4gbC+4FsJNpXYvILorMlxss/ECNogD9EXLCE4JS5exVFD5ez0nK5hXcNTQ==
 
 "@nestjs/common@10.4.6":
   version "10.4.6"
