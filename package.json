@@ -120,7 +120,7 @@
     "@types/jest": "29.5.14",
     "@types/jsonpath": "0.2.4",
     "@types/lodash": "4.17.13",
-    "@types/node": "18.16.9",
+    "@types/node": "18.19.64",
     "@typescript-eslint/eslint-plugin": "7.18.0",
     "@typescript-eslint/parser": "7.18.0",
     "dotenv": "16.4.5",
