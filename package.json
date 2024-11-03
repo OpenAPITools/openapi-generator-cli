@@ -133,7 +133,7 @@
     "jest-environment-node": "^29.4.1",
     "nx": "20.0.7",
     "prettier": "3.3.3",
-    "semantic-release": "22.0.12",
+    "semantic-release": "24.2.0",
     "ts-jest": "29.2.5",
     "ts-node": "10.9.2",
     "tslint": "6.1.3",
