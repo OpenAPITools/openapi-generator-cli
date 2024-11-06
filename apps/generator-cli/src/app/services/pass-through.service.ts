@@ -4,6 +4,7 @@ import { exec, spawn } from 'child_process';
 import { Command } from 'commander';
 import { isString, startsWith, trim } from 'lodash';
 import { COMMANDER_PROGRAM, LOGGER } from '../constants';
+import { javaCmd } from '../helpers';
 import { GeneratorService } from './generator.service';
 import { VersionManagerService } from './version-manager.service';
 import { ConfigService } from './config.service';
@@ -142,7 +143,7 @@ export class PassThroughService {
         )}" org.openapitools.codegen.OpenAPIGenerator`
       : `-jar "${cliPath}"`;
 
-    return ['java', process.env['JAVA_OPTS'], subCmd]
+    return [javaCmd, process.env['JAVA_OPTS'], subCmd]
       .filter(isString)
       .join(' ');
   }
