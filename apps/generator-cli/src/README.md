@@ -10,7 +10,7 @@ OpenAPI Generator allows generation of API client libraries (SDK generation), se
 configuration automatically given an OpenAPI Spec (both 2.0 and 3.0 are supported). Please see
 [OpenAPITools/openapi-generator](https://github.com/OpenAPITools/openapi-generator).
 
-The OpenAPI Generator is a Java project. `openapi-generator-cli` will download the appropriate JAR file and invoke the `java` executable to run the OpenAPI Generator. You must have the `java` binary executable available on your `PATH` for this to work. (JDK 11 is the minimal version supported. To install OpenJDK, please visit https://adoptium.net/)
+The OpenAPI Generator is a Java project. `openapi-generator-cli` will download the appropriate JAR file and invoke the `java` executable to run the OpenAPI Generator. You must have the `java` binary executable available on your `PATH` or have set `JAVA_HOME` correctly for this to work. (JDK 11 is the minimal version supported. To install OpenJDK, please visit https://adoptium.net/)
 
 If you find this tool useful, please consider sponsoring this project financially via https://opencollective.com/openapi_generator or directly to [Kay Schecker](https://github.com/sponsors/kay-schecker) (the author of this tool) :pray:
 
