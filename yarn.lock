@@ -1868,24 +1868,24 @@
     "@emnapi/runtime" "^1.1.0"
     "@tybys/wasm-util" "^0.9.0"
 
-"@nestjs/axios@3.1.1":
-  version "3.1.1"
-  resolved "https://registry.yarnpkg.com/@nestjs/axios/-/axios-3.1.1.tgz#565160180c81b580e4b192792fe506f5db9e1bcc"
-  integrity sha512-ySoxrzqX80P1q6LKLKGcgyBd2utg4gbC+4FsJNpXYvILorMlxss/ECNogD9EXLCE4JS5exVFD5ez0nK5hXcNTQ==
+"@nestjs/axios@~3.1.1":
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/@nestjs/axios/-/axios-3.1.2.tgz#e55c39cfd2e0ed24304b9aa31d1854ecbfe760c7"
+  integrity sha512-pFlfi4ZQsZtTNNhvgssbxjCHUd1nMpV3sXy/xOOB2uEJhw3M8j8SFR08gjFNil2we2Har7VCsXLfCkwbMHECFQ==
 
-"@nestjs/common@10.4.6":
-  version "10.4.6"
-  resolved "https://registry.yarnpkg.com/@nestjs/common/-/common-10.4.6.tgz#952e8fd0ceafeffcc4eaf47effd67fb395844ae0"
-  integrity sha512-KkezkZvU9poWaNq4L+lNvx+386hpOxPJkfXBBeSMrcqBOx8kVr36TGN2uYkF4Ta4zNu1KbCjmZbc0rhHSg296g==
+"@nestjs/common@~10.4.6":
+  version "10.4.7"
+  resolved "https://registry.yarnpkg.com/@nestjs/common/-/common-10.4.7.tgz#076cb77c06149805cb1e193d8cdc69bbe8446c75"
+  integrity sha512-gIOpjD3Mx8gfYGxYm/RHPcJzqdknNNFCyY+AxzBT3gc5Xvvik1Dn5OxaMGw5EbVfhZgJKVP0n83giUOAlZQe7w==
   dependencies:
     uid "2.0.2"
     iterare "1.2.1"
     tslib "2.7.0"
 
-"@nestjs/core@10.4.6":
-  version "10.4.6"
-  resolved "https://registry.yarnpkg.com/@nestjs/core/-/core-10.4.6.tgz#797b381f12bd62d2e425897058fa219da4c3689d"
-  integrity sha512-zXVPxCNRfO6gAy0yvEDjUxE/8gfZICJFpsl2lZAUH31bPb6m+tXuhUq2mVCTEltyMYQ+DYtRe+fEYM2v152N1g==
+"@nestjs/core@~10.4.6":
+  version "10.4.7"
+  resolved "https://registry.yarnpkg.com/@nestjs/core/-/core-10.4.7.tgz#adb27067a8c40b79f0713b417457fdfc6cf3406a"
+  integrity sha512-AIpQzW/vGGqSLkKvll1R7uaSNv99AxZI2EFyVJPNGDgFsfXaohfV1Ukl6f+s75Km+6Fj/7aNl80EqzNWQCS8Ig==
   dependencies:
     uid "2.0.2"
     "@nuxtjs/opencollective" "0.3.2"
