@@ -2,6 +2,7 @@ import { Test } from '@nestjs/testing';
 import chalk from 'chalk';
 import { Command, createCommand } from 'commander';
 import { COMMANDER_PROGRAM, LOGGER } from '../constants';
+import { javaCmd } from '../helpers';
 import { GeneratorService } from './generator.service';
 import { PassThroughService } from './pass-through.service';
 import { VersionManagerService } from './version-manager.service';
@@ -192,7 +193,7 @@ describe('PassThroughService', () => {
             await program.parseAsync([name, ...argv], { from: 'user' });
             expect(childProcess.spawn).toHaveBeenNthCalledWith(
               1,
-              'java -jar "/some/path/to/4.2.1.jar"',
+              `${javaCmd} -jar "/some/path/to/4.2.1.jar"`,
               [name, ...argv],
               {
                 stdio: 'inherit',
@@ -206,7 +207,7 @@ describe('PassThroughService', () => {
             await program.parseAsync([name, ...argv], { from: 'user' });
             expect(childProcess.spawn).toHaveBeenNthCalledWith(
               1,
-              'java java-opt-1=1 -jar "/some/path/to/4.2.1.jar"',
+              `${javaCmd} java-opt-1=1 -jar "/some/path/to/4.2.1.jar"`,
               [name, ...argv],
               {
                 stdio: 'inherit',
@@ -224,7 +225,7 @@ describe('PassThroughService', () => {
 
             expect(childProcess.spawn).toHaveBeenNthCalledWith(
               1,
-              `java -cp "${[
+              `${javaCmd} -cp "${[
                 '/some/path/to/4.2.1.jar',
                 '../some/custom.jar',
               ].join(cpDelimiter)}" org.openapitools.codegen.OpenAPIGenerator`,
@@ -303,7 +304,7 @@ describe('PassThroughService', () => {
                   it('spawns the correct process', () => {
                     expect(childProcess.spawn).toHaveBeenNthCalledWith(
                       1,
-                      'java -jar "/some/path/to/4.2.1.jar"',
+                      `${javaCmd} -jar "/some/path/to/4.2.1.jar"`,
                       cmd.split(' '),
                       { stdio: 'inherit', shell: true }
                     );
