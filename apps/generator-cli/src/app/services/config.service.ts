@@ -60,14 +60,43 @@ export class ConfigService {
   private read() {
     fs.ensureFileSync(this.configFile)
 
-    return merge(
+    const config = merge(
       this.defaultConfig,
       fs.readJSONSync(this.configFile, {throws: false, encoding: 'utf8'}),
     )
+
+    return this.replacePlaceholders(config)
   }
 
   private write(config) {
     fs.writeJSONSync(this.configFile, config, {encoding: 'utf8', spaces: config.spaces || 2})
   }
 
+  private replacePlaceholders(config: any): any {
+    const envVariables = Object.fromEntries(
+      Object.entries(process.env).map(([key, value]) => [`env.${key}`, value])
+    );
+    const placeholders = {
+      ...envVariables
+    };
+    const replacePlaceholderInString = (str: string): string => {
+      return str.replace(/\${(.*?)}/g, (match, p1) => {
+          const key = p1.trim();
+          return placeholders[key] !== undefined ? placeholders[key] : match;
+      });
+    };
+    const traverseAndReplace = (obj: any): any => {
+        if (typeof obj === 'string') {
+            return replacePlaceholderInString(obj);
+        } else if (Array.isArray(obj)) {
+            return obj.map(item => traverseAndReplace(item));
+        } else if (obj !== null && typeof obj === 'object') {
+            return Object.fromEntries(
+                Object.entries(obj).map(([key, value]) => [key, traverseAndReplace(value)])
+            );
+        }
+        return obj; // Return the value as is if it's not a string, array, or object
+    };
+    return traverseAndReplace(config);
+  }
 }
