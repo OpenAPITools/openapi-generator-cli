@@ -1005,25 +1005,25 @@
   resolved "https://registry.npmjs.org/@colors/colors/-/colors-1.5.0.tgz#bb504579c1cae923e6576a4f5da43d25f97bdbd9"
   integrity sha512-ooWCrlZP11i8GImSjTHYHLkvFDP48nS4+204nGb1RiX/WXYHmJA2III9/e2DWVabCESdW7hBAEzHRqUn9OUVvQ==
 
-"@commitlint/cli@19.6.1":
-  version "19.6.1"
-  resolved "https://registry.npmjs.org/@commitlint/cli/-/cli-19.6.1.tgz#24edd26595d911cc6b680cdfbb1fb083bfd5f73d"
-  integrity sha512-8hcyA6ZoHwWXC76BoC8qVOSr8xHy00LZhZpauiD0iO0VYbVhMnED0da85lTfIULxl7Lj4c6vZgF0Wu/ed1+jlQ==
+"@commitlint/cli@19.8.0":
+  version "19.8.0"
+  resolved "https://registry.yarnpkg.com/@commitlint/cli/-/cli-19.8.0.tgz#e66e5a5268437e42b7c6f2a447e94ea83b8a3272"
+  integrity sha512-t/fCrLVu+Ru01h0DtlgHZXbHV2Y8gKocTR5elDOqIRUzQd0/6hpt2VIWOj9b3NDo7y4/gfxeR2zRtXq/qO6iUg==
   dependencies:
-    "@commitlint/format" "^19.5.0"
-    "@commitlint/lint" "^19.6.0"
-    "@commitlint/load" "^19.6.1"
-    "@commitlint/read" "^19.5.0"
-    "@commitlint/types" "^19.5.0"
+    "@commitlint/format" "^19.8.0"
+    "@commitlint/lint" "^19.8.0"
+    "@commitlint/load" "^19.8.0"
+    "@commitlint/read" "^19.8.0"
+    "@commitlint/types" "^19.8.0"
     tinyexec "^0.3.0"
     yargs "^17.0.0"
 
-"@commitlint/config-conventional@19.6.0":
-  version "19.6.0"
-  resolved "https://registry.npmjs.org/@commitlint/config-conventional/-/config-conventional-19.6.0.tgz#badba72c8639ea79291e2941001bd7ea7fad3a2c"
-  integrity sha512-DJT40iMnTYtBtUfw9ApbsLZFke1zKh6llITVJ+x9mtpHD08gsNXaIRqHTmwTZL3dNX5+WoyK7pCN/5zswvkBCQ==
+"@commitlint/config-conventional@19.8.0":
+  version "19.8.0"
+  resolved "https://registry.yarnpkg.com/@commitlint/config-conventional/-/config-conventional-19.8.0.tgz#4a1470a0156f5d1f560426c05cfc3a6a796c2b9c"
+  integrity sha512-9I2kKJwcAPwMoAj38hwqFXG0CzS2Kj+SAByPUQ0SlHTfb7VUhYVmo7G2w2tBrqmOf7PFd6MpZ/a1GQJo8na8kw==
   dependencies:
-    "@commitlint/types" "^19.5.0"
+    "@commitlint/types" "^19.8.0"
     conventional-changelog-conventionalcommits "^7.0.2"
 
 "@commitlint/config-validator@^19.8.0":
@@ -1051,9 +1051,9 @@
   resolved "https://registry.npmjs.org/@commitlint/execute-rule/-/execute-rule-19.8.0.tgz#ebcac26dc75d481e223b0c37d59e5bdd7a164d4a"
   integrity sha512-fuLeI+EZ9x2v/+TXKAjplBJWI9CNrHnyi5nvUQGQt4WRkww/d95oVRsc9ajpt4xFrFmqMZkd/xBQHZDvALIY7A==
 
-"@commitlint/format@^19.5.0":
+"@commitlint/format@^19.8.0":
   version "19.8.0"
-  resolved "https://registry.npmjs.org/@commitlint/format/-/format-19.8.0.tgz#b06084fb3b807f2142c19c94572127d4a3af5da1"
+  resolved "https://registry.yarnpkg.com/@commitlint/format/-/format-19.8.0.tgz#b06084fb3b807f2142c19c94572127d4a3af5da1"
   integrity sha512-EOpA8IERpQstxwp/WGnDArA7S+wlZDeTeKi98WMOvaDLKbjptuHWdOYYr790iO7kTCif/z971PKPI2PkWMfOxg==
   dependencies:
     "@commitlint/types" "^19.8.0"
@@ -1067,9 +1067,9 @@
     "@commitlint/types" "^19.8.0"
     semver "^7.6.0"
 
-"@commitlint/lint@^19.6.0":
+"@commitlint/lint@^19.8.0":
   version "19.8.0"
-  resolved "https://registry.npmjs.org/@commitlint/lint/-/lint-19.8.0.tgz#c2bf85de6d2e86e13c972cf19a2d425e62e9b057"
+  resolved "https://registry.yarnpkg.com/@commitlint/lint/-/lint-19.8.0.tgz#c2bf85de6d2e86e13c972cf19a2d425e62e9b057"
   integrity sha512-+/NZKyWKSf39FeNpqhfMebmaLa1P90i1Nrb1SrA7oSU5GNN/lksA4z6+ZTnsft01YfhRZSYMbgGsARXvkr/VLQ==
   dependencies:
     "@commitlint/is-ignored" "^19.8.0"
@@ -1077,9 +1077,9 @@
     "@commitlint/rules" "^19.8.0"
     "@commitlint/types" "^19.8.0"
 
-"@commitlint/load@^19.6.1":
+"@commitlint/load@^19.8.0":
   version "19.8.0"
-  resolved "https://registry.npmjs.org/@commitlint/load/-/load-19.8.0.tgz#7c7078fbdc9c4e3a14fa5a8684c3cb854353551e"
+  resolved "https://registry.yarnpkg.com/@commitlint/load/-/load-19.8.0.tgz#7c7078fbdc9c4e3a14fa5a8684c3cb854353551e"
   integrity sha512-4rvmm3ff81Sfb+mcWT5WKlyOa+Hd33WSbirTVUer0wjS1Hv/Hzr07Uv1ULIV9DkimZKNyOwXn593c+h8lsDQPQ==
   dependencies:
     "@commitlint/config-validator" "^19.8.0"
@@ -1107,9 +1107,9 @@
     conventional-changelog-angular "^7.0.0"
     conventional-commits-parser "^5.0.0"
 
-"@commitlint/read@^19.5.0":
+"@commitlint/read@^19.8.0":
   version "19.8.0"
-  resolved "https://registry.npmjs.org/@commitlint/read/-/read-19.8.0.tgz#d16bea846619100e23c4d56bcf191c397da7542f"
+  resolved "https://registry.yarnpkg.com/@commitlint/read/-/read-19.8.0.tgz#d16bea846619100e23c4d56bcf191c397da7542f"
   integrity sha512-6ywxOGYajcxK1y1MfzrOnwsXO6nnErna88gRWEl3qqOOP8MDu/DTeRkGLXBFIZuRZ7mm5yyxU5BmeUvMpNte5w==
   dependencies:
     "@commitlint/top-level" "^19.8.0"
@@ -1152,7 +1152,7 @@
   dependencies:
     find-up "^7.0.0"
 
-"@commitlint/types@^19.5.0", "@commitlint/types@^19.8.0":
+"@commitlint/types@^19.8.0":
   version "19.8.0"
   resolved "https://registry.npmjs.org/@commitlint/types/-/types-19.8.0.tgz#5a77c7a723a714995a51917edd0ecfcf29495d3c"
   integrity sha512-LRjP623jPyf3Poyfb0ohMj8I3ORyBDOwXAgxxVPbSD0unJuW2mJWeiRfaQinjtccMqC5Wy1HOMfa4btKjbNxbg==
