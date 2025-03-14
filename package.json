@@ -97,7 +97,7 @@
     "lodash": "4.17.21",
     "proxy-agent": "^6.4.0",
     "reflect-metadata": "0.2.2",
-    "rxjs": "7.8.1",
+    "rxjs": "7.8.2",
     "tslib": "^2.3.0"
   },
   "devDependencies": {
