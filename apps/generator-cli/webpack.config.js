@@ -34,11 +34,9 @@ module.exports = composePlugins(
 
     config.plugins.push(
       new BannerPlugin({ banner: '#!/usr/bin/env node', raw: true }),
-      new GeneratePackageJsonPlugin(basePackageValues, {
-        useInstalledVersions: true,
-      })
+      new GeneratePackageJsonPlugin(basePackageValues),
     );
 
     return config;
-  }
+  },
 );
