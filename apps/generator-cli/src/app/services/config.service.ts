@@ -3,12 +3,13 @@ import * as path from 'path';
 import {COMMANDER_PROGRAM, LOGGER} from '../constants';
 import {set, get, has, merge} from 'lodash';
 import * as fs from 'fs-extra';
+import { isWin } from '../helpers';
 import { Command } from 'commander';
 
 @Injectable()
 export class ConfigService {
 
-  public readonly cwd = process.env.PWD || process.env.INIT_CWD || process.cwd()
+  public readonly cwd = isWin() ? process.cwd() : process.env.PWD || process.env.INIT_CWD || process.cwd()
   public readonly configFile = this.configFileOrDefault();
 
   private configFileOrDefault() {

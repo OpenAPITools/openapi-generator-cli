@@ -10,6 +10,7 @@ import * as os from 'os';
 import { VersionManagerService } from './version-manager.service';
 import { ConfigService } from './config.service';
 import { LOGGER } from '../constants';
+import { javaCmd } from '../helpers';
 
 interface GeneratorConfig {
   glob: string;
@@ -241,9 +242,18 @@ export class GeneratorService {
           this.isWin() ? ';' : ':'
         )}" org.openapitools.codegen.OpenAPIGenerator`
       : `-jar "${cliPath}"`;
-    return ['java', process.env['JAVA_OPTS'], subCmd, 'generate', appendix]
+
+    const command = [
+      javaCmd,
+      process.env['JAVA_OPTS'],
+      subCmd,
+      'generate',
+      appendix,
+    ]
       .filter(isString)
       .join(' ');
+
+    return this.isWin() ? `"${command}"` : command;
   };
 
   private isWin = () => process.platform === 'win32';
