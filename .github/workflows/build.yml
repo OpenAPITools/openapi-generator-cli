@@ -7,14 +7,14 @@ on:
       - master
       - renovate/**
   pull_request:
-    types: [ assigned, opened, synchronize, reopened ]
+    types: [assigned, opened, synchronize, reopened]
 jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [ 18.x ]
+        node-version: [18.x]
 
     steps:
       - name: Checkout
@@ -48,13 +48,13 @@ jobs:
           path: dist/apps/package.tgz
 
   e2e:
-    name: "E2E local: (${{ matrix.os }})"
+    name: 'E2E local: (${{ matrix.os }})'
     needs: build
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ ubuntu-latest, macos-latest ]
-        node-version: [ 18.x ]
+        os: [ubuntu-latest, macos-latest]
+        node-version: [20.x]
 
     steps:
       - name: Checkout
