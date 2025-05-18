@@ -134,7 +134,7 @@
     "nx": "20.6.0",
     "prettier": "3.5.3",
     "semantic-release": "22.0.12",
-    "ts-jest": "29.2.6",
+    "ts-jest": "29.3.4",
     "ts-node": "10.9.2",
     "tslint": "6.1.3",
     "type-fest": "4.37.0",
