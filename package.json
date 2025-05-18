@@ -124,7 +124,7 @@
     "@typescript-eslint/eslint-plugin": "7.18.0",
     "@typescript-eslint/parser": "7.18.0",
     "dotenv": "16.5.0",
-    "eslint": "9.22.0",
+    "eslint": "9.27.0",
     "eslint-config-prettier": "^10.0.0",
     "generate-package-json-webpack-plugin": "2.6.0",
     "husky": "9.1.7",
