@@ -1613,20 +1613,20 @@
   integrity sha512-1cB+Jyltu/uUPNQrpUimRHEQHrnQrpLzVj6dU3dgn6iDDDdahr10TgHFGTmw5VuJ9GzKZsCLDL78VSwJAs/9JQ==
 
 "@nestjs/common@^11.0.16":
-  version "11.0.20"
-  resolved "https://registry.yarnpkg.com/@nestjs/common/-/common-11.0.20.tgz#e67e73f261ee79a0c4daa2c303712731667d0129"
-  integrity sha512-/GH8NDCczjn6+6RNEtSNAts/nq/wQE8L1qZ9TRjqjNqEsZNE1vpFuRIhmcO2isQZ0xY5rySnpaRdrOAul3gQ3A==
+  version "11.1.1"
+  resolved "https://registry.yarnpkg.com/@nestjs/common/-/common-11.1.1.tgz#421eddea4385b06eba120722bd614fa03dbc8172"
+  integrity sha512-crzp+1qeZ5EGL0nFTPy9NrVMAaUWewV5AwtQyv6SQ9yQPXwRl9W9hm1pt0nAtUu5QbYMbSuo7lYcF81EjM+nCA==
   dependencies:
     uid "2.0.2"
-    file-type "20.4.1"
+    file-type "20.5.0"
     iterare "1.2.1"
     load-esm "1.0.2"
     tslib "2.8.1"
 
 "@nestjs/core@^11.0.16":
-  version "11.0.20"
-  resolved "https://registry.yarnpkg.com/@nestjs/core/-/core-11.0.20.tgz#1a053474d0128b4ba8d2edd136add6854bb09f4c"
-  integrity sha512-yUkEzBGiRNSEThVl6vMCXgoA9sDGWoRbJsTLdYdCC7lg7PE1iXBnna1FiBfQjT995pm0fjyM1e3WsXmyWeJXbw==
+  version "11.1.1"
+  resolved "https://registry.yarnpkg.com/@nestjs/core/-/core-11.1.1.tgz#4b270972d3f25741adc8aa9fd2ad32f47abcec76"
+  integrity sha512-UFoUAgLKFT+RwHTANJdr0dF7p0qS9QjkaUPjg8aafnjM/qxxxrUVDB49nVvyMlk+Hr1+vvcNaOHbWWQBxoZcHA==
   dependencies:
     uid "2.0.2"
     "@nuxt/opencollective" "0.4.1"
@@ -1636,9 +1636,9 @@
     tslib "2.8.1"
 
 "@nestjs/platform-express@^11.0.16":
-  version "11.0.20"
-  resolved "https://registry.yarnpkg.com/@nestjs/platform-express/-/platform-express-11.0.20.tgz#1a81d6eab1c5694ccc148264e006665d0c0ed8f6"
-  integrity sha512-h/Xq2x0Qi2cr9T64w9DfLejZws1M1hYu7n7XWuC4vxX00FlfOz1jSWGgaTo/Gjq6vtULfq34Gp5Fzf0w34XDyQ==
+  version "11.1.1"
+  resolved "https://registry.yarnpkg.com/@nestjs/platform-express/-/platform-express-11.1.1.tgz#a74c31e00b8f28ecd2d0f7a9c1b5afe5722847d5"
+  integrity sha512-IUxk380qnUtz0PCRQ5i+o9UHlGMrFzGPIJxDwyt3JZZwx2AngOlcEcm5e+7YeJQEr2QYX2QyC4tUQg0zde+D7A==
   dependencies:
     cors "2.8.5"
     express "5.1.0"
@@ -1668,9 +1668,9 @@
     pluralize "8.0.0"
 
 "@nestjs/testing@^11.0.16":
-  version "11.0.20"
-  resolved "https://registry.yarnpkg.com/@nestjs/testing/-/testing-11.0.20.tgz#32ba2f992ab64cf191b403efb4e7ebac8448c7a7"
-  integrity sha512-3o+HWsVfA46tt81ctKuNj5ufL9srfmp3dQBCAIx9fzvjooEKwWl5L69AcvDh6JhdB79jhhM1lkSSU+1fBGbxgw==
+  version "11.1.1"
+  resolved "https://registry.yarnpkg.com/@nestjs/testing/-/testing-11.1.1.tgz#aecc2b90730eb769a48e5f6bacb78f717fc1e74d"
+  integrity sha512-stzm8YrLDGAijHYQw+8Z9dD6lGdvahL0hIjGVZ/0KBxLZht0/rvRjgV31UK+DUqXaF7yhJTw9ryrPaITxI1J6A==
   dependencies:
     tslib "2.8.1"
 
@@ -4669,10 +4669,17 @@ debug@2.6.9:
   dependencies:
     ms "2.0.0"
 
-debug@4, debug@^4.0.0, debug@^4.1.0, debug@^4.1.1, debug@^4.3.1, debug@^4.3.2, debug@^4.3.4, debug@^4.3.5, debug@^4.3.6, debug@^4.4.0:
+debug@4, debug@^4.0.0, debug@^4.1.0, debug@^4.1.1, debug@^4.3.1, debug@^4.3.2, debug@^4.3.4, debug@^4.3.6:
   version "4.4.0"
   resolved "https://registry.yarnpkg.com/debug/-/debug-4.4.0.tgz#2b3f2aea2ffeb776477460267377dc8710faba8a"
   integrity sha512-6WTZ/IxCY/T6BALoZHaE4ctp9xm+Z5kY/pzYaCHRFeyVhojxlrm+46y68HA6hr0TcwEssoxNiDEUJQjfPZ/RYA==
+  dependencies:
+    ms "^2.1.3"
+
+debug@^4.3.5, debug@^4.4.0:
+  version "4.4.1"
+  resolved "https://registry.yarnpkg.com/debug/-/debug-4.4.1.tgz#e5a8bc6cbc4c6cd3e64308b0693a3d4fa550189b"
+  integrity sha512-KcKCqiftBJcZr++7ykoDIEwSa3XWowTfNPo92BYxjXiyYEVrUQh2aLyhxBCwww+heortUFxEJYcRzosstTEBYQ==
   dependencies:
     ms "^2.1.3"
 
@@ -5483,10 +5490,10 @@ file-entry-cache@^8.0.0:
   dependencies:
     flat-cache "^4.0.0"
 
-file-type@20.4.1:
-  version "20.4.1"
-  resolved "https://registry.yarnpkg.com/file-type/-/file-type-20.4.1.tgz#8a58cf0922c6098af0ca5d84d5cf859c0c0f56a5"
-  integrity sha512-hw9gNZXUfZ02Jo0uafWLaFVPter5/k2rfcrjFJJHX/77xtSDOfJuEFb6oKlFV86FLP1SuyHMW1PSk0U9M5tKkQ==
+file-type@20.5.0:
+  version "20.5.0"
+  resolved "https://registry.yarnpkg.com/file-type/-/file-type-20.5.0.tgz#616e90564e6ffabab22ad9763e28efcc5c95aee0"
+  integrity sha512-BfHZtG/l9iMm4Ecianu7P8HRD2tBHLtjXinm4X62XBOYzi7CYA7jyqfJzOvXHqzVrVPYqBo2/GvbARMaaJkKVg==
   dependencies:
     "@tokenizer/inflate" "^0.2.6"
     strtok3 "^10.2.0"
