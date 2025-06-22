@@ -958,7 +958,7 @@
     "@babel/plugin-transform-modules-commonjs" "^7.25.9"
     "@babel/plugin-transform-typescript" "^7.25.9"
 
-"@babel/runtime@^7.12.5", "@babel/runtime@^7.21.0", "@babel/runtime@^7.22.6", "@babel/runtime@^7.8.4":
+"@babel/runtime@^7.12.5", "@babel/runtime@^7.22.6", "@babel/runtime@^7.8.4":
   version "7.26.10"
   resolved "https://registry.npmjs.org/@babel/runtime/-/runtime-7.26.10.tgz#a07b4d8fa27af131a633d7b3524db803eb4764c2"
   integrity sha512-2WJMeRQPHKSPemqk/awGrAiuFfzBmOIPXKizAsVhWH9YJqLZ0H+HS4c8loHGgW6utJ3E/ejXQUsiGaQy2NZ9Fw==
@@ -4250,19 +4250,18 @@ concurrently@*:
     tree-kill "^1.2.2"
     yargs "^17.7.2"
 
-concurrently@6.5.1:
-  version "6.5.1"
-  resolved "https://registry.npmjs.org/concurrently/-/concurrently-6.5.1.tgz#4518c67f7ac680cf5c34d5adf399a2a2047edc8c"
-  integrity sha512-FlSwNpGjWQfRwPLXvJ/OgysbBxPkWpiVjy1042b0U7on7S7qwwMIILRj7WTN1mTgqa582bG6NFuScOoh6Zgdag==
+concurrently@9.2.0:
+  version "9.2.0"
+  resolved "https://registry.yarnpkg.com/concurrently/-/concurrently-9.2.0.tgz#233e3892ceb0b5db9fd49e9c8c739737a7b638b5"
+  integrity sha512-IsB/fiXTupmagMW4MNp2lx2cdSN2FfZq78vF90LBB+zZHArbIQZjQtzXCiXnvTxCZSvXanTqFLWBjw2UkLx1SQ==
   dependencies:
-    chalk "^4.1.0"
-    date-fns "^2.16.1"
+    chalk "^4.1.2"
     lodash "^4.17.21"
-    rxjs "^6.6.3"
-    spawn-command "^0.0.2-1"
-    supports-color "^8.1.0"
+    rxjs "^7.8.1"
+    shell-quote "^1.8.1"
+    supports-color "^8.1.1"
     tree-kill "^1.2.2"
-    yargs "^16.2.0"
+    yargs "^17.7.2"
 
 config-chain@^1.1.11:
   version "1.1.13"
@@ -4654,13 +4653,6 @@ data-urls@^3.0.2:
     abab "^2.0.6"
     whatwg-mimetype "^3.0.0"
     whatwg-url "^11.0.0"
-
-date-fns@^2.16.1:
-  version "2.30.0"
-  resolved "https://registry.npmjs.org/date-fns/-/date-fns-2.30.0.tgz#f367e644839ff57894ec6ac480de40cae4b0f4d0"
-  integrity sha512-fnULvOpxnC5/Vg3NCiWelDsLiUc9bRwAPs/+LfTLNvetFCtCTN+yQz15C/fs4AwX1R9K5GLtLfn8QW+dWisaAw==
-  dependencies:
-    "@babel/runtime" "^7.21.0"
 
 debug@2.6.9:
   version "2.6.9"
@@ -9612,13 +9604,6 @@ rxjs@7.8.1:
   dependencies:
     tslib "^2.1.0"
 
-rxjs@^6.6.3:
-  version "6.6.7"
-  resolved "https://registry.npmjs.org/rxjs/-/rxjs-6.6.7.tgz#90ac018acabf491bf65044235d5863c4dab804c9"
-  integrity sha512-hTdwr+7yYNIT5n4AMYp85KA6yw2Va0FLa3Rguvbpa4W3I5xynaBZo41cM3XM+4Q6fRMj3sBYIR1VAmZMXYJvRQ==
-  dependencies:
-    tslib "^1.9.0"
-
 rxjs@^7.2.0, rxjs@^7.4.0, rxjs@^7.5.5, rxjs@^7.8.0, rxjs@^7.8.1, rxjs@^7.8.2:
   version "7.8.2"
   resolved "https://registry.npmjs.org/rxjs/-/rxjs-7.8.2.tgz#955bc473ed8af11a002a2be52071bf475638607b"
@@ -10184,11 +10169,6 @@ source-map@^0.6.0, source-map@^0.6.1, source-map@~0.6.0, source-map@~0.6.1:
   resolved "https://registry.npmjs.org/source-map/-/source-map-0.6.1.tgz#74722af32e9614e9c287a8d0bbde48b5e2f1a263"
   integrity sha512-UjgapumWlbMhkBgzT7Ykc5YXUT46F0iKu8SGXq0bcwP5dz/h0Plj6enJqjz1Zbq2l5WaqYnrVbwWOWMyF3F47g==
 
-spawn-command@^0.0.2-1:
-  version "0.0.2"
-  resolved "https://registry.npmjs.org/spawn-command/-/spawn-command-0.0.2.tgz#9544e1a43ca045f8531aac1a48cb29bdae62338e"
-  integrity sha512-zC8zGoGkmc8J9ndvml8Xksr1Amk9qBujgbF0JAIWO7kXr43w0h/0GJNM/Vustixu+YE8N/MTrQ7N31FvHUACxQ==
-
 spawn-error-forwarder@~1.0.0:
   version "1.0.0"
   resolved "https://registry.npmjs.org/spawn-error-forwarder/-/spawn-error-forwarder-1.0.0.tgz#1afd94738e999b0346d7b9fc373be55e07577029"
@@ -10471,7 +10451,7 @@ supports-color@^7.0.0, supports-color@^7.1.0:
   dependencies:
     has-flag "^4.0.0"
 
-supports-color@^8.0.0, supports-color@^8.1.0, supports-color@^8.1.1:
+supports-color@^8.0.0, supports-color@^8.1.1:
   version "8.1.1"
   resolved "https://registry.npmjs.org/supports-color/-/supports-color-8.1.1.tgz#cd6fc17e28500cff56c1b86c0a7fd4a54a73005c"
   integrity sha512-MpUEN2OodtUzxvKQl72cUF7RQ5EiHsGvSsVG0ia9c5RbWGL2CI4C7EpPS8UTBIplnlzZiNuV56w+FuNxy3ty2Q==
@@ -10834,7 +10814,7 @@ tslib@2.8.1, tslib@^2.0.0, tslib@^2.0.1, tslib@^2.1.0, tslib@^2.3.0, tslib@^2.4.
   resolved "https://registry.npmjs.org/tslib/-/tslib-2.8.1.tgz#612efe4ed235d567e8aba5f2a5fab70280ade83f"
   integrity sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w==
 
-tslib@^1.13.0, tslib@^1.8.1, tslib@^1.9.0:
+tslib@^1.13.0, tslib@^1.8.1:
   version "1.14.1"
   resolved "https://registry.npmjs.org/tslib/-/tslib-1.14.1.tgz#cf2d38bdc34a134bcaf1091c41f6619e2f672d00"
   integrity sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==
@@ -11477,7 +11457,7 @@ yargs-parser@^20.2.2:
   resolved "https://registry.npmjs.org/yargs-parser/-/yargs-parser-20.2.9.tgz#2eb7dc3b0289718fc295f362753845c41a0c94ee"
   integrity sha512-y11nGElTIV+CT3Zv9t7VKl+Q3hTQoT9a1Qzezhhl6Rp21gJ/IVTW7Z3y9EWXhuUBC2Shnf+DX0antecpAwSP8w==
 
-yargs@^16.0.0, yargs@^16.2.0:
+yargs@^16.0.0:
   version "16.2.0"
   resolved "https://registry.npmjs.org/yargs/-/yargs-16.2.0.tgz#1c82bf0f6b6a66eafce7ef30e376f49a12477f66"
   integrity sha512-D1mvvtDG0L5ft/jGWkLpG1+m0eQxOfaBvTNELraWj22wSVUMWxZUvYgJYcKh6jGGIkJFhH4IZPQhR4TKpc8mBw==
