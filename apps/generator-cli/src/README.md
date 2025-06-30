@@ -175,6 +175,7 @@ is automatically used to generate your code. 🎉
 | relDir       | directory name of file relative to the glob provided          | docs                                                  |
 | relPath      | file name and extension of file relative to the glob provided | docs/auth.yaml                                        |
 | ext          | just file extension                                           | yaml                                                  |
+| env.<name>   | environment variable (use ${env.name} syntax)                 |                                                       |
 
 ### Using custom / private maven registry 
 
@@ -195,6 +196,18 @@ If you're using a private maven registry you can configure the `downloadUrl` and
 ```
 
 If the `version` property param is set it is not necessary to configure the `queryUrl`.
+
+`queryUrl` and `downloadUrl` can use the following placeholders:
+
+| placeholder | description                                        |
+|-------------|----------------------------------------------------|
+| groupId     | maven groupId where '.' has been replace with /    |
+| artifactId  | maven artifactId where '.' has been replace with / |
+| versionName | maven version (only for downloadUrl)               |
+| group.id    | maven groupId                                      |
+| artifact.id | maven artifactId                                   |
+| env.<name>  | environment variable name                          |
+
 
 ### Use locally built JAR
 In order to use a locally built jar of the generator CLI, you can copy the jar from your local build (i.e. if you were to `build` the [OpenAPITools/openapi-generator](https://github.com/OpenAPITools/openapi-generator) repository it would be in `~/openapi-generator/modules/openapi-generator-cli/target/openapi-generator-cli.jar`) into `./node_modules/@openapitools/openapi-generator-cli/versions/` and change the `version` in the `openapitools.json` file to the base name of the jar file.
