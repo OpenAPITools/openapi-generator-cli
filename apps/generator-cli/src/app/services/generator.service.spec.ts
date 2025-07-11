@@ -122,7 +122,10 @@ describe('GeneratorService', () => {
         concurrently.mockImplementation((ec, cfg) => {
           executedCommands = ec;
           concurrentlyCfg = cfg;
-          return Promise.resolve();
+          return {
+            commands: ec.map((c) => ({ name: c })),
+            result: Promise.resolve(),
+          };
         });
       });
 

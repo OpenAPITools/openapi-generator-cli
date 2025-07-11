@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { flatten, isString, kebabCase, sortBy, upperFirst } from 'lodash';
 
-import concurrently from 'concurrently';
+import concurrently, { type CloseEvent } from 'concurrently';
 import * as path from 'path';
 import * as fs from 'fs-extra';
 import * as glob from 'glob';
@@ -94,7 +94,9 @@ export class GeneratorService {
       commands.length > 0 &&
       (await (async () => {
         try {
-          this.printResult(await concurrently(commands, { maxProcesses: 10 }));
+          this.printResult(
+            await concurrently(commands, { maxProcesses: 10 }).result,
+          );
           return true;
         } catch (e) {
           this.printResult(e);
@@ -110,13 +112,11 @@ export class GeneratorService {
     return generated;
   }
 
-  private printResult(
-    res: { command: concurrently.CommandObj; exitCode: number }[]
-  ) {
+  private printResult(res: CloseEvent[]) {
     this.logger.log(
       sortBy(res, 'command.name')
         .map(({ exitCode, command }) => {
-          const failed = exitCode > 0;
+          const failed = typeof exitCode === 'string' || exitCode > 0;
           return [
             chalk[failed ? 'red' : 'green'](command.name),
             ...(failed ? [chalk.yellow(`  ${command.command}\n`)] : []),
