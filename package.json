@@ -88,7 +88,7 @@
     "chalk": "4.1.2",
     "commander": "8.3.0",
     "compare-versions": "4.1.4",
-    "concurrently": "^7.6.0",
+    "concurrently": "^9.0.0",
     "console.table": "0.10.0",
     "fs-extra": "11.3.0",
     "glob": "11.x",
