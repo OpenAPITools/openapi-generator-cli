@@ -1625,9 +1625,9 @@
   integrity sha512-68pFJgu+/AZbWkGu65Z3r55bTsCPlgyKaV4BSG8yUAD72q1PPuyVRgUwFv6BxdnibTUHlyxm06FmYWNC+bjN7A==
 
 "@nestjs/common@^11.0.16":
-  version "11.1.3"
-  resolved "https://registry.yarnpkg.com/@nestjs/common/-/common-11.1.3.tgz#d954644da5f4d1b601e48ee71a0d3e3405d81ea1"
-  integrity sha512-ogEK+GriWodIwCw6buQ1rpcH4Kx+G7YQ9EwuPySI3rS05pSdtQ++UhucjusSI9apNidv+QURBztJkRecwwJQXg==
+  version "11.1.5"
+  resolved "https://registry.yarnpkg.com/@nestjs/common/-/common-11.1.5.tgz#bc491d049e21f91216189b06e56f801730a8a3d1"
+  integrity sha512-DQpWdr3ShO0BHWkHl3I4W/jR6R3pDtxyBlmrpTuZF+PXxQyBXNvsUne0Wyo6QHPEDi+pAz9XchBFoKbqOhcdTg==
   dependencies:
     uid "2.0.2"
     file-type "21.0.0"
@@ -1636,9 +1636,9 @@
     tslib "2.8.1"
 
 "@nestjs/core@^11.0.16":
-  version "11.1.3"
-  resolved "https://registry.yarnpkg.com/@nestjs/core/-/core-11.1.3.tgz#42a9c6261ff70ef49afa809c526134cae22021e8"
-  integrity sha512-5lTni0TCh8x7bXETRD57pQFnKnEg1T6M+VLE7wAmyQRIecKQU+2inRGZD+A4v2DC1I04eA0WffP0GKLxjOKlzw==
+  version "11.1.5"
+  resolved "https://registry.yarnpkg.com/@nestjs/core/-/core-11.1.5.tgz#98fff1a0b47b36a1939f6d9f6c899c085e470e25"
+  integrity sha512-Qr25MEY9t8VsMETy7eXQ0cNXqu0lzuFrrTr+f+1G57ABCtV5Pogm7n9bF71OU2bnkDD32Bi4hQLeFR90cku3Tw==
   dependencies:
     uid "2.0.2"
     "@nuxt/opencollective" "0.4.1"
@@ -1648,13 +1648,13 @@
     tslib "2.8.1"
 
 "@nestjs/platform-express@^11.0.16":
-  version "11.1.3"
-  resolved "https://registry.yarnpkg.com/@nestjs/platform-express/-/platform-express-11.1.3.tgz#bf470f2e270ca9daa930974476dd0d7d62879556"
-  integrity sha512-hEDNMlaPiBO72fxxX/CuRQL3MEhKRc/sIYGVoXjrnw6hTxZdezvvM6A95UaLsYknfmcZZa/CdG1SMBZOu9agHQ==
+  version "11.1.5"
+  resolved "https://registry.yarnpkg.com/@nestjs/platform-express/-/platform-express-11.1.5.tgz#93a609c6ffd80460b561220d469e5e1bd11f732f"
+  integrity sha512-OsoiUBY9Shs5IG3uvDIt9/IDfY5OlvWBESuB/K4Eun8xILw1EK5d5qMfC3d2sIJ+kA3l+kBR1d/RuzH7VprLIg==
   dependencies:
     cors "2.8.5"
     express "5.1.0"
-    multer "2.0.1"
+    multer "2.0.2"
     path-to-regexp "8.2.0"
     tslib "2.8.1"
 
@@ -1680,9 +1680,9 @@
     pluralize "8.0.0"
 
 "@nestjs/testing@^11.0.16":
-  version "11.1.3"
-  resolved "https://registry.yarnpkg.com/@nestjs/testing/-/testing-11.1.3.tgz#27b34003f90429fef542b4fe54c5d43f73308b17"
-  integrity sha512-CeXG6/eEqgFIkPkmU00y18Dd3DLOIDFhPItzJK1SWckKo6IhcnfoRJzGx75bmuvUMjb51j6An96S/+MJ2ty9jA==
+  version "11.1.5"
+  resolved "https://registry.yarnpkg.com/@nestjs/testing/-/testing-11.1.5.tgz#8a95502b8eb0349c4f3d7cf355e441291084733e"
+  integrity sha512-ZYRYF750SefmuIo7ZqPlHDcin1OHh6My0OkOfGEFjrD9mJ0vMVIpwMTOOkpzCfCcpqUuxeHBuecpiIn+NLrQbQ==
   dependencies:
     tslib "2.8.1"
 
@@ -7940,10 +7940,10 @@ ms@2.1.3, ms@^2.1.2, ms@^2.1.3:
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.1.3.tgz#574c8138ce1d2b5861f0b44579dbadd60c6615b2"
   integrity sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==
 
-multer@2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/multer/-/multer-2.0.1.tgz#3ed335ed2b96240e3df9e23780c91cfcf5d29202"
-  integrity sha512-Ug8bXeTIUlxurg8xLTEskKShvcKDZALo1THEX5E41pYCD2sCVub5/kIRIGqWNoqV6szyLyQKV6mD4QUrWE5GCQ==
+multer@2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/multer/-/multer-2.0.2.tgz#08a8aa8255865388c387aaf041426b0c87bf58dd"
+  integrity sha512-u7f2xaZ/UG8oLXHvtF/oWTRvT44p9ecwBBqTwgJVq0+4BW1g8OW01TyMEGWBHbyMOYVHXslaut7qEQ1meATXgw==
   dependencies:
     append-field "^1.0.0"
     busboy "^1.6.0"
@@ -10427,9 +10427,9 @@ strip-json-comments@~2.0.1:
   integrity sha512-4gB8na07fecVVkOI6Rs4e7T6NOTki5EmL7TUduTs6bu3EdnSycntVJ4re8kgZA+wx9IueI2Y11bfbgwtzuE0KQ==
 
 strtok3@^10.2.2:
-  version "10.3.1"
-  resolved "https://registry.yarnpkg.com/strtok3/-/strtok3-10.3.1.tgz#80fe431a4ee652de4e33f14e11e15fd5170a627d"
-  integrity sha512-3JWEZM6mfix/GCJBBUrkA8p2Id2pBkyTkVCJKto55w080QBKZ+8R171fGrbiSp+yMO/u6F8/yUh7K4V9K+YCnw==
+  version "10.3.2"
+  resolved "https://registry.yarnpkg.com/strtok3/-/strtok3-10.3.2.tgz#7e5d14d27dc69c1319f74a91f137851e1a373910"
+  integrity sha512-or9w505RhhY66+uoe5YOC5QO/bRuATaoim3XTh+pGKx5VMWi/HDhMKuCjDLsLJouU2zg9Hf1nLPcNW7IHv80kQ==
   dependencies:
     "@tokenizer/token" "^0.3.0"
 
@@ -10714,9 +10714,9 @@ toidentifier@1.0.1:
   integrity sha512-o5sSPKEkg/DIQNmH43V0/uerLrpzVedkUh8tGNvaeXpfpuwjKenlSox/2O/BTlZUtEe+JG7s5YhEz608PlAHRA==
 
 token-types@^6.0.0:
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/token-types/-/token-types-6.0.0.tgz#1ab26be1ef9c434853500c071acfe5c8dd6544a3"
-  integrity sha512-lbDrTLVsHhOMljPscd0yitpozq7Ga2M5Cvez5AjGg8GASBjtt6iERCAJ93yommPmz62fb45oFIXHEZ3u9bfJEA==
+  version "6.0.3"
+  resolved "https://registry.yarnpkg.com/token-types/-/token-types-6.0.3.tgz#684f4f40e0750078ec644c826207a2c160b827a8"
+  integrity sha512-IKJ6EzuPPWtKtEIEPpIdXv9j5j2LGJEYk0CKY2efgKoYKLBiZdh6iQkLVBow/CB3phyWAWCyk+bZeaimJn6uRQ==
   dependencies:
     "@tokenizer/token" "^0.3.0"
     ieee754 "^1.2.1"
