@@ -1295,6 +1295,14 @@
   resolved "https://registry.yarnpkg.com/@humanwhocodes/retry/-/retry-0.4.2.tgz#1860473de7dfa1546767448f333db80cb0ff2161"
   integrity sha512-xeO57FpIu4p1Ri3Jq/EXq4ClRm86dVF2z/+kvFnyqVYRavTZmaFaUBbWCOuuTh0o/g7DSsk6kc2vrS4Vl5oPOQ==
 
+"@inquirer/external-editor@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@inquirer/external-editor/-/external-editor-1.0.0.tgz#a4b53af494049093ebc3c5c73fa949258e013cec"
+  integrity sha512-5v3YXc5ZMfL6OJqXPrX9csb4l7NlQA2doO1yynUjpUChT9hg4JcuBVP0RbsEJ/3SL/sxWEyFjT2W69ZhtoBWqg==
+  dependencies:
+    chardet "^2.1.0"
+    iconv-lite "^0.6.3"
+
 "@isaacs/balanced-match@^4.0.1":
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/@isaacs/balanced-match/-/balanced-match-4.0.1.tgz#3081dadbc3460661b751e7591d7faea5df39dd29"
@@ -2744,10 +2752,10 @@
   dependencies:
     "@types/node" "*"
 
-"@types/inquirer@8.2.11":
-  version "8.2.11"
-  resolved "https://registry.yarnpkg.com/@types/inquirer/-/inquirer-8.2.11.tgz#5f741050c696acf1926f136450d8d98ca65d9557"
-  integrity sha512-15UboTvxb9SOaPG7CcXZ9dkv8lNqfiAwuh/5WxJDLjmElBt9tbx1/FDsEnJddUBKvN4mlPKvr8FyO1rAmBanzg==
+"@types/inquirer@8.2.12":
+  version "8.2.12"
+  resolved "https://registry.yarnpkg.com/@types/inquirer/-/inquirer-8.2.12.tgz#c26da8d8fe5baff78382a1035059ef4967cee7a0"
+  integrity sha512-YxURZF2ZsSjU5TAe06tW0M3sL4UI9AMPA6dd8I72uOtppzNafcY38xkYgCZ/vsVOAyNdzHmvtTpLWilOrbP0dQ==
   dependencies:
     "@types/through" "*"
     rxjs "^7.2.0"
@@ -3946,10 +3954,10 @@ char-regex@^1.0.2:
   resolved "https://registry.npmjs.org/char-regex/-/char-regex-1.0.2.tgz#d744358226217f981ed58f479b1d6bcc29545dcf"
   integrity sha512-kWWXztvZ5SBQV+eRgKFeh8q5sLuZY2+8WUIzlxWVTg+oGwY14qylx1KbKzHd8P6ZYkAg0xyIDU9JMHhyJMZ1jw==
 
-chardet@^0.7.0:
-  version "0.7.0"
-  resolved "https://registry.npmjs.org/chardet/-/chardet-0.7.0.tgz#90094849f0937f2eedc2425d0d28a9e5f0cbad9e"
-  integrity sha512-mT8iDcrh03qDGRRmoA2hmBJnxpllMR+0/0qlzjqZES6NdiWDcZkCNAk4rPFZ9Q85r27unkiNNg8ZOiwZXBHwcA==
+chardet@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/chardet/-/chardet-2.1.0.tgz#1007f441a1ae9f9199a4a67f6e978fb0aa9aa3fe"
+  integrity sha512-bNFETTG/pM5ryzQ9Ad0lJOTa6HWD/YsScAR3EnCPZRPlQh77JocYktSHOUHelyhm8IARL+o4c4F1bP5KVOjiRA==
 
 chokidar@^3.5.3, chokidar@^3.6.0:
   version "3.6.0"
@@ -5386,15 +5394,6 @@ express@^4.21.2:
     utils-merge "1.0.1"
     vary "~1.1.2"
 
-external-editor@^3.0.3:
-  version "3.1.0"
-  resolved "https://registry.npmjs.org/external-editor/-/external-editor-3.1.0.tgz#cb03f740befae03ea4d283caed2741a83f335495"
-  integrity sha512-hMQ4CX1p1izmuLYyZqLMO/qGNw10wSv9QDCPfzXfyFrOaCSSoRfqE1Kf1s5an66J5JZC62NewG+mK49jOCtQew==
-  dependencies:
-    chardet "^0.7.0"
-    iconv-lite "^0.4.24"
-    tmp "^0.0.33"
-
 fast-deep-equal@^3.1.1, fast-deep-equal@^3.1.3:
   version "3.1.3"
   resolved "https://registry.npmjs.org/fast-deep-equal/-/fast-deep-equal-3.1.3.tgz#3a7d56b559d6cbc3eb512325244e619a65c6c525"
@@ -6200,7 +6199,7 @@ hyperdyperid@^1.2.0:
   resolved "https://registry.npmjs.org/hyperdyperid/-/hyperdyperid-1.2.0.tgz#59668d323ada92228d2a869d3e474d5a33b69e6b"
   integrity sha512-Y93lCzHYgGWdrJ66yIktxiaGULYc6oGiABxhcO5AufBeOyoIdZF7bIfLaOrbM0iGIOXQQgxxRrFEnb+Y6w1n4A==
 
-iconv-lite@0.4.24, iconv-lite@^0.4.24:
+iconv-lite@0.4.24:
   version "0.4.24"
   resolved "https://registry.npmjs.org/iconv-lite/-/iconv-lite-0.4.24.tgz#2022b4b25fbddc21d2f524974a474aafe733908b"
   integrity sha512-v3MXnZAcvnywkTUEZomIActle7RXXeedOR31wwl7VlyoXO4Qi9arvSenNQWne1TcRwhCL1HwLI21bEqdpj8/rA==
@@ -6353,16 +6352,16 @@ init-package-json@^7.0.2:
     validate-npm-package-license "^3.0.4"
     validate-npm-package-name "^6.0.0"
 
-inquirer@8.2.6:
-  version "8.2.6"
-  resolved "https://registry.npmjs.org/inquirer/-/inquirer-8.2.6.tgz#733b74888195d8d400a67ac332011b5fae5ea562"
-  integrity sha512-M1WuAmb7pn9zdFRtQYk26ZBoY043Sse0wVDdk4Bppr+JOXyQYybdtvK+l9wUibhtjdjvtoiNy8tk+EgsYIUqKg==
+inquirer@8.2.7:
+  version "8.2.7"
+  resolved "https://registry.yarnpkg.com/inquirer/-/inquirer-8.2.7.tgz#62f6b931a9b7f8735dc42db927316d8fb6f71de8"
+  integrity sha512-UjOaSel/iddGZJ5xP/Eixh6dY1XghiBw4XK13rCCIJcJfyhhoul/7KhLLUGtebEj6GDYM6Vnx/mVsjx2L/mFIA==
   dependencies:
+    "@inquirer/external-editor" "^1.0.0"
     ansi-escapes "^4.2.1"
     chalk "^4.1.1"
     cli-cursor "^3.1.0"
     cli-width "^3.0.0"
-    external-editor "^3.0.3"
     figures "^3.0.0"
     lodash "^4.17.21"
     mute-stream "0.0.8"
@@ -8502,11 +8501,6 @@ ora@5.4.1, ora@^5.4.1:
     log-symbols "^4.1.0"
     strip-ansi "^6.0.0"
     wcwidth "^1.0.1"
-
-os-tmpdir@~1.0.2:
-  version "1.0.2"
-  resolved "https://registry.npmjs.org/os-tmpdir/-/os-tmpdir-1.0.2.tgz#bbe67406c79aa85c5cfec766fe5734555dfa1274"
-  integrity sha512-D2FR03Vir7FIu45XBY20mTb+/ZSWB00sjU9jdQXt83gDrI4Ztz5Fs7/yy74g2N5SVQY4xY1qDr4rNddwYRVX0g==
 
 p-each-series@^3.0.0:
   version "3.0.0"
@@ -10696,13 +10690,6 @@ tinyglobby@^0.2.12:
   dependencies:
     fdir "^6.4.4"
     picomatch "^4.0.2"
-
-tmp@^0.0.33:
-  version "0.0.33"
-  resolved "https://registry.npmjs.org/tmp/-/tmp-0.0.33.tgz#6d34335889768d21b2bcda0aa277ced3b1bfadf9"
-  integrity sha512-jRCJlojKnZ3addtTOjdIqoRuPEKBvNXcGYqzO6zWZX8KfKEpnGY5jfggJQ3EjKuu8D4bJRr0y+cYJFmYbImXGw==
-  dependencies:
-    os-tmpdir "~1.0.2"
 
 tmp@~0.2.1:
   version "0.2.3"
