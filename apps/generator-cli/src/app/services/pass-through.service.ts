@@ -2,7 +2,6 @@ import { Inject, Injectable } from '@nestjs/common';
 import chalk from 'chalk';
 import { exec, spawn } from 'child_process';
 import { Command } from 'commander';
-import { isString, startsWith, trim } from 'lodash';
 import { COMMANDER_PROGRAM, LOGGER } from '../constants';
 import { GeneratorService } from './generator.service';
 import { VersionManagerService } from './version-manager.service';
@@ -101,14 +100,18 @@ export class PassThroughService {
 
     const commands = help
       .split('\n')
-      .filter((line) => startsWith(line, ' '))
-      .map<string>(trim)
-      .map((line) => line.match(/^([a-z-]+)\s+(.+)/i).slice(1))
+      .filter((line) => line.startsWith(' '))
+      .map((line) =>
+        line
+          .trim()
+          .match(/^([a-z-]+)\s+(.+)/i)
+          .slice(1),
+      )
       .reduce((acc, [cmd, desc]) => ({ ...acc, [cmd]: desc }), {});
 
     const allCommands = completion
       .split('\n')
-      .map<string>(trim)
+      .map<string>((line) => line.trim())
       .filter((c) => c.length > 0 && c.indexOf('--') !== 0);
 
     for (const cmd of allCommands) {
@@ -143,7 +146,7 @@ export class PassThroughService {
       : `-jar "${cliPath}"`;
 
     return ['java', process.env['JAVA_OPTS'], subCmd]
-      .filter(isString)
+      .filter((str): str is string => str != null && typeof str === 'string')
       .join(' ');
   }
 

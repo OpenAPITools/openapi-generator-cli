@@ -4,7 +4,6 @@ const { composePlugins, withNx } = require('@nx/webpack');
 const { name, version, ...packageConfig } = require('../../package.json');
 const GeneratePackageJsonPlugin = require('generate-package-json-webpack-plugin');
 const { BannerPlugin } = require('webpack');
-const { omit } = require('lodash');
 
 // Nx plugins for webpack.
 module.exports = composePlugins(
@@ -12,8 +11,13 @@ module.exports = composePlugins(
     target: 'node',
   }),
   (config) => {
+    const packageConfigWithoutScriptsAndDeps = {...packageConfig};
+    delete packageConfigWithoutScriptsAndDeps.devDependencies;
+    delete packageConfigWithoutScriptsAndDeps.dependencies;
+    delete packageConfigWithoutScriptsAndDeps.scripts;
+
     const basePackageValues = {
-      ...omit(packageConfig, ['scripts', 'dependencies', 'devDependencies']),
+      ...packageConfigWithoutScriptsAndDeps,
       version,
       name: `@${name}/openapi-generator-cli`,
       description:

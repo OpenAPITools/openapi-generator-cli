@@ -1,7 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { catchError, map, switchMap } from 'rxjs/operators';
-import { replace } from 'lodash';
 import { Observable, of } from 'rxjs';
 import { AxiosError } from 'axios';
 import * as fs from 'fs-extra';
@@ -251,8 +250,8 @@ export class VersionManagerService {
   private replacePlaceholders(str: string, additionalPlaceholders = {}) {
     const placeholders = {
       ...additionalPlaceholders,
-      groupId: replace(mvn.groupId, '.', '/'),
-      artifactId: replace(mvn.artifactId, '.', '/'),
+      groupId: mvn.groupId.replace(/\./g, '/'),
+      artifactId: mvn.artifactId.replace(/\./g, '/'),
       'group.id': mvn.groupId,
       'artifact.id': mvn.artifactId,
     };

@@ -1,5 +1,4 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { flatten, isString, kebabCase, sortBy, upperFirst } from 'lodash';
 
 import concurrently, { type CloseEvent } from 'concurrently';
 import * as path from 'path';
@@ -63,8 +62,8 @@ export class GeneratorService {
 
     const globsWithNoMatches = [];
 
-    const commands = flatten(
-      enabledGenerators.map(([name, config]) => {
+    const commands = enabledGenerators
+      .map(([name, config]) => {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { glob: globPattern, disabled, ...params } = config;
 
@@ -88,7 +87,7 @@ export class GeneratorService {
           command: this.buildCommand(cwd, params, customGenerator, spec),
         }));
       })
-    );
+      .flat();
 
     const generated =
       commands.length > 0 &&
@@ -112,18 +111,21 @@ export class GeneratorService {
     return generated;
   }
 
-  private printResult(res: CloseEvent[]) {
-    this.logger.log(
-      sortBy(res, 'command.name')
-        .map(({ exitCode, command }) => {
-          const failed = typeof exitCode === 'string' || exitCode > 0;
-          return [
-            chalk[failed ? 'red' : 'green'](command.name),
-            ...(failed ? [chalk.yellow(`  ${command.command}\n`)] : []),
-          ].join('\n');
-        })
-        .join('\n')
-    );
+  private printResult(res?: CloseEvent[]) {
+    if (res) {
+      this.logger.log(
+        res
+          .sort((a, b) => a.command.name.localeCompare(b.command.name))
+          .map(({ exitCode, command }) => {
+            const failed = typeof exitCode === 'string' || exitCode > 0;
+            return [
+              chalk[failed ? 'red' : 'green'](command.name),
+              ...(failed ? [chalk.yellow(`  ${command.command}\n`)] : []),
+            ].join('\n');
+          })
+          .join('\n'),
+      );
+    }
   }
 
   private buildCommand(
@@ -142,7 +144,7 @@ export class GeneratorService {
 
     const placeholders: { [key: string]: string } = {
       name,
-      Name: upperFirst(name),
+      Name: name.charAt(0).toUpperCase() + name.slice(1),
 
       cwd,
 
@@ -160,7 +162,11 @@ export class GeneratorService {
       ...params,
     })
       .map(([k, v]) => {
-        const key = kebabCase(k);
+        const key = k
+          .replace(/([a-z])([A-Z])/g, '$1-$2')
+          .replace(/[\s_]+/g, '-')
+          .toLowerCase();
+
         const value = (() => {
           switch (typeof v) {
             case 'object':
@@ -242,7 +248,7 @@ export class GeneratorService {
         )}" org.openapitools.codegen.OpenAPIGenerator`
       : `-jar "${cliPath}"`;
     return ['java', process.env['JAVA_OPTS'], subCmd, 'generate', appendix]
-      .filter(isString)
+      .filter((str): str is string => str != null && typeof str === 'string')
       .join(' ');
   };
 
