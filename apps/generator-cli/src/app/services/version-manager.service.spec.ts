@@ -133,7 +133,7 @@ describe('VersionManagerService', () => {
                 ],
               },
             },
-          })
+          }),
         );
 
         returnValue = await fixture.getAll().toPromise();
@@ -142,7 +142,7 @@ describe('VersionManagerService', () => {
       it('executes one get request', () => {
         expect(get).toHaveBeenNthCalledWith(
           1,
-          'https://search.maven.org/solrsearch/select?q=g:org.openapitools+AND+a:openapi-generator-cli&core=gav&start=0&rows=200'
+          'https://search.maven.org/solrsearch/select?q=g:org.openapitools+AND+a:openapi-generator-cli&core=gav&start=0&rows=200',
         );
       });
 
@@ -175,7 +175,7 @@ describe('VersionManagerService', () => {
                   ],
                 },
               },
-            })
+            }),
           );
 
           returnValue = await fixture.search([]).toPromise();
@@ -184,7 +184,7 @@ describe('VersionManagerService', () => {
         it('executes one get request', () => {
           expect(get).toHaveBeenNthCalledWith(
             1,
-            'https://search.maven.org/solrsearch/select?q=g:org.openapitools+AND+a:openapi-generator-cli&core=gav&start=0&rows=200'
+            'https://search.maven.org/solrsearch/select?q=g:org.openapitools+AND+a:openapi-generator-cli&core=gav&start=0&rows=200',
           );
         });
 
@@ -219,7 +219,7 @@ describe('VersionManagerService', () => {
         it('executes one get request', () => {
           expect(get).toHaveBeenNthCalledWith(
             1,
-            'https://search.maven.org/solrsearch/select?q=g:org.openapitools+AND+a:openapi-generator-cli&core=gav&start=0&rows=200'
+            'https://search.maven.org/solrsearch/select?q=g:org.openapitools+AND+a:openapi-generator-cli&core=gav&start=0&rows=200',
           );
         });
 
@@ -270,14 +270,14 @@ describe('VersionManagerService', () => {
           expect(setVersion).toHaveBeenNthCalledWith(
             1,
             'generator-cli.version',
-            '1.2.3'
+            '1.2.3',
           );
         });
 
         it('logs a success message', () => {
           expect(log).toHaveBeenNthCalledWith(
             1,
-            chalk.green('Did set selected version to 1.2.3')
+            chalk.green('Did set selected version to 1.2.3'),
           );
         });
       });
@@ -295,11 +295,11 @@ describe('VersionManagerService', () => {
         });
 
         it('does not set the config value', () => {
-          expect(setVersion).toBeCalledTimes(0);
+          expect(setVersion).toHaveBeenCalledTimes(0);
         });
 
         it('logs no success message', () => {
-          expect(log).toBeCalledTimes(0);
+          expect(log).toHaveBeenCalledTimes(0);
         });
       });
     });
@@ -328,7 +328,7 @@ describe('VersionManagerService', () => {
       it('removes the correct file', () => {
         expect(fs.removeSync).toHaveBeenNthCalledWith(
           1,
-          `${fixture.storage}/4.3.1.jar`
+          `${fixture.storage}/4.3.1.jar`,
         );
       });
 
@@ -446,7 +446,7 @@ describe('VersionManagerService', () => {
                 before: [chalk.yellow(`Download 4.2.0 ...`)],
                 after: [
                   chalk.green(
-                    `Downloaded 4.2.0 to custom storage location ${expected}`
+                    `Downloaded 4.2.0 to custom storage location ${expected}`,
                   ),
                 ],
               });
@@ -458,7 +458,7 @@ describe('VersionManagerService', () => {
           expect(get).toHaveBeenNthCalledWith(
             1,
             'https://repo1.maven.org/maven2/org/openapitools/openapi-generator-cli/4.2.0/openapi-generator-cli-4.2.0.jar',
-            { responseType: 'stream' }
+            { responseType: 'stream' },
           );
         });
 
@@ -466,21 +466,21 @@ describe('VersionManagerService', () => {
           it('ensures the save dir', () => {
             expect(fs.ensureDirSync).toHaveBeenNthCalledWith(
               1,
-              fixture.storage
+              fixture.storage,
             );
           });
 
           it('creates a temporary directory', () => {
             expect(fs.mkdtempSync).toHaveBeenNthCalledWith(
               1,
-              path.join(os.tmpdir(), 'generator-cli-')
+              path.join(os.tmpdir(), 'generator-cli-'),
             );
           });
 
           it('creates the correct write stream', () => {
             expect(fs.createWriteStream).toHaveBeenNthCalledWith(
               1,
-              '/tmp/generator-cli-abcDEF/4.2.0'
+              '/tmp/generator-cli-abcDEF/4.2.0',
             );
           });
 
@@ -489,7 +489,7 @@ describe('VersionManagerService', () => {
               1,
               '/tmp/generator-cli-abcDEF/4.2.0',
               `${fixture.storage}/4.2.0.jar`,
-              { overwrite: true }
+              { overwrite: true },
             );
           });
 
@@ -518,7 +518,7 @@ describe('VersionManagerService', () => {
         });
 
         it('does not call download', () => {
-          expect(downloadSpy).toBeCalledTimes(0);
+          expect(downloadSpy).toHaveBeenCalledTimes(0);
         });
 
         it('returns true', () => {
@@ -563,7 +563,7 @@ describe('VersionManagerService', () => {
         fixture.isDownloaded('4.3.1');
         expect(fs.existsSync).toHaveBeenNthCalledWith(
           1,
-          fixture.storage + '/4.3.1.jar'
+          fixture.storage + '/4.3.1.jar',
         );
       });
     });
@@ -571,7 +571,7 @@ describe('VersionManagerService', () => {
     describe('filePath()', () => {
       it('returns the path to the given version name', () => {
         expect(fixture.filePath('1.2.3')).toEqual(
-          `${fixture.storage}/1.2.3.jar`
+          `${fixture.storage}/1.2.3.jar`,
         );
       });
 

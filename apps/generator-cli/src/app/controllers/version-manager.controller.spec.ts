@@ -48,9 +48,9 @@ describe('VersionManagerController', () => {
   });
 
   it('adds 3 commands, but 2 actions', () => {
-    expect(commandMock.action).toBeCalledTimes(2);
-    expect(commandMock.command).toBeCalledTimes(3);
-    expect(commandMock.description).toBeCalledTimes(3);
+    expect(commandMock.action).toHaveBeenCalledTimes(2);
+    expect(commandMock.command).toHaveBeenCalledTimes(3);
+    expect(commandMock.description).toHaveBeenCalledTimes(3);
   });
 
   describe('commands', function () {
@@ -110,21 +110,21 @@ describe('VersionManagerController', () => {
           'remove',
           'setSelectedVersion',
         ])('does not call version manager %s', (fn) => {
-          expect(versionManagerServiceMock[fn]).toBeCalledTimes(0);
+          expect(versionManagerServiceMock[fn]).toHaveBeenCalledTimes(0);
         });
 
         it('does not print a table', () => {
-          expect(uiServiceMock.table).toBeCalledTimes(0);
+          expect(uiServiceMock.table).toHaveBeenCalledTimes(0);
         });
 
         it('does not print a list', () => {
-          expect(uiServiceMock.list).toBeCalledTimes(0);
+          expect(uiServiceMock.list).toHaveBeenCalledTimes(0);
         });
 
         it('prints the result as json', () => {
           expect(log).toHaveBeenNthCalledWith(
             1,
-            JSON.stringify(versions, null, 2)
+            JSON.stringify(versions, null, 2),
           );
         });
       });
@@ -137,7 +137,7 @@ describe('VersionManagerController', () => {
           uiServiceMock.table.mockReset().mockResolvedValue(versions[0]);
           uiServiceMock.list.mockReset().mockResolvedValue(whatsNextSpy);
           versionManagerServiceMock.isSelectedVersion.mockImplementationOnce(
-            (v) => v === '1.2.3'
+            (v) => v === '1.2.3',
           );
           commandMock.refs['list [versionTags...]'].opts
             .mockReset()
@@ -193,7 +193,7 @@ describe('VersionManagerController', () => {
           await cmd.action(['tag1', 'tag2']);
           expect(log).toHaveBeenNthCalledWith(
             1,
-            chalk.red('No results for: tag1 tag2')
+            chalk.red('No results for: tag1 tag2'),
           );
         });
 
@@ -289,12 +289,16 @@ describe('VersionManagerController', () => {
 
       it('sets version[0] from the list', async () => {
         versionManagerServiceMock.search.mockReturnValue(
-          of([{ version: '1.2.3' }, { version: '1.2.4' }, { version: '0.5.6' }])
+          of([
+            { version: '1.2.3' },
+            { version: '1.2.4' },
+            { version: '0.5.6' },
+          ]),
         );
 
         await cmd.action(['tag1', 'tag2']);
         expect(
-          versionManagerServiceMock.setSelectedVersion
+          versionManagerServiceMock.setSelectedVersion,
         ).toHaveBeenNthCalledWith(1, '1.2.3');
       });
 
@@ -303,7 +307,7 @@ describe('VersionManagerController', () => {
         await cmd.action(['tag1', 'tag2']);
         expect(log).toHaveBeenNthCalledWith(
           1,
-          chalk.red('Unable to find version matching criteria "tag1 tag2"')
+          chalk.red('Unable to find version matching criteria "tag1 tag2"'),
         );
       });
     });
