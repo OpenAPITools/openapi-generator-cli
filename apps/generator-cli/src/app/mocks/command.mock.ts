@@ -1,7 +1,4 @@
-import { get, set } from 'lodash';
-
 export class CommandMock {
-
   commands: {
     [key: string]: {
       self: CommandMock,
@@ -24,41 +21,55 @@ export class CommandMock {
 
   helpInformation = jest.fn().mockReturnValue('some help text');
 
-  action = jest.fn().mockImplementation(action => {
-    set(this.commands, [this.currentCommand, 'action'], action);
+  ensureCommand = () => {
+    if (!this.commands[this.currentCommand]) {
+      this.commands[this.currentCommand] = {
+        self: this,
+        description: '',
+        allowUnknownOption: false,
+        action: () => {},
+        options: [],
+      };
+    }
+  };
+
+  action = jest.fn().mockImplementation((action) => {
+    this.ensureCommand();
+    this.commands[this.currentCommand].action = action;
     return this;
   });
 
   option = jest.fn().mockImplementation((flags, description, defaultValue) => {
-    const options = get(this.commands, [this.currentCommand, 'options'], []);
-
-    set(this.commands, [this.currentCommand, 'options'], [
+    const options = this.commands[this.currentCommand]?.options ?? [];
+    this.ensureCommand();
+    this.commands[this.currentCommand].options = [
       ...options,
       {
         flags,
         description,
-        defaultValue
-      }
-    ]);
+        defaultValue,
+      },
+    ];
     return this;
   });
 
-  command = jest.fn().mockImplementation(cmd => {
+  command = jest.fn().mockImplementation((cmd) => {
     this.currentCommand = cmd;
     this.refs[cmd] = this;
     return this;
   });
 
   allowUnknownOption = jest.fn().mockImplementation(() => {
-    set(this.commands, [this.currentCommand, 'allowUnknownOption'], true);
+    this.ensureCommand();
+    this.commands[this.currentCommand].allowUnknownOption = true;
     return this;
   });
 
-  description = jest.fn().mockImplementation(desc => {
-    set(this.commands, [this.currentCommand, 'description'], desc);
+  description = jest.fn().mockImplementation((desc) => {
+    this.ensureCommand();
+    this.commands[this.currentCommand].description = desc;
     return this;
   });
 
   opts = jest.fn();
-
 }

@@ -1,7 +1,6 @@
-import {Inject, Injectable} from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import * as path from 'path';
-import {COMMANDER_PROGRAM, LOGGER} from '../constants';
-import {set, get, has, merge} from 'lodash';
+import { COMMANDER_PROGRAM, LOGGER } from '../constants';
 import * as fs from 'fs-extra';
 import { Command } from 'commander';
 
@@ -45,29 +44,106 @@ export class ConfigService {
   }
 
   get<T = unknown>(path: string, defaultValue?: T): T {
-    return get(this.read(), path, defaultValue)
+    const getPath = (
+      obj: Record<string, unknown> | unknown,
+      keys: string[],
+    ): unknown => {
+      if (!obj || keys.length === 0) return obj;
+
+      const [head, ...tail] = keys;
+
+      if (tail.length === 0) {
+        return obj[head];
+      }
+
+      return getPath(obj[head], tail);
+    };
+
+    const result = getPath(this.read(), path.split('.')) as T;
+    return result !== undefined ? result : defaultValue;
   }
 
-  has(path) {
-    return has(this.read(), path)
+  has(path: string) {
+    const hasPath = (
+      obj: Record<string, unknown> | unknown,
+      keys: string[],
+    ): boolean => {
+      if (!obj || keys.length === 0) return false;
+
+      const [head, ...tail] = keys;
+
+      if (tail.length === 0) {
+        return Object.prototype.hasOwnProperty.call(obj, head);
+      }
+
+      return hasPath(obj[head] as Record<string, unknown>, tail);
+    };
+
+    return hasPath(this.read(), path.split('.'));
   }
 
   set(path: string, value: unknown) {
-    this.write(set(this.read(), path, value))
-    return this
+    const setPath = (
+      obj: object,
+      keys: string[],
+      val: unknown,
+    ): object => {
+      const [head, ...tail] = keys;
+
+      if (tail.length === 0) {
+        obj[head] = val;
+        return obj;
+      }
+
+      if (!obj[head] || typeof obj[head] !== 'object') {
+        obj[head] = {};
+      }
+
+      setPath(obj[head] as Record<string, unknown>, tail, val);
+      return obj;
+    };
+
+    const config = this.read();
+    this.write(setPath(config, path.split('.'), value));
+    return this;
   }
 
   private read() {
-    fs.ensureFileSync(this.configFile)
+    const deepMerge = (
+      target: object,
+      source: object,
+    ): object => {
+      if (!source || typeof source !== 'object') return target;
 
-    return merge(
+      const result = { ...target };
+
+      for (const key in source) {
+        if (Object.prototype.hasOwnProperty.call(source, key)) {
+          if (
+            source[key] &&
+            typeof source[key] === 'object' &&
+            !Array.isArray(source[key])
+          ) {
+            const value = (result[key] || {});
+            result[key] = deepMerge(value, source[key]);
+          } else {
+            result[key] = source[key];
+          }
+        }
+      }
+
+      return result;
+    };
+
+    fs.ensureFileSync(this.configFile);
+
+    return deepMerge(
       this.defaultConfig,
-      fs.readJSONSync(this.configFile, {throws: false, encoding: 'utf8'}),
-    )
+      fs.readJSONSync(this.configFile, { throws: false, encoding: 'utf8' }),
+    );
   }
 
   private write(config) {
     fs.writeJSONSync(this.configFile, config, {encoding: 'utf8', spaces: config.spaces || 2})
   }
-
 }
