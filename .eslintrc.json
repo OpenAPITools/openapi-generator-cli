@@ -10,5 +10,5 @@
     },
     "rules": {
     },
-    "ignorePatterns": ["apps/generator-cli/webpack.config.js"]
+    "ignorePatterns": ["webpack.config.js"]
 }
