@@ -1,5 +1,5 @@
 {
     "extends": "../../.eslintrc",
     "rules": {},
-    "ignorePatterns": ["webcpack.config.js"]
+    "ignorePatterns": ["webcpack.config.js", "!**/*"]
 }
