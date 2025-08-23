@@ -9,5 +9,6 @@
         "ecmaVersion": 11
     },
     "rules": {
-    }
+    },
+    "ignorePatterns": ["apps/generator-cli/webpack.config.js"]
 }
