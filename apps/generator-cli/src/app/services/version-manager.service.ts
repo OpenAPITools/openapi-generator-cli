@@ -279,6 +279,7 @@ export class VersionManagerService {
     } catch(e) {
       // simply show the original error if the above code block fails
       this.logger.log('Errors: ', error);
+      this.logger.debug('Caught errors: ', e);
     }
   }
 

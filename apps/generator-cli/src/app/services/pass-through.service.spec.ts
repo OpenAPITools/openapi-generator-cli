@@ -9,7 +9,8 @@ import { ConfigService } from './config.service';
 
 jest.mock('child_process');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const childProcess = jest.mocked(require('child_process'));
+import childProcessImport from 'child_process';
+const childProcess = jest.mocked(childProcessImport);
 
 describe('PassThroughService', () => {
   let fixture: PassThroughService;
@@ -286,6 +287,7 @@ describe('PassThroughService', () => {
                   expect(spy).toHaveBeenCalledTimes(helpText ? 1 : 0);
                 });
 
+		// eslint-disable-next-line no-unused-expressions
                 helpText &&
                   it('prints the correct help text', () => {
                     expect(spy).toHaveBeenCalledWith(helpText());
@@ -299,6 +301,7 @@ describe('PassThroughService', () => {
                   );
                 });
 
+		// eslint-disable-next-line no-unused-expressions
                 spawn &&
                   it('spawns the correct process', () => {
                     expect(childProcess.spawn).toHaveBeenNthCalledWith(
