@@ -124,7 +124,7 @@ export class PassThroughService {
   private run = (subCmd: string) =>
     new Promise<string>((resolve, reject) => {
       exec(`${this.cmd()} ${subCmd}`, (error, stdout, stderr) => {
-	// eslint-disable-next-line no-unused-expressions
+	// eslint-disable-next-line @typescript-eslint/no-unused-expressions
         error ? reject(new Error(stderr)) : resolve(stdout);
       });
     });

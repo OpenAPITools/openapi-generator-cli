@@ -287,7 +287,7 @@ describe('PassThroughService', () => {
                   expect(spy).toHaveBeenCalledTimes(helpText ? 1 : 0);
                 });
 
-		// eslint-disable-next-line no-unused-expressions
+		// eslint-disable-next-line @typescript-eslint/no-unused-expressions
                 helpText &&
                   it('prints the correct help text', () => {
                     expect(spy).toHaveBeenCalledWith(helpText());
@@ -301,7 +301,7 @@ describe('PassThroughService', () => {
                   );
                 });
 
-		// eslint-disable-next-line no-unused-expressions
+		// eslint-disable-next-line @typescript-eslint/no-unused-expressions
                 spawn &&
                   it('spawns the correct process', () => {
                     expect(childProcess.spawn).toHaveBeenNthCalledWith(
