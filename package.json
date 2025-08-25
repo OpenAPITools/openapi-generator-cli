@@ -127,7 +127,7 @@
     "husky": "9.1.7",
     "jest": "30.0.5",
     "jest-environment-jsdom": "30.0.5",
-    "jest-environment-node": "^29.4.1",
+    "jest-environment-node": "^30.0.0",
     "nx": "21.3.11",
     "prettier": "3.6.2",
     "semantic-release": "22.0.12",
