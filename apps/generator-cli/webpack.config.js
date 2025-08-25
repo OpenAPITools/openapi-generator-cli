@@ -1,5 +1,5 @@
-/* eslint-disable no-undef */
-/* eslint-disable @typescript-eslint/no-var-requires */
+/* eslint-disable */
+
 const { composePlugins, withNx } = require('@nx/webpack');
 const { name, version, ...packageConfig } = require('../../package.json');
 const GeneratePackageJsonPlugin = require('generate-package-json-webpack-plugin');

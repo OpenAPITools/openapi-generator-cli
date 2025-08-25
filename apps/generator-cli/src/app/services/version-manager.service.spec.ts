@@ -13,7 +13,8 @@ import * as path from 'path';
 jest.mock('fs-extra');
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const fs = jest.mocked(require('fs-extra'));
+import fsExtra from 'fs-extra';
+const fs = jest.mocked(fsExtra);
 
 describe('VersionManagerService', () => {
   let fixture: VersionManagerService;

@@ -8,11 +8,14 @@ jest.mock('fs-extra');
 jest.mock('glob');
 jest.mock('concurrently');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const fs = jest.mocked(require('fs-extra'));
+import fsExtra from 'fs-extra';
+const fs = jest.mocked(fsExtra);
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const glob = jest.mocked(require('glob'));
+import globImport from 'glob';
+const glob = jest.mocked(globImport);
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const concurrently = jest.mocked(require('concurrently'));
+import concurrentlyImport from 'concurrently';
+const concurrently = jest.mocked(concurrentlyImport);
 
 describe('GeneratorService', () => {
   let fixture: GeneratorService;
