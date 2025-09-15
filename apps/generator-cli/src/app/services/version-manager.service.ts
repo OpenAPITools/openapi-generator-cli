@@ -8,7 +8,7 @@ import * as path from 'path';
 import * as os from 'os';
 import * as Stream from 'stream';
 import chalk from 'chalk';
-import compare from 'compare-versions';
+import { compareVersions } from 'compare-versions';
 import { LOGGER } from '../constants';
 import { ConfigService } from './config.service';
 import * as configSchema from '../../config.schema.json';
@@ -86,7 +86,7 @@ export class VersionManagerService {
       ),
       map((versions) => {
         const latestVersion = this.filterVersionsByTags(versions, ['stable'])
-          .sort((l, r) => compare(l.version, r.version))
+          .sort((l, r) => compareVersions(l.version, r.version))
           .pop();
         latestVersion.versionTags.push('latest'); // works, because it's a reference
         return versions;
