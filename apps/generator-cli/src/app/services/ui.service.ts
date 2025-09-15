@@ -1,6 +1,6 @@
 // import ora from 'ora'
 import {Injectable} from '@nestjs/common';
-import prompt from 'inquirer';
+import inquirer from 'inquirer';
 import Separator from 'inquirer/lib/objects/separator';
 import {getTable} from 'console.table'
 
@@ -48,7 +48,7 @@ export class UIService {
       .filter((c) => c instanceof Separator)
       .length
 
-    const res = await prompt([{
+    const res = await inquirer.prompt([{
       type: 'list',
       name: config.name,
       pageSize: process.stdout.rows - separatorCount - 1,
