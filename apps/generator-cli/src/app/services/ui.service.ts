@@ -27,7 +27,7 @@ export class UIService {
         new Separator(header),
         new Separator(separator),
         ...rows.map((name: string, index: number) => ({
-          name,
+          name: config.name,
           short: config.rows[index].short,
           value: config.rows[index].value,
         })),
