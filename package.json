@@ -90,7 +90,7 @@
     "compare-versions": "6.1.1",
     "concurrently": "^9.0.0",
     "console.table": "0.10.0",
-    "fs-extra": "11.3.1",
+    "fs-extra": "11.3.2",
     "glob": "11.x",
     "inquirer": "8.2.7",
     "jsonpath": "1.1.1",
