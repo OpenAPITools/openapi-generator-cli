@@ -288,8 +288,15 @@ export class VersionManagerService {
 
   versions : Version[] = [
     {
+      version: '7.16.0',
+      versionTags: [ '7.16.0', 'stable', 'latest' ],
+      releaseDate: new Date("2025-09-28T06:24:58.285Z"),
+      installed: false,
+      downloadLink: 'https://repo1.maven.org/maven2/org/openapitools/openapi-generator-cli/7.16.0/openapi-generator-cli-7.16.0.jar'
+    },
+    {
       version: '7.15.0',
-      versionTags: [ '7.15.0', 'stable', 'latest' ],
+      versionTags: [ '7.15.0', 'stable' ],
       releaseDate: new Date("2025-08-22T06:24:58.285Z"),
       installed: false,
       downloadLink: 'https://repo1.maven.org/maven2/org/openapitools/openapi-generator-cli/7.15.0/openapi-generator-cli-7.15.0.jar'
