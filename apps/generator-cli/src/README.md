@@ -223,16 +223,20 @@ Change your `openapitools.json` to:
   "$schema": "node_modules/@openapitools/openapi-generator-cli/config.schema.json",
   "spaces": 2,
   "generator-cli": {
-    "version": "7.9.0-20240829.123431-22",
+    "version": "7.17.0-20251003.020930-8",
     "repository": {
-      "downloadUrl": "https://oss.sonatype.org/content/repositories/snapshots/org/openapitools/openapi-generator-cli/7.9.0-SNAPSHOT/openapi-generator-cli-${versionName}.jar"
+      "downloadUrl": "https://central.sonatype.com/repository/maven-snapshots/org/openapitools/openapi-generator-cli/7.17.0-SNAPSHOT/openapi-generator-cli-${version}.jar"
     }
   }
 }
 ```
 
 Example is with a snapshot of `7.9.0`, please change the `version` and `downloadUrl` accordingly.
-You can find all snapshots [here](https://oss.sonatype.org/content/repositories/snapshots/org/openapitools/openapi-generator-cli/).
+You can find the published snapshots in the build log of the [Publish to Maven Central Github workflow](https://github.com/OpenAPITools/openapi-generator/actions/workflows/maven-release.yml) in OpenAPI Generator repo, e.g.
+
+```
+[INFO] Uploading to central: https://central.sonatype.com/repository/maven-snapshots/org/openapitools/openapi-generator-cli/7.17.0-SNAPSHOT/openapi-generator-cli-7.17.0-20251003.020930-8.jar
+```
 
 ## Run specific generators
 
