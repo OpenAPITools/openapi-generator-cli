@@ -231,7 +231,7 @@ Change your `openapitools.json` to:
 }
 ```
 
-Example is with a snapshot of `7.9.0`, please change the `version` and `downloadUrl` accordingly.
+Example is with a snapshot of `7.17.0`, please change the `version` and `downloadUrl` accordingly.
 You can find the published snapshots in the build log of the [Publish to Maven Central Github workflow](https://github.com/OpenAPITools/openapi-generator/actions/workflows/maven-release.yml) in OpenAPI Generator repo, e.g.
 
 ```
