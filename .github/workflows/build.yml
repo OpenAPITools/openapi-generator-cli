@@ -81,7 +81,7 @@ jobs:
           npm run oa version-manager help
           npm run oa generate -- -g ruby -i https://raw.githubusercontent.com/OpenAPITools/openapi-generator/master/modules/openapi-generator/src/test/resources/3_0/petstore.yaml -o $GITHUB_WORKSPACE/tmp/ruby-client
           (npm run oa version-manager set 3.0.0 && npm run oa version | grep -q '3.0.0') || exit 1
-          (npm run oa version-manager set 4.0 && npm run oa version | grep -q '4.0.3') || exit 1
+          (npm run oa version-manager set 6.0 && npm run oa version | grep -q '6.0.1') || exit 1
           (npm run oa version-manager set 4.3.1 && npm run oa version | grep -q '4.3.1') || exit 1
           (npm run oa version-manager set 4.3.1 && npm run oa version | grep -q '4.3.1') || exit 1
           (export OPENAPI_GENERATOR_CLI_SEARCH_URL=DEFAULT && npm run oa version-manager set 7.2.0 && npm run oa version | grep -q '7.2.0') || exit 1
