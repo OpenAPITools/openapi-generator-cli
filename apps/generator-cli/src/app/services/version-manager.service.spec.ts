@@ -142,7 +142,7 @@ describe('VersionManagerService', () => {
       it('executes one get request', () => {
         expect(get).toHaveBeenNthCalledWith(
           1,
-          'https://search.maven.org/solrsearch/select?q=g:org.openapitools+AND+a:openapi-generator-cli&core=gav&start=0&rows=200',
+          'https://central.sonatype.com/solrsearch/select?q=g:org.openapitools+AND+a:openapi-generator-cli&core=gav&start=0&rows=200',
         );
       });
 
@@ -184,7 +184,7 @@ describe('VersionManagerService', () => {
         it('executes one get request', () => {
           expect(get).toHaveBeenNthCalledWith(
             1,
-            'https://search.maven.org/solrsearch/select?q=g:org.openapitools+AND+a:openapi-generator-cli&core=gav&start=0&rows=200',
+            'https://central.sonatype.com/solrsearch/select?q=g:org.openapitools+AND+a:openapi-generator-cli&core=gav&start=0&rows=200',
           );
         });
 
@@ -219,7 +219,7 @@ describe('VersionManagerService', () => {
         it('executes one get request', () => {
           expect(get).toHaveBeenNthCalledWith(
             1,
-            'https://search.maven.org/solrsearch/select?q=g:org.openapitools+AND+a:openapi-generator-cli&core=gav&start=0&rows=200',
+            'https://central.sonatype.com/solrsearch/select?q=g:org.openapitools+AND+a:openapi-generator-cli&core=gav&start=0&rows=200',
           );
         });
 

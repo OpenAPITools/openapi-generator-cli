@@ -26,7 +26,7 @@
         "repository": {
           "queryUrl": {
             "type": "string",
-            "default": "https://search.maven.org/solrsearch/select?q=g:${group.id}+AND+a:${artifact.id}&core=gav&start=0&rows=200"
+            "default": "https://central.sonatype.com/solrsearch/select?q=g:${group.id}+AND+a:${artifact.id}&core=gav&start=0&rows=200"
           },
           "downloadUrl": {
             "type": "string",

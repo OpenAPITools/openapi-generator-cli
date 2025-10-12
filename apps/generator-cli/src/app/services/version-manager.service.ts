@@ -23,7 +23,7 @@ export interface Version {
 }
 
 const mvn = {
-  repo: 'https://search.maven.org',
+  repo: 'https://central.sonatype.com',
   groupId: 'org.openapitools',
   artifactId: 'openapi-generator-cli',
 };
