@@ -264,6 +264,14 @@ If `useDocker` option is used, the spec file gets mounted to path `/local/<your-
 
 Custom generators can be used by passing the `--custom-generator=/my/custom-generator.jar` argument.
 
+## Bypassing maven repo search
+
+To bypass maven repo search for all stable versions (as central.sonatype.com or search.maven.org could be down due to various reasons), one can set the environment variable `OPENAPI_GENERATOR_CLI_SEARCH_URL` to `DEFAULT`:
+
+Linux: `export OPENAPI_GENERATOR_CLI_SEARCH_URL=DEFAULT`
+
+DOS: `set OPENAPI_GENERATOR_CLI_SEARCH_URL=DEFAULT`
+
 ## Further Documentation
 
 Please refer to the [official openapi-generator docs](https://github.com/OpenAPITools/openapi-generator#3---usage) for
