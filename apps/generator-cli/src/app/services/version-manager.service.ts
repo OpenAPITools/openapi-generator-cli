@@ -181,9 +181,9 @@ export class VersionManagerService {
                 );
                 const file = fs.createWriteStream(temporaryFilePath);
                 res.data.pipe(file);
-                file.on('finish', (content) => {
+                file.on('finish', () => {
                   fs.moveSync(temporaryFilePath, filePath, { overwrite: true });
-                  resolve(content);
+                  resolve(true);
                 });
               })
           )
