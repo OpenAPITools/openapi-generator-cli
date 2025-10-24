@@ -12,6 +12,7 @@ describe('ConfigService', () => {
   let program: Command;
 
   const log = jest.fn();
+  const error = jest.fn();
 
   beforeEach(async () => {
     program = createCommand();
@@ -20,7 +21,7 @@ describe('ConfigService', () => {
     const moduleRef = await Test.createTestingModule({
       providers: [
         ConfigService,
-        { provide: LOGGER, useValue: { log } },
+        { provide: LOGGER, useValue: { log, error } },
         { provide: COMMANDER_PROGRAM, useValue: program },
       ],
     }).compile();
@@ -89,6 +90,42 @@ describe('ConfigService', () => {
             { throws: false, encoding: 'utf8' }
           );
         });
+      });
+    });
+
+    describe('the config has values having placeholders', () => {
+      beforeEach(() => {
+        fs.readJSONSync.mockReturnValue({
+          $schema: 'foo.json',
+          spaces: 4,
+          'generator-cli': {
+            version: '1.2.3',
+            repository: {
+              queryUrl: 'https://${env.__unit_test_username}:${env.__unit_test_password}@server/api',
+              downloadUrl: 'https://${env.__unit_test_non_matching}@server/api'
+            }
+          },
+        });
+        process.env['__unit_test_username'] = 'myusername';
+        process.env['__unit_test_password'] = 'mypassword';
+      });
+
+      afterEach(() => {
+        delete process.env['__unit_test_username'];
+        delete process.env['__unit_test_password'];
+      })
+
+      it('verify placeholder replaced with env vars', () => {
+        const value = fixture.get('generator-cli.repository.queryUrl');
+
+        expect(value).toEqual('https://myusername:mypassword@server/api');
+      });
+
+      it('verify placeholders not matching env vars are not replaced', () => {
+        const value = fixture.get('generator-cli.repository.downloadUrl');
+
+        expect(value).toEqual('https://${env.__unit_test_non_matching}@server/api');
+        expect(error).toHaveBeenCalledWith('Environment variable for placeholder \'__unit_test_non_matching\' not found.');
       });
     });
 
