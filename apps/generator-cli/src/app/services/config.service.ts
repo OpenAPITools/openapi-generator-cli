@@ -76,7 +76,7 @@ export class ConfigService {
         return Object.prototype.hasOwnProperty.call(obj, head);
       }
 
-      return hasPath((obj as Record<string, unknown>)[head] as Record<string, unknown> | undefined, tail);
+      return hasPath(obj[head] as Record<string, unknown>, tail);
     };
 
     return hasPath(this.read(), path.split('.'));
@@ -148,10 +148,9 @@ export class ConfigService {
   private replacePlaceholders(config: Record<string, unknown>): Record<string, unknown> {
     const replacePlaceholderInString = (inputString: string): string => {
       return inputString.replace(/\${(.*?)}/g, (fullMatch, placeholderKey) => {
-        const trimmedKey = placeholderKey.trim();
-        const environmentVariableKey = trimmedKey.startsWith('env.')
-          ? trimmedKey.substring(4)
-          : trimmedKey;
+        const environmentVariableKey = placeholderKey.startsWith('env.')
+          ? placeholderKey.substring(4)
+          : placeholderKey;
 
         const environmentVariableValue = process.env[environmentVariableKey];
 
