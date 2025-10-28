@@ -30,7 +30,7 @@ To make that happen, a version management was added to the package.
 The first time you run the command `openapi-generator-cli` the last stable version 
 of [OpenAPITools/openapi-generator](https://github.com/OpenAPITools/openapi-generator) is downloaded by default. 
 
-That version is saved in the file *openapitools.json*. Therefore you should include this file in your version control, 
+That version is saved in the file *openapitools.json*. Therefore, you should include this file in your version control, 
 to ensure that the correct version is being used next time you call the command.
 
 If you would like to use a different version of the [OpenAPITools/openapi-generator](https://github.com/OpenAPITools/openapi-generator), 
@@ -66,7 +66,7 @@ After the installation has finished you can run `npx openapi-generator-cli` or a
   "name": "my-cool-package",
   "version": "0.0.0",
   "scripts": {
-    "my-awesome-script-name": "openapi-generator-cli generate -i docs/openapi.yaml -g typescript-angular -o generated-sources/openapi --additional-properties=ngVersion=6.1.7,npmName=restClient,supportsES6=true,npmVersion=6.9.0,withInterfaces=true",
+    "my-awesome-script-name": "openapi-generator-cli generate -i docs/openapi.yaml -g typescript-angular -o generated-sources/openapi --additional-properties=ngVersion=6.1.7,npmName=restClient,supportsES6=true,npmVersion=6.9.0,withInterfaces=true"
   }
 }
 ```
@@ -164,17 +164,18 @@ is automatically used to generate your code. 🎉
 
 ##### Available placeholders
      
-| placeholder  | description                                                   | example                                               |
-|--------------|---------------------------------------------------------------|-------------------------------------------------------|
-| name         | just file name                                                | auth                                                  |
-| Name         | just file name, but starting with a capital letter            | Auth                                                  |
-| cwd          | the current cwd                                               | /Users/some-user/projects/some-project                |
-| base         | file name and extension                                       | auth.yaml                                             |
-| path         | full path and filename                                        | /Users/some-user/projects/some-project/docs/auth.yaml |
-| dir          | path without the filename                                     | /Users/some-user/projects/some-project/docs           |
-| relDir       | directory name of file relative to the glob provided          | docs                                                  |
-| relPath      | file name and extension of file relative to the glob provided | docs/auth.yaml                                        |
-| ext          | just file extension                                           | yaml                                                  |
+| placeholder | description                                                   | example                                               |
+|-------------|---------------------------------------------------------------|-------------------------------------------------------|
+| name        | just file name                                                | auth                                                  |
+| Name        | just file name, but starting with a capital letter            | Auth                                                  |
+| cwd         | the current cwd                                               | /Users/some-user/projects/some-project                |
+| base        | file name and extension                                       | auth.yaml                                             |
+| path        | full path and filename                                        | /Users/some-user/projects/some-project/docs/auth.yaml |
+| dir         | path without the filename                                     | /Users/some-user/projects/some-project/docs           |
+| relDir      | directory name of file relative to the glob provided          | docs                                                  |
+| relPath     | file name and extension of file relative to the glob provided | docs/auth.yaml                                        |
+| ext         | just file extension                                           | yaml                                                  |
+| env.<name>  | environment variable (use ${env.name} syntax)                 |                                                       |
 
 ### Using custom / private maven registry 
 
@@ -196,6 +197,17 @@ If you're using a private maven registry you can configure the `downloadUrl` and
 
 If the `version` property param is set it is not necessary to configure the `queryUrl`.
 
+`queryUrl` and `downloadUrl` can use the following placeholders:
+
+| placeholder | description                                        |
+|-------------|----------------------------------------------------|
+| groupId     | maven groupId where '.' has been replace with /    |
+| artifactId  | maven artifactId where '.' has been replace with / |
+| versionName | maven version (only for downloadUrl)               |
+| group.id    | maven groupId                                      |
+| artifact.id | maven artifactId                                   |
+| env.<name>  | environment variable name                          |
+
 ### Use locally built JAR
 In order to use a locally built jar of the generator CLI, you can copy the jar from your local build (i.e. if you were to `build` the [OpenAPITools/openapi-generator](https://github.com/OpenAPITools/openapi-generator) repository it would be in `~/openapi-generator/modules/openapi-generator-cli/target/openapi-generator-cli.jar`) into `./node_modules/@openapitools/openapi-generator-cli/versions/` and change the `version` in the `openapitools.json` file to the base name of the jar file.
 E.g.:
@@ -210,7 +222,7 @@ and then:
   "$schema": "./node_modules/@openapitools/openapi-generator-cli/config.schema.json",
   "spaces": 2,
   "generator-cli": {
-    "version": "my-local-snapshot",
+    "version": "my-local-snapshot"
   }
 }
 ```
@@ -232,7 +244,7 @@ Change your `openapitools.json` to:
 ```
 
 Example is with a snapshot of `7.17.0`, please change the `version` and `downloadUrl` accordingly.
-You can find the published snapshots in the build log of the [Publish to Maven Central Github workflow](https://github.com/OpenAPITools/openapi-generator/actions/workflows/maven-release.yml) in OpenAPI Generator repo, e.g.
+You can find the published snapshots in the build log of the [Publish to Maven Central GitHub workflow](https://github.com/OpenAPITools/openapi-generator/actions/workflows/maven-release.yml) in OpenAPI Generator repo, e.g.
 
 ```
 [INFO] Uploading to central: https://central.sonatype.com/repository/maven-snapshots/org/openapitools/openapi-generator-cli/7.17.0-SNAPSHOT/openapi-generator-cli-7.17.0-20251003.020930-8.jar
