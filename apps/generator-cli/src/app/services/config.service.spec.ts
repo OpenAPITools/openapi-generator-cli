@@ -12,6 +12,7 @@ describe('ConfigService', () => {
   let program: Command;
 
   const log = jest.fn();
+  const error = jest.fn();
 
   beforeEach(async () => {
     program = createCommand();
@@ -20,7 +21,7 @@ describe('ConfigService', () => {
     const moduleRef = await Test.createTestingModule({
       providers: [
         ConfigService,
-        { provide: LOGGER, useValue: { log } },
+        { provide: LOGGER, useValue: { log, error } },
         { provide: COMMANDER_PROGRAM, useValue: program },
       ],
     }).compile();
@@ -89,6 +90,43 @@ describe('ConfigService', () => {
             { throws: false, encoding: 'utf8' }
           );
         });
+      });
+    });
+
+    describe('the config has values having placeholders', () => {
+      let originalEnv: NodeJS.ProcessEnv;
+
+      beforeEach(() => {
+        originalEnv = { ...process.env };
+        
+        fs.readJSONSync.mockReturnValue({
+          $schema: 'foo.json',
+          spaces: 4,
+          'generator-cli': {
+            version: '1.2.3',
+            repository: {
+              queryUrl: 'https://${env.__unit_test_username}:${env.__unit_test_password}@server/api',
+              downloadUrl: 'https://${env.__unit_test_non_matching}@server/api'
+            }
+          },
+        });
+        process.env['__unit_test_username'] = 'myusername';
+        process.env['__unit_test_password'] = 'mypassword';
+      });
+
+      afterEach(() => {
+        process.env = { ...originalEnv };
+      });
+
+      it('verify placeholder replaced with env vars', () => {
+        const value = fixture.get('generator-cli.repository.queryUrl');
+        expect(value).toEqual('https://myusername:mypassword@server/api');
+      });
+
+      it('verify placeholders not matching env vars are not replaced', () => {
+        const value = fixture.get('generator-cli.repository.downloadUrl');
+        expect(value).toEqual('https://${env.__unit_test_non_matching}@server/api');
+        expect(error).toHaveBeenCalledWith('Environment variable for placeholder \'__unit_test_non_matching\' not found.');
       });
     });
 
@@ -182,6 +220,61 @@ describe('ConfigService', () => {
             )
           ).toBeTruthy();
         });
+      });
+    });
+
+    describe('replacePlaceholders', () => {
+      let originalEnv: NodeJS.ProcessEnv;
+
+      beforeEach(() => {
+        jest.clearAllMocks();
+        originalEnv = { ...process.env };
+      });
+
+      afterEach(() => {
+        process.env = { ...originalEnv };
+      });
+
+      it('replaces a simple placeholder with an environment variable', () => {
+        process.env.TEST_VAR = 'value1';
+        const input = { key: 'Hello ${TEST_VAR}' };
+        const result = fixture['replacePlaceholders'](input);
+        expect(result.key).toBe('Hello value1');
+      });
+
+      it('leaves placeholder unchanged and logs error if env var is missing', () => {
+        delete process.env.MISSING_VAR;
+        const input = { key: 'Hello ${MISSING_VAR}' };
+        const result = fixture['replacePlaceholders'](input);
+        expect(result.key).toBe('Hello ${MISSING_VAR}');
+        expect(error).toHaveBeenCalledWith(expect.stringContaining('MISSING_VAR'));
+      });
+
+      it('replaces placeholders in nested objects and arrays', () => {
+        process.env.NESTED_VAR = 'nested';
+        const input = {
+          arr: ['${NESTED_VAR}', { inner: '${NESTED_VAR}' }],
+          obj: { deep: '${NESTED_VAR}' },
+        };
+        const result = fixture['replacePlaceholders'](input);
+        expect(result.arr[0]).toBe('nested');
+        expect((result.arr[1] as { inner: string }).inner).toBe('nested');
+        expect((result.obj as { deep: string }).deep).toBe('nested');
+      });
+
+      it('handles env. prefix in placeholders', () => {
+        process.env.PREFIX_VAR = 'prefix';
+        const input = { key: 'Value: ${env.PREFIX_VAR}' };
+        const result = fixture['replacePlaceholders'](input);
+        expect(result.key).toBe('Value: prefix');
+      });
+
+      it('replaces multiple placeholders in a single string', () => {
+        process.env.FIRST = 'one';
+        process.env.SECOND = 'two';
+        const input = { key: 'Values: ${FIRST}, ${SECOND}' };
+        const result = fixture['replacePlaceholders'](input);
+        expect(result.key).toBe('Values: one, two');
       });
     });
   });
