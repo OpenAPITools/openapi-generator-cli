@@ -133,7 +133,7 @@
     "semantic-release": "24.2.9",
     "ts-jest": "29.4.6",
     "ts-node": "10.9.2",
-    "type-fest": "5.3.0",
+    "type-fest": "5.3.1",
     "typescript": "5.9.3",
     "jest-util": "30.2.0"
   }
