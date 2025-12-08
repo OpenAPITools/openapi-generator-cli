@@ -1,6 +1,5 @@
 // import ora from 'ora'
 import {Injectable} from '@nestjs/common';
-import prompt, {Separator} from 'inquirer';
 import {getTable} from 'console.table'
 
 @Injectable()
@@ -23,15 +22,15 @@ export class UIService {
       name: config.name,
       message: config.message,
       choices: [
-        new Separator(header),
-        new Separator(separator),
+        new inquirer.Separator(header),
+        new inquirer.Separator(separator),
         ...rows.map((name: string, index: number) => ({
           name,
           short: config.rows[index].short,
           value: config.rows[index].value,
         })),
-        new Separator(separator),
-        new Separator(' '.repeat(separator.length)),
+        new inquirer.Separator(separator),
+        new inquirer.Separator(' '.repeat(separator.length)),
       ],
     })
   }
@@ -44,10 +43,10 @@ export class UIService {
 
     const separatorCount = config
       .choices
-      .filter((c) => c instanceof Separator)
+      .filter((c) => c instanceof inquirer.Separator)
       .length
 
-    const res = await prompt([{
+    const res = await inquirer.prompt([{
       type: 'list',
       name: config.name,
       pageSize: process.stdout.rows - separatorCount - 1,
