@@ -1,6 +1,6 @@
 // import ora from 'ora'
 import {Injectable} from '@nestjs/common';
-import {prompt, Separator} from 'inquirer';
+import prompt, {Separator} from 'inquirer';
 import {getTable} from 'console.table'
 
 @Injectable()
