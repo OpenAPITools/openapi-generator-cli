@@ -1,7 +1,8 @@
 // import ora from 'ora'
 import {Injectable} from '@nestjs/common';
 import {getTable} from 'console.table';
-import inquirer from 'inquirer';
+
+const inquirer = require('inquirer');
 
 @Injectable()
 export class UIService {
@@ -12,7 +13,6 @@ export class UIService {
     printColNum?: boolean,
     rows: Array<{ row: Record<string, unknown>, short: string, value: T }>,
   }): Promise<T> {
-
 
     const table = getTable(config.rows.map(({row}, index: number) => {
       return config.printColNum === false ? row : ({'#': index + 1, ...row});
