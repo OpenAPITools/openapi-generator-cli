@@ -1,8 +1,7 @@
 // import ora from 'ora'
 import {Injectable} from '@nestjs/common';
 import {getTable} from 'console.table';
-
-const inquirer = require('inquirer');
+import inquirer from 'inquirer';
 
 @Injectable()
 export class UIService {
