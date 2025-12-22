@@ -24,7 +24,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/OpenAPITools/openapi-generator-cli.git"
+    "url": "git+https://github.com/OpenAPITools/openapi-generator-cli.git"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
