@@ -7,7 +7,7 @@ import { Command } from 'commander';
 @Injectable()
 export class ConfigService {
 
-  public readonly cwd = process.env.PWD || process.env.INIT_CWD || process.cwd()
+  public readonly cwd = process.cwd()
   public readonly configFile = this.configFileOrDefault();
 
   private configFileOrDefault() {
