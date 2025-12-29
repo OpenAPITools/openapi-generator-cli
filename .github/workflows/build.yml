@@ -84,7 +84,6 @@ jobs:
           (npm run oa version-manager set 6.0 && npm run oa version | grep -q '6.0.1') || exit 1
           (npm run oa version-manager set 4.3.1 && npm run oa version | grep -q '4.3.1') || exit 1
           (npm run oa version-manager set 4.3.1 && npm run oa version | grep -q '4.3.1') || exit 1
-          (export OPENAPI_GENERATOR_CLI_SEARCH_URL=DEFAULT && npm run oa version-manager set 7.2.0 && npm run oa version | grep -q '7.2.0') || exit 1
           json -I -f openapitools.json -e 'this["generator-cli"]["storageDir"]="./my/storage/"'
           (npm run oa version-manager set 4.3.0 && npm run oa version | grep -q '4.3.0') || exit 1
           test -f ./my/storage/4.3.0.jar || exit 1
@@ -92,6 +91,8 @@ jobs:
           (npm run oa version-manager set 4.3.1 && npm run oa version | grep -q '4.3.1') || exit 1
           test -f ~/my/storage/4.3.1.jar || exit 1
           npm run oa:generate && mkdir ./foo && cd ./foo && npm run oa:generate
+          (export OPENAPI_GENERATOR_CLI_SEARCH_URL=MAVEN && npm run oa version-manager set 7.2.0 && npm run oa version | grep -q '7.2.0') || exit 1
+
 
 #  release:
 #    if: github.event.pull_request.merged == 'true'
