@@ -6,42 +6,42 @@ import { Command } from 'commander';
 
 @Injectable()
 export class ConfigService {
-
-  public readonly cwd = process.env.PWD || process.env.INIT_CWD || process.cwd()
+  public readonly cwd =
+    process.env.PWD || process.env.INIT_CWD || process.cwd();
   public readonly configFile = this.configFileOrDefault();
 
   private configFileOrDefault() {
     this.program.parseOptions(process.argv);
     const conf = this.program.opts().openapitools;
 
-    if(!conf) {
+    if (!conf) {
       return path.resolve(this.cwd, 'openapitools.json');
     }
 
     return path.isAbsolute(conf) ? conf : path.resolve(this.cwd, conf);
   }
 
-  public get useDocker()  {
+  public get useDocker() {
     return this.get('generator-cli.useDocker', false);
   }
 
-  public get dockerImageName()  {
+  public get dockerImageName() {
     return this.get('generator-cli.dockerImageName', 'openapitools/openapi-generator-cli');
   }
 
   private readonly defaultConfig = {
-    $schema: './node_modules/@openapitools/openapi-generator-cli/config.schema.json',
+    $schema:
+      './node_modules/@openapitools/openapi-generator-cli/config.schema.json',
     spaces: 2,
     'generator-cli': {
       version: undefined,
     },
-  }
+  };
 
   constructor(
     @Inject(LOGGER) private readonly logger: LOGGER,
     @Inject(COMMANDER_PROGRAM) private readonly program: Command,
-  ) {
-  }
+  ) {}
 
   get<T = unknown>(path: string, defaultValue?: T): T {
     const getPath = (
@@ -59,8 +59,14 @@ export class ConfigService {
       return getPath(obj[head], tail);
     };
 
-    const result = getPath(this.read(), path.split('.')) as T;
-    return result !== undefined ? result : defaultValue;
+    const raw = getPath(this.read(), path.split('.')) as Record<
+      string,
+      unknown
+    >;
+
+    const resolved = this.replacePlaceholders(raw) as T;
+
+    return resolved !== undefined ? resolved : defaultValue;
   }
 
   has(path: string) {
@@ -110,9 +116,9 @@ export class ConfigService {
 
   private read() {
     const deepMerge = (
-      target: object,
+      target: Record<string, unknown>,
       source: object,
-    ): object => {
+    ): Record<string, unknown> => {
       if (!source || typeof source !== 'object') return target;
 
       const result = { ...target };
@@ -124,7 +130,7 @@ export class ConfigService {
             typeof source[key] === 'object' &&
             !Array.isArray(source[key])
           ) {
-            const value = (result[key] || {});
+            const value = (result[key] || {}) as Record<string, unknown>;
             result[key] = deepMerge(value, source[key]);
           } else {
             result[key] = source[key];
@@ -137,10 +143,56 @@ export class ConfigService {
 
     fs.ensureFileSync(this.configFile);
 
-    return deepMerge(
-      this.defaultConfig,
-      fs.readJSONSync(this.configFile, { throws: false, encoding: 'utf8' }),
-    );
+    const fileConfig =
+      fs.readJSONSync(this.configFile, { throws: false, encoding: 'utf8' }) ??
+      {};
+
+    return deepMerge(this.defaultConfig, fileConfig);
+  }
+
+  private replacePlaceholders(config: Record<string, unknown>): Record<string, unknown> {
+    const replacePlaceholderInString = (inputString: string): string => {
+      return inputString.replace(/\${(.*?)}/g, (fullMatch, placeholderKey) => {
+        const environmentVariableKey = placeholderKey.startsWith('env.')
+          ? placeholderKey.substring(4)
+          : placeholderKey;
+
+        const environmentVariableValue = process.env[environmentVariableKey];
+
+        if (environmentVariableValue === undefined) {
+          this.logger.error(
+            `Environment variable for placeholder '${environmentVariableKey}' not found.`,
+          );
+          return fullMatch;
+        }
+
+        return environmentVariableValue;
+      });
+    };
+
+    const traverseConfigurationObject = (
+      configurationValue: unknown,
+    ): unknown => {
+      if (typeof configurationValue === 'string') {
+        return replacePlaceholderInString(configurationValue);
+      }
+      if (Array.isArray(configurationValue)) {
+        return configurationValue.map(traverseConfigurationObject);
+      }
+      if (configurationValue && typeof configurationValue === 'object') {
+        return Object.fromEntries(
+          Object.entries(configurationValue as Record<string, unknown>).map(
+            ([propertyKey, propertyValue]) => [
+              propertyKey,
+              traverseConfigurationObject(propertyValue),
+            ],
+          ),
+        );
+      }
+      return configurationValue;
+    };
+
+    return traverseConfigurationObject(config) as Record<string, unknown>;
   }
 
   private write(config) {
