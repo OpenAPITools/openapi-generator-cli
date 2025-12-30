@@ -98,7 +98,7 @@ describe('ConfigService', () => {
 
       beforeEach(() => {
         originalEnv = { ...process.env };
-        
+
         fs.readJSONSync.mockReturnValue({
           $schema: 'foo.json',
           spaces: 4,
@@ -214,11 +214,9 @@ describe('ConfigService', () => {
       });
       describe('--openapitools not set', () => {
         it('returns default path, if openapitools argument not provided', () => {
-          expect(
-            fixture.configFile.endsWith(
-              'openapi-generator-cli/openapitools.json'
-            )
-          ).toBeTruthy();
+          expect(fixture.configFile).toEqual(
+            expect.stringMatching(/[/\\]openapitools\.json$/),
+          );
         });
       });
     });

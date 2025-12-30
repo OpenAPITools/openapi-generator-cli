@@ -6,8 +6,8 @@ import { Command } from 'commander';
 
 @Injectable()
 export class ConfigService {
-
-  public readonly cwd = process.env.PWD || process.env.INIT_CWD || process.cwd();
+  public readonly cwd =
+    process.env.PWD || process.env.INIT_CWD || process.cwd();
   public readonly configFile = this.configFileOrDefault();
 
   private configFileOrDefault() {
@@ -59,8 +59,14 @@ export class ConfigService {
       return getPath(obj[head], tail);
     };
 
-    const result = getPath(this.read(), path.split('.')) as T;
-    return result !== undefined ? result : defaultValue;
+    const raw = getPath(this.read(), path.split('.')) as Record<
+      string,
+      unknown
+    >;
+
+    const resolved = this.replacePlaceholders(raw) as T;
+
+    return resolved !== undefined ? resolved : defaultValue;
   }
 
   has(path: string) {
@@ -137,12 +143,11 @@ export class ConfigService {
 
     fs.ensureFileSync(this.configFile);
 
-    const config = deepMerge(
-      this.defaultConfig,
-      fs.readJSONSync(this.configFile, { throws: false, encoding: 'utf8' }),
-    );
+    const fileConfig =
+      fs.readJSONSync(this.configFile, { throws: false, encoding: 'utf8' }) ??
+      {};
 
-    return this.replacePlaceholders(config);
+    return deepMerge(this.defaultConfig, fileConfig);
   }
 
   private replacePlaceholders(config: Record<string, unknown>): Record<string, unknown> {
