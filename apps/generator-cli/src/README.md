@@ -201,7 +201,7 @@ If the `version` property param is set it is not necessary to configure the `que
 
 | placeholder | description                                        |
 |-------------|----------------------------------------------------|
-| groupId     | maven groupId where '.' has been replace with /    |
+| groupId     | maven groupId where '.' has been replaced with /   |
 | artifactId  | maven artifactId where '.' has been replace with / |
 | versionName | maven version (only for downloadUrl)               |
 | group.id    | maven groupId                                      |
