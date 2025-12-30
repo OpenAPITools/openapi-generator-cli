@@ -18,7 +18,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Use Node.js ${{matrix.node-version }}
         uses: actions/setup-node@v6
@@ -42,7 +42,7 @@ jobs:
           cd dist/apps/generator-cli
           yarn pack -f ../package.tgz
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         with:
           name: package.tgz
           path: dist/apps/package.tgz
@@ -58,14 +58,14 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Use Node.js ${{matrix.node-version }}
         uses: actions/setup-node@v6
         with:
           node-version: ${{matrix.node-version }}
 
-      - uses: actions/download-artifact@v5
+      - uses: actions/download-artifact@v7
         with:
           name: package.tgz
 
