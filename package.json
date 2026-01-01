@@ -100,8 +100,8 @@
     "tslib": "^2.3.0"
   },
   "devDependencies": {
-    "@commitlint/cli": "20.2.0",
-    "@commitlint/config-conventional": "20.2.0",
+    "@commitlint/cli": "20.3.0",
+    "@commitlint/config-conventional": "20.3.0",
     "@nestjs/schematics": "11.0.9",
     "@nestjs/testing": "^11.0.16",
     "@nx/eslint": "22.3.3",
