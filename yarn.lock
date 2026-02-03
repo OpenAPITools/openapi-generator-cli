@@ -3120,10 +3120,10 @@
   dependencies:
     undici-types "~7.14.0"
 
-"@types/node@20.19.30":
-  version "20.19.30"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-20.19.30.tgz#84fa87498ade5cd2b6ba8f8eec01d3b138ca60d0"
-  integrity sha512-WJtwWJu7UdlvzEAUm484QNg5eAoq5QR08KDNx7g45Usrs2NtOPiX8ugDqmKdXkyL03rBqU5dYNYVQetEpBHq2g==
+"@types/node@20.19.31":
+  version "20.19.31"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-20.19.31.tgz#762ddf4088b3ac2389077cf1fb5336800a1fb4d5"
+  integrity sha512-5jsi0wpncvTD33Sh1UCgacK37FFwDn+EG7wCmEvs62fCvBL+n8/76cAYDok21NF6+jaVWIqKwCZyX7Vbu8eB3A==
   dependencies:
     undici-types "~6.21.0"
 
