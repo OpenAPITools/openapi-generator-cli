@@ -93,7 +93,7 @@
     "fs-extra": "11.3.3",
     "glob": "13.x",
     "inquirer": "8.2.7",
-    "jsonpath": "1.2.0",
+    "jsonpath": "1.2.1",
     "proxy-agent": "^6.4.0",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.2",
