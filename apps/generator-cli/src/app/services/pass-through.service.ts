@@ -85,8 +85,11 @@ export class PassThroughService {
 
   public passThrough = (cmd: Command) => {
     const args = [cmd.name(), ...cmd.args];
+    // Join command and args into a single string to avoid Node 24+ deprecation warning
+    // DEP0190: passing args to spawn with shell: true concatenates without escaping
+    const fullCommand = [this.cmd(), ...args].join(' ');
 
-    spawn(this.cmd(), args, {
+    spawn(fullCommand, {
       stdio: 'inherit',
       shell: true,
     }).on('exit', process.exit);

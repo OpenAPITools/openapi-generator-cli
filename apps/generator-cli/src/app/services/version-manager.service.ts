@@ -134,7 +134,8 @@ export class VersionManagerService {
   async remove(versionName: string) {
     if (this.configService.useDocker) {
       await new Promise<void>((resolve) => {
-        spawn('docker', ['rmi', this.getDockerImageName(versionName)], {
+        // Use single command string to avoid Node 24+ deprecation warning (DEP0190)
+        spawn(`docker rmi ${this.getDockerImageName(versionName)}`, {
           stdio: 'inherit',
           shell: true,
         }).on('exit', () => resolve());
@@ -151,7 +152,8 @@ export class VersionManagerService {
 
     if (this.configService.useDocker) {
       await new Promise<void>((resolve) => {
-        spawn('docker', ['pull', this.getDockerImageName(versionName)], {
+        // Use single command string to avoid Node 24+ deprecation warning (DEP0190)
+        spawn(`docker pull ${this.getDockerImageName(versionName)}`, {
           stdio: 'inherit',
           shell: true,
         }).on('exit', () => resolve());
