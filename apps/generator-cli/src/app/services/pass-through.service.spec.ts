@@ -178,8 +178,7 @@ describe('PassThroughService', () => {
               await program.parseAsync([name, ...argv], { from: 'user' });
               expect(childProcess.spawn).toHaveBeenNthCalledWith(
                 1,
-                'docker run --rm -v "/foo/bar:/local" openapitools/openapi-generator-cli:v4.2.1',
-                [name, ...argv],
+                `docker run --rm -v "/foo/bar:/local" openapitools/openapi-generator-cli:v4.2.1 ${name} ${argv.join(' ')}`,
                 {
                   stdio: 'inherit',
                   shell: true,
@@ -192,8 +191,7 @@ describe('PassThroughService', () => {
             await program.parseAsync([name, ...argv], { from: 'user' });
             expect(childProcess.spawn).toHaveBeenNthCalledWith(
               1,
-              'java -jar "/some/path/to/4.2.1.jar"',
-              [name, ...argv],
+              `java -jar "/some/path/to/4.2.1.jar" ${name} ${argv.join(' ')}`,
               {
                 stdio: 'inherit',
                 shell: true,
@@ -206,8 +204,7 @@ describe('PassThroughService', () => {
             await program.parseAsync([name, ...argv], { from: 'user' });
             expect(childProcess.spawn).toHaveBeenNthCalledWith(
               1,
-              'java java-opt-1=1 -jar "/some/path/to/4.2.1.jar"',
-              [name, ...argv],
+              `java java-opt-1=1 -jar "/some/path/to/4.2.1.jar" ${name} ${argv.join(' ')}`,
               {
                 stdio: 'inherit',
                 shell: true,
@@ -227,8 +224,7 @@ describe('PassThroughService', () => {
               `java -cp "${[
                 '/some/path/to/4.2.1.jar',
                 '../some/custom.jar',
-              ].join(cpDelimiter)}" org.openapitools.codegen.OpenAPIGenerator`,
-              [name, ...argv],
+              ].join(cpDelimiter)}" org.openapitools.codegen.OpenAPIGenerator ${name} ${argv.join(' ')}`,
               {
                 stdio: 'inherit',
                 shell: true,
@@ -303,8 +299,7 @@ describe('PassThroughService', () => {
                   it('spawns the correct process', () => {
                     expect(childProcess.spawn).toHaveBeenNthCalledWith(
                       1,
-                      'java -jar "/some/path/to/4.2.1.jar"',
-                      cmd.split(' '),
+                      `java -jar "/some/path/to/4.2.1.jar" ${cmd}`,
                       { stdio: 'inherit', shell: true }
                     );
                   });
