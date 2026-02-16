@@ -2,7 +2,7 @@
 import { Injectable } from '@nestjs/common';
 import select, { Separator } from '@inquirer/select';
 import { getTable } from 'console.table';
-import { styleText } from 'util';
+import { dim } from 'chalk';
 
 @Injectable()
 export class UIService {
@@ -18,7 +18,6 @@ export class UIService {
     );
 
     const [header, separator, ...rows] = table.trim().split('\n');
-    const dim = (text: string) => styleText('dim', text);
     return this.list({
       message: config.message,
       choices: [
@@ -39,7 +38,7 @@ export class UIService {
     message: string;
     choices: Array<{ name: string; short?: string; value: T } | Separator>;
   }): Promise<T> {
-    const pageSize = Math.max(1, process.stdout.rows - 3);
+    const pageSize = Math.max(1, process.stdout.rows - 2);
     try {
       const res = await select({
         pageSize,
@@ -49,7 +48,7 @@ export class UIService {
 
       return res;
     } catch (err) {
-      if (err instanceof Error && err.name === 'ExitPromptError') {
+      if (err instanceof Error && err.message.startsWith('User force closed the prompt with')) {
         process.exit(0);
       }
       throw err;
