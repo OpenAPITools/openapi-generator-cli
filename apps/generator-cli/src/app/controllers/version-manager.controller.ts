@@ -26,7 +26,7 @@ export class VersionManagerController {
     @Inject(LOGGER) private readonly logger: LOGGER,
     @Inject(COMMANDER_PROGRAM) private readonly program: Command,
     private readonly ui: UIService,
-    private readonly service: VersionManagerService
+    private readonly service: VersionManagerService,
   ) {}
 
   private list = async (versionTags: string[]) => {
@@ -43,8 +43,12 @@ export class VersionManagerController {
     }
 
     const { version, installed } = await this.table(versions);
-    const isSelected = await this.service.isSelectedVersion(version);
-    const choice = (name: string, cb = () => null, color = (v) => v) => ({
+    const isSelected = this.service.isSelectedVersion(version);
+    const choice = (
+      name: string,
+      cb: () => Promise<unknown> = () => Promise.resolve(),
+      color = (v: string) => v,
+    ) => ({
       name: color(name),
       value: cb,
     });
@@ -53,11 +57,11 @@ export class VersionManagerController {
 
     if (!installed) {
       choices.unshift(
-        choice('download', () => this.service.download(version), chalk.yellow)
+        choice('download', () => this.service.download(version), chalk.yellow),
       );
     } else if (!isSelected) {
       choices.unshift(
-        choice('remove', () => this.service.remove(version), chalk.red)
+        choice('remove', () => this.service.remove(version), chalk.red),
       );
     }
 
@@ -66,13 +70,13 @@ export class VersionManagerController {
         choice(
           'use',
           () => this.service.setSelectedVersion(version),
-          chalk.green
-        )
+          chalk.green,
+        ),
       );
     }
 
     await (
-      await this.ui.list({ name: 'next', message: 'Whats next?', choices })
+      await this.ui.list({ message: 'Whats next?', choices })
     )();
   };
 
@@ -86,8 +90,8 @@ export class VersionManagerController {
 
     this.logger.log(
       chalk.red(
-        `Unable to find version matching criteria "${versionTags.join(' ')}"`
-      )
+        `Unable to find version matching criteria "${versionTags.join(' ')}"`,
+      ),
     );
   };
 
@@ -95,12 +99,11 @@ export class VersionManagerController {
     this.ui.table({
       printColNum: false,
       message: 'The following releases are available:',
-      name: 'version',
       rows: versions.map((version) => {
         const stable = version.versionTags.includes('stable');
         const selected = this.service.isSelectedVersion(version.version);
         const versionTags = version.versionTags.map((t) =>
-          t === 'latest' ? chalk.green(t) : t
+          t === 'latest' ? chalk.green(t) : t,
         );
 
         return {

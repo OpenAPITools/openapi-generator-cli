@@ -149,7 +149,6 @@ describe('VersionManagerController', () => {
           expect(uiServiceMock.table).toHaveBeenNthCalledWith(1, {
             printColNum: false,
             message: 'The following releases are available:',
-            name: 'version',
             rows: [
               {
                 value: versions[0],
