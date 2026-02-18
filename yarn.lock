@@ -1927,9 +1927,9 @@
   integrity sha512-68pFJgu+/AZbWkGu65Z3r55bTsCPlgyKaV4BSG8yUAD72q1PPuyVRgUwFv6BxdnibTUHlyxm06FmYWNC+bjN7A==
 
 "@nestjs/common@^11.0.16":
-  version "11.1.13"
-  resolved "https://registry.yarnpkg.com/@nestjs/common/-/common-11.1.13.tgz#3d4bcc2a593236546bc62f7801b0d4450b26a9ac"
-  integrity sha512-ieqWtipT+VlyDWLz5Rvz0f3E5rXcVAnaAi+D53DEHLjc1kmFxCgZ62qVfTX2vwkywwqNkTNXvBgGR72hYqV//Q==
+  version "11.1.14"
+  resolved "https://registry.yarnpkg.com/@nestjs/common/-/common-11.1.14.tgz#f89e8d9ad32a3804958eda1c4846d2e2f107ce28"
+  integrity sha512-IN/tlqd7Nl9gl6f0jsWEuOrQDaCI9vHzxv0fisHysfBQzfQIkqlv5A7w4Qge02BUQyczXT9HHPgHtWHCxhjRng==
   dependencies:
     uid "2.0.2"
     file-type "21.3.0"
@@ -1938,9 +1938,9 @@
     tslib "2.8.1"
 
 "@nestjs/core@^11.0.16":
-  version "11.1.13"
-  resolved "https://registry.yarnpkg.com/@nestjs/core/-/core-11.1.13.tgz#4444e124d255759d545a631f63e9d84fe1a1e3e5"
-  integrity sha512-Tq9EIKiC30EBL8hLK93tNqaToy0hzbuVGYt29V8NhkVJUsDzlmiVf6c3hSPtzx2krIUVbTgQ2KFeaxr72rEyzQ==
+  version "11.1.14"
+  resolved "https://registry.yarnpkg.com/@nestjs/core/-/core-11.1.14.tgz#37cb2deb18082f7e78585182f2fca6158748ef8b"
+  integrity sha512-7OXPPMoDr6z+5NkoQKu4hOhfjz/YYqM3bNilPqv1WVFWrzSmuNXxvhbX69YMmNmRYascPXiwESqf5jJdjKXEww==
   dependencies:
     uid "2.0.2"
     "@nuxt/opencollective" "0.4.1"
@@ -1950,9 +1950,9 @@
     tslib "2.8.1"
 
 "@nestjs/platform-express@^11.0.16":
-  version "11.1.13"
-  resolved "https://registry.yarnpkg.com/@nestjs/platform-express/-/platform-express-11.1.13.tgz#272e350cb3938ec0f383aa083c7f1d5d44fae2dc"
-  integrity sha512-LYmi43BrAs1n74kLCUfXcHag7s1CmGETcFbf9IVyA/KWXAuAH95G3wEaZZiyabOLFNwq4ifnRGnIwUwW7cz3+w==
+  version "11.1.14"
+  resolved "https://registry.yarnpkg.com/@nestjs/platform-express/-/platform-express-11.1.14.tgz#909d88f81ad2114c0f61fe5731bbaa65de8075a6"
+  integrity sha512-Fs+/j+mBSBSXErOQJ/YdUn/HqJGSJ4pGfiJyYOyz04l42uNVnqEakvu1kXLbxMabR6vd6/h9d6Bi4tso9p7o4Q==
   dependencies:
     cors "2.8.6"
     express "5.2.1"
@@ -1983,9 +1983,9 @@
     pluralize "8.0.0"
 
 "@nestjs/testing@^11.0.16":
-  version "11.1.13"
-  resolved "https://registry.yarnpkg.com/@nestjs/testing/-/testing-11.1.13.tgz#bc28447627e51f34e193983147cfc5af3b6caa95"
-  integrity sha512-bOWP8nLEZAOEEX8jAZGBCc1yU0+nv4g2ipc+QEzkVUe3eEEUKHKaeGafJ3GtDuGavlZKfkXEqflZuICdavu5dQ==
+  version "11.1.14"
+  resolved "https://registry.yarnpkg.com/@nestjs/testing/-/testing-11.1.14.tgz#f8d8ca2e65c788c4cebdd34def7bf16d7b5bbc69"
+  integrity sha512-cQxX0ronsTbpfHz8/LYOVWXxoTxv6VoxrnuZoQaVX7QV2PSMqxWE7/9jSQR0GcqAFUEmFP34c6EJqfkjfX/k4Q==
   dependencies:
     tslib "2.8.1"
 
@@ -10042,9 +10042,9 @@ qs@6.13.0:
     side-channel "^1.0.6"
 
 qs@^6.14.0, qs@^6.14.1:
-  version "6.14.1"
-  resolved "https://registry.yarnpkg.com/qs/-/qs-6.14.1.tgz#a41d85b9d3902f31d27861790506294881871159"
-  integrity sha512-4EK3+xJl8Ts67nLYNwqw/dsFVnCf+qR7RgXSK9jEEm9unao3njwMDdmsdvoKBKHzxd7tCYz5e5M+SnMjdtXGQQ==
+  version "6.15.0"
+  resolved "https://registry.yarnpkg.com/qs/-/qs-6.15.0.tgz#db8fd5d1b1d2d6b5b33adaf87429805f1909e7b3"
+  integrity sha512-mAZTtNCeetKMH+pSjrb76NAM8V9a05I9aBZOHztWy/UqcJdQYNsf59vrRKWnojAT9Y+GbIvoTBC++CPHqpDBhQ==
   dependencies:
     side-channel "^1.1.0"
 
