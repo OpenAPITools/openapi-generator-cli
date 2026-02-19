@@ -58,7 +58,7 @@ export class VersionManagerService {
 
   getAll(): Observable<Version[]> {
     // bypass querying serach.maven.org and use default versions instead
-    if (process.env.OPENAPI_GENERATOR_CLI_SEARCH_URL === 'DEFAULT' ) {
+    if (process.env.OPENAPI_GENERATOR_CLI_SEARCH_URL !== 'MAVEN' ) {
       return this.getObservableVersions();
     }
 
