@@ -44,7 +44,7 @@
     "rest"
   ],
   "engines": {
-    "node": ">=16"
+    "node": ">=20.19.0"
   },
   "scripts": {
     "nx": "nx",
