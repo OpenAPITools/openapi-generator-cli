@@ -6204,10 +6204,10 @@ function-timeout@^1.0.1:
   resolved "https://registry.yarnpkg.com/function-timeout/-/function-timeout-1.0.2.tgz#e5a7b6ffa523756ff20e1231bbe37b5f373aadd5"
   integrity sha512-939eZS4gJ3htTHAldmyyuzlrD58P03fHG49v2JfFXbV6OhvZKRC9j2yAtdHw/zrp2zXHuv05zMIy40F0ge7spA==
 
-generate-package-json-webpack-plugin@2.6.0:
-  version "2.6.0"
-  resolved "https://registry.yarnpkg.com/generate-package-json-webpack-plugin/-/generate-package-json-webpack-plugin-2.6.0.tgz#cb98336801aad3cdc21304c278e5856f057ae233"
-  integrity sha512-JJS6CTkCIJeiqJay/mqrO005vbyLeozcyQvJf5AbToN7zsBewlu1Zk4dLiTV1+S/jJUUFjjn/ng9rjdbsJYyXw==
+generate-package-json-webpack-plugin@2.7.0:
+  version "2.7.0"
+  resolved "https://registry.yarnpkg.com/generate-package-json-webpack-plugin/-/generate-package-json-webpack-plugin-2.7.0.tgz#ca27d893ad9f55be0918879b9d468f1f292a7760"
+  integrity sha512-8GvEmAYLJa3PpfCwGlmBp2SM6EuEkSlfkoRQT/gbcPU3UF7Wl7s5m5ovsh6xF1Lmup6OPQZL5iODfom/IBPq9w==
 
 gensync@^1.0.0-beta.2:
   version "1.0.0-beta.2"

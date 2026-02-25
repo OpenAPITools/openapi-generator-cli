@@ -32,7 +32,7 @@ module.exports = composePlugins(
       dependencies: {
         'reflect-metadata': '',
         '@nuxtjs/opencollective': '',
-        axios: '',
+        axios: '^',
       },
     };
 
