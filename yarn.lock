@@ -3149,10 +3149,10 @@
   dependencies:
     undici-types "~7.14.0"
 
-"@types/node@20.19.34":
-  version "20.19.34"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-20.19.34.tgz#6eae179a306087a4001867a8866a9896241646e7"
-  integrity sha512-by3/Z0Qp+L9cAySEsSNNwZ6WWw8ywgGLPQGgbQDhNRSitqYgkgp4pErd23ZSCavbtUA2CN4jQtoB3T8nk4j3Rg==
+"@types/node@20.19.35":
+  version "20.19.35"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-20.19.35.tgz#117b373fd1dff528b2f9f8c2d1a85de6af8101ca"
+  integrity sha512-Uarfe6J91b9HAUXxjvSOdiO2UPOKLm07Q1oh0JHxoZ1y8HoqxDAu3gVrsrOHeiio0kSsoVBt4wFrKOm0dKxVPQ==
   dependencies:
     undici-types "~6.21.0"
 
