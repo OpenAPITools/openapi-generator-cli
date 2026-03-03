@@ -90,7 +90,7 @@
     "compare-versions": "6.1.1",
     "concurrently": "^9.0.0",
     "console.table": "0.10.0",
-    "fs-extra": "11.3.3",
+    "fs-extra": "11.3.4",
     "glob": "13.x",
     "jsonpath": "1.2.1",
     "proxy-agent": "^6.4.0",
