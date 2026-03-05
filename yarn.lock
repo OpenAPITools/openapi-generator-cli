@@ -1996,9 +1996,9 @@
     pluralize "8.0.0"
 
 "@nestjs/testing@^11.0.16":
-  version "11.1.15"
-  resolved "https://registry.yarnpkg.com/@nestjs/testing/-/testing-11.1.15.tgz#48229b2946fe9a2fb3e7af9b14c54cf50d6320b4"
-  integrity sha512-S/LW1HCq2AJfl8l3PatGhEytW7iNhNin8IcpWpMTxoJsFGMZujYfntunATgQ5o9V2Iu/MVnFwW+ww7KmyvN5xA==
+  version "11.1.16"
+  resolved "https://registry.yarnpkg.com/@nestjs/testing/-/testing-11.1.16.tgz#c929e5f39ef60f69dc6acfb5bdc1cdcb28894461"
+  integrity sha512-E7/aUCxzeMSJV80L5GWGIuiMyR/1ncS7uOIetAImfbS4ATE1/h2GBafk0qpk+vjFtPIbtoh9BWDGICzUEU5jDA==
   dependencies:
     tslib "2.8.1"
 
