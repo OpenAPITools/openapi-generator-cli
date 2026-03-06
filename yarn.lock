@@ -3142,12 +3142,12 @@
   dependencies:
     undici-types "~7.14.0"
 
-"@types/node@20.19.37":
-  version "20.19.37"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-20.19.37.tgz#b4fb4033408dd97becce63ec932c9ec57a9e2919"
-  integrity sha512-8kzdPJ3FsNsVIurqBs7oodNnCEVbni9yUEkaHbgptDACOPW04jimGagZ51E6+lXUwJjgnBw+hyko/lkFWCldqw==
+"@types/node@24.12.0":
+  version "24.12.0"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-24.12.0.tgz#6222e028210e5322e4f4f6767f8d88e5ea3b33d2"
+  integrity sha512-GYDxsZi3ChgmckRT9HPU0WEhKLP08ev/Yfcq2AstjrDASOYCSXeyjDsHg4v5t4jOj7cyDX3vmprafKlWIG9MXQ==
   dependencies:
-    undici-types "~6.21.0"
+    undici-types "~7.16.0"
 
 "@types/node@^20.10.7":
   version "20.19.33"
@@ -11667,6 +11667,11 @@ undici-types@~7.14.0:
   version "7.14.0"
   resolved "https://registry.yarnpkg.com/undici-types/-/undici-types-7.14.0.tgz#4c037b32ca4d7d62fae042174604341588bc0840"
   integrity sha512-QQiYxHuyZ9gQUIrmPo3IA+hUl4KYk8uSA7cHrcKd/l3p1OTpZcM0Tbp9x7FAtXdAYhlasd60ncPpgu6ihG6TOA==
+
+undici-types@~7.16.0:
+  version "7.16.0"
+  resolved "https://registry.yarnpkg.com/undici-types/-/undici-types-7.16.0.tgz#ffccdff36aea4884cbfce9a750a0580224f58a46"
+  integrity sha512-Zz+aZWSj8LE6zoxD+xrjh4VfkIG8Ya6LvYkZqtUQGJPZjYl53ypCaUwWqo7eI0x66KBGeRo+mlBEkMSeSZ38Nw==
 
 unicode-canonical-property-names-ecmascript@^2.0.0:
   version "2.0.1"
