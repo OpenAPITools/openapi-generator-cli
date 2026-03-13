@@ -179,7 +179,7 @@ is automatically used to generate your code. 🎉
 
 ### Using custom / private maven registry 
 
-If you're using a private maven registry you can configure the `downloadUrl` and `queryUrl` like this:
+If you're using a private maven registry you can configure the `downloadUrl` and `queryUrl` and optional `username` and `password` like this:
 
 ```json
 {
@@ -189,7 +189,9 @@ If you're using a private maven registry you can configure the `downloadUrl` and
     "version": "7.8.0",
     "repository": {
       "queryUrl": "https://private.maven.intern/solrsearch/select?q=g:${group.id}+AND+a:${artifact.id}&core=gav&start=0&rows=200",
-      "downloadUrl": "https://private.maven.intern/maven2/${groupId}/${artifactId}/${versionName}/${artifactId}-${versionName}.jar"
+      "downloadUrl": "https://private.maven.intern/maven2/${groupId}/${artifactId}/${versionName}/${artifactId}-${versionName}.jar",
+      "username": "${env.MAVEN_USERNAME}",
+      "password": "${env.MAVEN_PASSWORD}"
     }
   }
 }
