@@ -24,8 +24,6 @@
           "type": "string"
         },
         "repository": {
-          "type": "object",
-          "properties": {
             "queryUrl": {
               "type": "string",
             "default": "https://central.sonatype.com/solrsearch/select?q=g:${group.id}+AND+a:${artifact.id}&core=gav&start=0&rows=200"
@@ -42,7 +40,6 @@
               "type": "string",
               "description": "Password for authenticating against the maven repository. Supports ${env.VAR_NAME} placeholders."
             }
-          }
         },
         "useDocker": {
           "type": "boolean",
