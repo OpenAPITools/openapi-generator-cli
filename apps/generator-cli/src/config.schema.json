@@ -31,6 +31,14 @@
           "downloadUrl": {
             "type": "string",
             "default": "https://repo1.maven.org/maven2/${groupId}/${artifactId}/${versionName}/${artifactId}-${versionName}.jar"
+          },
+          "username": {
+            "type": "string",
+            "description": "Username for authenticating against the maven repository. Supports ${env.VAR_NAME} placeholders."
+          },
+          "password": {
+            "type": "string",
+            "description": "Password for authenticating against the maven repository. Supports ${env.VAR_NAME} placeholders."
           }
         },
         "useDocker": {
