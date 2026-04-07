@@ -63,17 +63,25 @@ export class AppModule implements OnApplicationBootstrap {
   ) {}
 
   onApplicationBootstrap = async () => {
-    let selectedVersion = this.versionManager.getSelectedVersion();
+    const hasCustomGenerator = process.argv.some(
+      (arg) =>
+        arg === '--custom-generator' || arg.startsWith('--custom-generator='),
+    );
 
-    if (!selectedVersion) {
-      const [{ version }] = await this.versionManager
-        .search(['latest'])
-        .toPromise();
-      await this.versionManager.setSelectedVersion(version);
-      selectedVersion = version;
+    if (!hasCustomGenerator) {
+      let selectedVersion = this.versionManager.getSelectedVersion();
+
+      if (!selectedVersion) {
+        const [{ version }] = await this.versionManager
+          .search(['latest'])
+          .toPromise();
+        await this.versionManager.setSelectedVersion(version);
+        selectedVersion = version;
+      }
+
+      await this.versionManager.downloadIfNeeded(selectedVersion);
     }
 
-    await this.versionManager.downloadIfNeeded(selectedVersion);
     await this.passThroughService.init();
     this.program.parse(process.argv);
   };

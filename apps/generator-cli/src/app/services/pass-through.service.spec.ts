@@ -8,8 +8,11 @@ import { VersionManagerService } from './version-manager.service';
 import { ConfigService } from './config.service';
 
 jest.mock('child_process');
+jest.mock('fs');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const childProcess = jest.mocked(require('child_process'));
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const fs = jest.mocked(require('fs'));
 
 describe('PassThroughService', () => {
   let fixture: PassThroughService;
@@ -56,6 +59,7 @@ describe('PassThroughService', () => {
     fixture = moduleRef.get(PassThroughService);
 
     childProcess.spawn.mockReset().mockReturnValue({ on: jest.fn() });
+    fs.existsSync.mockReset().mockReturnValue(true);
     configServiceMock.get.mockClear();
     configServiceMock.get.mockReset();
     configServiceMock.useDocker = false;
@@ -225,6 +229,23 @@ describe('PassThroughService', () => {
                 '/some/path/to/4.2.1.jar',
                 '../some/custom.jar',
               ].join(cpDelimiter)}" org.openapitools.codegen.OpenAPIGenerator ${name} ${argv.join(' ')}`,
+              {
+                stdio: 'inherit',
+                shell: true,
+              }
+            );
+          });
+
+          it('can delegate with custom jar only when standard jar is missing', async () => {
+            fs.existsSync.mockReturnValue(false);
+            await program.parseAsync(
+              [name, ...argv, '--custom-generator=../some/custom.jar'],
+              { from: 'user' }
+            );
+
+            expect(childProcess.spawn).toHaveBeenNthCalledWith(
+              1,
+              `java -jar "../some/custom.jar" ${name} ${argv.join(' ')}`,
               {
                 stdio: 'inherit',
                 shell: true,

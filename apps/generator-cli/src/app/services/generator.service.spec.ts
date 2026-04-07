@@ -116,7 +116,9 @@ describe('GeneratorService', () => {
 
       beforeEach(() => {
         executedCommands = [];
-        fs.existsSync.mockImplementation((p) => !!config[p]);
+        fs.existsSync.mockImplementation(
+          (p) => p === '/path/to/4.2.1.jar' || !!config[p],
+        );
         fs.readJSONSync.mockImplementation((p) => config[p]);
         glob.sync.mockImplementation((g) => specFiles[g]);
         concurrently.mockImplementation((ec, cfg) => {
@@ -273,6 +275,38 @@ describe('GeneratorService', () => {
 
         it(`resolved to ${expectedCommands.length > 1}`, () => {
           expect(returnValue).toEqual(expectedCommands.length > 0);
+        });
+      });
+
+      describe('custom jar only (standard jar missing)', () => {
+        let returnValue: boolean;
+
+        beforeEach(async () => {
+          fs.existsSync.mockImplementation((p) => {
+            if (p === '/path/to/4.2.1.jar') return false;
+            return !!config[p];
+          });
+          configGet.mockImplementation(
+            (path, defaultValue) => config['bar.json'] || defaultValue,
+          );
+          returnValue = await fixture.generate('../some/custom.jar');
+        });
+
+        it('uses only the custom jar', () => {
+          expect(executedCommands).toEqual([
+            {
+              name: '[bar] api/cat.yaml',
+              command: `java -jar "../some/custom.jar" generate --input-spec="${cwd}/api/cat.yaml" --output="bar/cat" --some-bool`,
+            },
+            {
+              name: '[bar] api/bird.json',
+              command: `java -jar "../some/custom.jar" generate --input-spec="${cwd}/api/bird.json" --output="bar/bird" --some-bool`,
+            },
+          ]);
+        });
+
+        it('resolved to true', () => {
+          expect(returnValue).toEqual(true);
         });
       });
     });

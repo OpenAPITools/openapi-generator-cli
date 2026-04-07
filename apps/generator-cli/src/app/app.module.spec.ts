@@ -114,6 +114,67 @@ describe('AppModule', () => {
           expect(programMock.parse).toHaveBeenNthCalledWith(1, process.argv);
         });
       });
+
+      describe('a custom generator is provided', () => {
+        beforeEach(async () => {
+          process.argv = [
+            'foo',
+            'baz',
+            '--custom-generator',
+            '/path/to/custom.jar',
+          ];
+          programMock.parse.mockImplementation(() => {
+            expect(passThroughServiceMock.init).toHaveBeenCalledTimes(1);
+          });
+          versionManagerServiceMock.getSelectedVersion.mockReturnValue('1.2.3');
+          await fixture.onApplicationBootstrap();
+        });
+
+        it('does not search for the latest version', () => {
+          expect(versionManagerServiceMock.search).toHaveBeenCalledTimes(0);
+        });
+
+        it('does not set the selected version', () => {
+          expect(
+            versionManagerServiceMock.setSelectedVersion,
+          ).toHaveBeenCalledTimes(0);
+        });
+
+        it('does not download', () => {
+          expect(
+            versionManagerServiceMock.downloadIfNeeded,
+          ).toHaveBeenCalledTimes(0);
+        });
+
+        it('parses the command', () => {
+          expect(programMock.parse).toHaveBeenNthCalledWith(1, process.argv);
+        });
+      });
+
+      describe('a custom generator is provided with = syntax', () => {
+        beforeEach(async () => {
+          process.argv = [
+            'foo',
+            'baz',
+            '--custom-generator=/path/to/custom.jar',
+          ];
+          programMock.parse.mockImplementation(() => {
+            expect(passThroughServiceMock.init).toHaveBeenCalledTimes(1);
+          });
+          versionManagerServiceMock.getSelectedVersion.mockReturnValue('1.2.3');
+          await fixture.onApplicationBootstrap();
+        });
+
+        it('does not download', () => {
+          expect(
+            versionManagerServiceMock.downloadIfNeeded,
+          ).toHaveBeenCalledTimes(0);
+        });
+
+        it('parses the command', () => {
+          expect(programMock.parse).toHaveBeenNthCalledWith(1, process.argv);
+        });
+      });
     });
   });
 });

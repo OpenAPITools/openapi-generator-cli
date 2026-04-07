@@ -2,6 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import chalk from 'chalk';
 import { exec, spawn } from 'child_process';
 import { Command } from 'commander';
+import * as fs from 'fs';
 import { COMMANDER_PROGRAM, LOGGER } from '../constants';
 import { GeneratorService } from './generator.service';
 import { VersionManagerService } from './version-manager.service';
@@ -139,14 +140,21 @@ export class PassThroughService {
       ].join(' ');
     }
 
-    const customGenerator = this.program.opts()?.customGenerator;
+    const customGenerator =
+      this.program.opts()?.customGenerator ||
+      this.getCustomGeneratorFromArgs();
     const cliPath = this.versionManager.filePath();
 
-    const subCmd = customGenerator
-      ? `-cp "${[cliPath, customGenerator].join(
-          this.isWin() ? ';' : ':'
-        )}" org.openapitools.codegen.OpenAPIGenerator`
-      : `-jar "${cliPath}"`;
+    let subCmd: string;
+    if (customGenerator) {
+      subCmd = fs.existsSync(cliPath)
+        ? `-cp "${[cliPath, customGenerator].join(
+            this.isWin() ? ';' : ':'
+          )}" org.openapitools.codegen.OpenAPIGenerator`
+        : `-jar "${customGenerator}"`;
+    } else {
+      subCmd = `-jar "${cliPath}"`;
+    }
 
     return ['java', process.env['JAVA_OPTS'], subCmd]
       .filter((str): str is string => str != null && typeof str === 'string')
@@ -155,6 +163,19 @@ export class PassThroughService {
 
   private printHelp(cmd: Pick<Command, 'helpInformation'>) {
     console.log(chalk.cyanBright(cmd.helpInformation()));
+  }
+
+  private getCustomGeneratorFromArgs(): string | undefined {
+    for (let i = 0; i < process.argv.length; i++) {
+      const arg = process.argv[i];
+      if (arg === '--custom-generator' && i + 1 < process.argv.length) {
+        return process.argv[i + 1];
+      }
+      if (arg.startsWith('--custom-generator=')) {
+        return arg.substring('--custom-generator='.length);
+      }
+    }
+    return undefined;
   }
 
   private isWin = () => process.platform === 'win32';
