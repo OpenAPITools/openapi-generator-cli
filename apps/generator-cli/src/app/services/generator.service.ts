@@ -242,11 +242,16 @@ export class GeneratorService {
     }
 
     const cliPath = this.versionManager.filePath();
-    const subCmd = customGenerator
-      ? `-cp "${[cliPath, customGenerator].join(
-          this.isWin() ? ';' : ':'
-        )}" org.openapitools.codegen.OpenAPIGenerator`
-      : `-jar "${cliPath}"`;
+    let subCmd: string;
+    if (customGenerator) {
+      subCmd = fs.existsSync(cliPath)
+        ? `-cp "${[cliPath, customGenerator].join(
+            this.isWin() ? ';' : ':'
+          )}" org.openapitools.codegen.OpenAPIGenerator`
+        : `-jar "${customGenerator}"`;
+    } else {
+      subCmd = `-jar "${cliPath}"`;
+    }
     return ['java', process.env['JAVA_OPTS'], subCmd, 'generate', appendix]
       .filter((str): str is string => str != null && typeof str === 'string')
       .join(' ');
