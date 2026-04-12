@@ -1913,11 +1913,6 @@
   resolved "https://registry.yarnpkg.com/@leichtgewicht/ip-codec/-/ip-codec-2.0.5.tgz#4fc56c15c580b9adb7dc3c333a134e540b44bfb1"
   integrity sha512-Vo+PSpZG2/fmgmiNzYK9qWRh8h/CHrwD0mo1h1DzL4yzHNSfWYujGTYsWGreD000gcgmZ7K4Ys6Tx9TxtsKdDw==
 
-"@ltd/j-toml@^1.38.0":
-  version "1.38.0"
-  resolved "https://registry.yarnpkg.com/@ltd/j-toml/-/j-toml-1.38.0.tgz#00d19f6d65ac5dac39bc64f97a545f47e9ebefc4"
-  integrity sha512-lYtBcmvHustHQtg4X7TXUu1Xa/tbLC3p2wLvgQI+fWVySguVZJF60Snxijw5EiohumxZbR10kWYFFebh1zotiw==
-
 "@lukeed/csprng@^1.0.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@lukeed/csprng/-/csprng-1.1.0.tgz#1e3e4bd05c1cc7a0b2ddbd8a03f39f6e4b5e6cfe"
@@ -2216,35 +2211,35 @@
     consola "^2.15.0"
     node-fetch "^2.6.1"
 
-"@nx/devkit@22.6.0":
-  version "22.6.0"
-  resolved "https://registry.yarnpkg.com/@nx/devkit/-/devkit-22.6.0.tgz#1a7d13f75d8da36b78c5dfc196305521e8aaffc8"
-  integrity sha512-uT8vzj0pZRGTI3u/Pfx9oE05NWYFPVPKh9rDpNGqtxzwnFy9ZBd3GOAbwtXaCO8drhBGyhekJiikoyV16E8mRw==
+"@nx/devkit@22.6.5":
+  version "22.6.5"
+  resolved "https://registry.yarnpkg.com/@nx/devkit/-/devkit-22.6.5.tgz#929988fe36d806e0da64bce27502e6e53a265cab"
+  integrity sha512-9kvAI+kk2pfEXLqS8OyjI9XvWmp+Gdn7jPfxDAz8BOqxMyPy3p5hYl+jc4TIsLOWunAFl8azqrcYsHzEpaWCIA==
   dependencies:
     "@zkochan/js-yaml" "0.0.7"
-    ejs "^3.1.7"
+    ejs "5.0.1"
     enquirer "~2.3.6"
     minimatch "10.2.4"
     semver "^7.6.3"
     tslib "^2.3.0"
     yargs-parser "21.1.1"
 
-"@nx/docker@22.6.0":
-  version "22.6.0"
-  resolved "https://registry.yarnpkg.com/@nx/docker/-/docker-22.6.0.tgz#82ec57235af5bc463fae0ea09855e8c29cbed181"
-  integrity sha512-5+p7Ukr65KETB4p3AhpSqUhR/p6ZmvaR5ej8OfHpWLwULjjFwZbqzoaqSCJ+dTSL0hSLKYtO0s6tg/WFGcv2Dg==
+"@nx/docker@22.6.5":
+  version "22.6.5"
+  resolved "https://registry.yarnpkg.com/@nx/docker/-/docker-22.6.5.tgz#c76e99cf11a6dd71a8d6ea0d73e25944b8195e44"
+  integrity sha512-kEZi8sC7hL5WsUCJkmj7hvrTahK8yOsRfgRljbSQnQ6vAZPHHZQnB36ybgrb0JbhFPciRV5Mf9UQm13Ev49M2Q==
   dependencies:
-    "@nx/devkit" "22.6.0"
+    "@nx/devkit" "22.6.5"
     enquirer "~2.3.6"
     tslib "^2.3.0"
 
-"@nx/eslint-plugin@22.6.0":
-  version "22.6.0"
-  resolved "https://registry.yarnpkg.com/@nx/eslint-plugin/-/eslint-plugin-22.6.0.tgz#937a061bca944c58f32ce8da4d37a076b39ea451"
-  integrity sha512-MOgrdxzZJ65C+N3tLXCRJbMy5bmWxdBo/WwYMY/6j75rAbG5nzn2A3c7Z2T4zIv8dg69UtSlJ+ktLKrT4RMsxQ==
+"@nx/eslint-plugin@22.6.5":
+  version "22.6.5"
+  resolved "https://registry.yarnpkg.com/@nx/eslint-plugin/-/eslint-plugin-22.6.5.tgz#d6ba6f1f1985ba73e47cf0a80861faf0242ddacc"
+  integrity sha512-G1DkvBMzBAqxxrJ7Zfky5HN4HQjrULKZQ5J5YCnTm5qZpah58U7xAP4g8D0aJzKMWMUJkgXAU1ojiLbeZUDJkw==
   dependencies:
-    "@nx/devkit" "22.6.0"
-    "@nx/js" "22.6.0"
+    "@nx/devkit" "22.6.5"
+    "@nx/js" "22.6.5"
     "@phenomnomnominal/tsquery" "~6.1.4"
     "@typescript-eslint/type-utils" "^8.0.0"
     "@typescript-eslint/utils" "^8.0.0"
@@ -2255,26 +2250,26 @@
     semver "^7.6.3"
     tslib "^2.3.0"
 
-"@nx/eslint@22.6.0":
-  version "22.6.0"
-  resolved "https://registry.yarnpkg.com/@nx/eslint/-/eslint-22.6.0.tgz#89ed9249a7bc4d19a46a54d0da44478b45535b6d"
-  integrity sha512-Xj6Bkhc/7amn+aS3sYkUe3ARYswQihCo9IP033uVB9S27xTA+RyzsrIsv8ukCO392njAn+2mPBPEuVfl2DIaqQ==
+"@nx/eslint@22.6.5":
+  version "22.6.5"
+  resolved "https://registry.yarnpkg.com/@nx/eslint/-/eslint-22.6.5.tgz#bf4d960fa1a9759a3ce1f5f478052c67a74eb0d1"
+  integrity sha512-rEV8CveVA3CCW8MHSKauUI+6XSpQ0nZ/z64fBvBulLUoUO10/mVpkbl3NpRyhCKXzOHYhW35wwuzq6YrfSi6gA==
   dependencies:
-    "@nx/devkit" "22.6.0"
-    "@nx/js" "22.6.0"
+    "@nx/devkit" "22.6.5"
+    "@nx/js" "22.6.5"
     semver "^7.6.3"
     tslib "^2.3.0"
     typescript "~5.9.2"
 
-"@nx/jest@22.6.0":
-  version "22.6.0"
-  resolved "https://registry.yarnpkg.com/@nx/jest/-/jest-22.6.0.tgz#0d8c8fad773fbdf216444e950b40b30b771e8363"
-  integrity sha512-JUTeMgs+D3brmxaysluxLE0NqNaBSF1Ic77e9JvkuuJmDjU4FSUgDMhUALwsaLgFRGqsXJ4b6Rt2nrVaIY2ucg==
+"@nx/jest@22.6.5":
+  version "22.6.5"
+  resolved "https://registry.yarnpkg.com/@nx/jest/-/jest-22.6.5.tgz#9a180ed775e3ade84d62afa15246881de503577d"
+  integrity sha512-Px+ROXwl3s8tjS3OEVMtNY5krQ2zAWyK7s922zmtbXjNKGZ8bg6krnkq7n5XpQwyXTZNVxku8TXcN7jXZECGFQ==
   dependencies:
     "@jest/reporters" "^30.0.2"
     "@jest/test-result" "^30.0.2"
-    "@nx/devkit" "22.6.0"
-    "@nx/js" "22.6.0"
+    "@nx/devkit" "22.6.5"
+    "@nx/js" "22.6.5"
     "@phenomnomnominal/tsquery" "~6.1.4"
     identity-obj-proxy "3.0.0"
     jest-config "^30.0.2"
@@ -2287,10 +2282,10 @@
     tslib "^2.3.0"
     yargs-parser "21.1.1"
 
-"@nx/js@22.6.0":
-  version "22.6.0"
-  resolved "https://registry.yarnpkg.com/@nx/js/-/js-22.6.0.tgz#7765e7cc1359873d56a50949024c427551eefef9"
-  integrity sha512-4tLdBRP3YyPQMIhYF1PJO3vTp0ghh5KLdfmMNXE1C508zSWIDmopXFDm3XWYQ/Ssk96/umhGQAA8iIafvx7cEw==
+"@nx/js@22.6.5":
+  version "22.6.5"
+  resolved "https://registry.yarnpkg.com/@nx/js/-/js-22.6.5.tgz#a09a60bcba6881585967d5633714937f48efa48a"
+  integrity sha512-bmikz6qaBHfuAgsqPB/TfLIKfvI4g+EKIRAiU2FHnEtVWOKDAmSQXHFwE3rMS49jl2JLgxkdNjZHpg4g/OLy0g==
   dependencies:
     "@babel/core" "^7.23.2"
     "@babel/plugin-proposal-decorators" "^7.22.7"
@@ -2299,8 +2294,8 @@
     "@babel/preset-env" "^7.23.2"
     "@babel/preset-typescript" "^7.22.5"
     "@babel/runtime" "^7.22.6"
-    "@nx/devkit" "22.6.0"
-    "@nx/workspace" "22.6.0"
+    "@nx/devkit" "22.6.5"
+    "@nx/workspace" "22.6.5"
     "@zkochan/js-yaml" "0.0.7"
     babel-plugin-const-enum "^1.0.1"
     babel-plugin-macros "^3.1.0"
@@ -2313,96 +2308,96 @@
     jsonc-parser "3.2.0"
     npm-run-path "^4.0.1"
     picocolors "^1.1.0"
-    picomatch "4.0.2"
+    picomatch "4.0.4"
     semver "^7.6.3"
     source-map-support "0.5.19"
     tinyglobby "^0.2.12"
     tslib "^2.3.0"
 
-"@nx/nest@22.6.0":
-  version "22.6.0"
-  resolved "https://registry.yarnpkg.com/@nx/nest/-/nest-22.6.0.tgz#6d3a24710257c331b878229ababb2a04ce65dd9c"
-  integrity sha512-vbnkeLphQT9h5myP9IN6c9gb8KWDuqdMD3iU3bdT2aamW88yZqw5L0ItrisAvLN2pXucdT9q6yhSPB7hm0CPfg==
+"@nx/nest@22.6.5":
+  version "22.6.5"
+  resolved "https://registry.yarnpkg.com/@nx/nest/-/nest-22.6.5.tgz#9889bbe078456a6c0d94d1528e57e903747dcb18"
+  integrity sha512-HdQVzXEccVtoSakU+Mqib44DgbFi1JKkA0BVnUp6Fmp0/Bt0xo5l2lhP2x4qS8oKQCWHtoxNznWKLkmqGLRjig==
   dependencies:
     "@nestjs/schematics" "^11.0.0"
-    "@nx/devkit" "22.6.0"
-    "@nx/eslint" "22.6.0"
-    "@nx/js" "22.6.0"
-    "@nx/node" "22.6.0"
+    "@nx/devkit" "22.6.5"
+    "@nx/eslint" "22.6.5"
+    "@nx/js" "22.6.5"
+    "@nx/node" "22.6.5"
     tslib "^2.3.0"
 
-"@nx/node@22.6.0":
-  version "22.6.0"
-  resolved "https://registry.yarnpkg.com/@nx/node/-/node-22.6.0.tgz#a9d712eb4257e049213c0b8733242f0340d4f432"
-  integrity sha512-VDuTzMh2s4xVKT2UAABL8cNoo0v5inRbpf7ocd72PP3MXSTAqBMy0LURzXm0BDhrl+M5PtXwK3tDVyw6MX7XWw==
+"@nx/node@22.6.5":
+  version "22.6.5"
+  resolved "https://registry.yarnpkg.com/@nx/node/-/node-22.6.5.tgz#b10b4959e4373c143c98419f73dc0e4fb958fd57"
+  integrity sha512-ahZRKpd6pqflRqBX4/oVSk5bAHtS2CM4I3T3c6iuTNenG8ehVxGmuJj8KpiC0tlLe3kJoR1oWQU1pDakXrVWow==
   dependencies:
-    "@nx/devkit" "22.6.0"
-    "@nx/docker" "22.6.0"
-    "@nx/eslint" "22.6.0"
-    "@nx/jest" "22.6.0"
-    "@nx/js" "22.6.0"
+    "@nx/devkit" "22.6.5"
+    "@nx/docker" "22.6.5"
+    "@nx/eslint" "22.6.5"
+    "@nx/jest" "22.6.5"
+    "@nx/js" "22.6.5"
     kill-port "^1.6.1"
     tcp-port-used "^1.0.2"
     tslib "^2.3.0"
 
-"@nx/nx-darwin-arm64@22.6.0":
-  version "22.6.0"
-  resolved "https://registry.yarnpkg.com/@nx/nx-darwin-arm64/-/nx-darwin-arm64-22.6.0.tgz#c795826dc1a187df7442d8773a6632276eb7ac9f"
-  integrity sha512-sOlgi3ym6gA5ipMtTv39fC3+33KvNEAsI5CoVejVezLdVFjtSlS+ccR3OKZRZeuZuvpeOzKNqGtnqwE+UNtIhg==
+"@nx/nx-darwin-arm64@22.6.5":
+  version "22.6.5"
+  resolved "https://registry.yarnpkg.com/@nx/nx-darwin-arm64/-/nx-darwin-arm64-22.6.5.tgz#d1c88bc4b94c24b4d3e217dd52a0888ef0c63def"
+  integrity sha512-qT77Omkg5xQuL2+pDbneX2tI+XW5ZeayMylu7UUgK8OhTrAkJLKjpuYRH4xT5XBipxbDtlxmO3aLS3Ib1pKzJQ==
 
-"@nx/nx-darwin-x64@22.6.0":
-  version "22.6.0"
-  resolved "https://registry.yarnpkg.com/@nx/nx-darwin-x64/-/nx-darwin-x64-22.6.0.tgz#01da062ae0866d28300da8e435dcffbeadea238e"
-  integrity sha512-qg+wMRkgPazGG3dBKtP8mRFppLTigyGVJJnRfQquxnjXPY5oFVL9UZcKbISItAIdSk5jzxZ9SwAIMk2Ggeg36w==
+"@nx/nx-darwin-x64@22.6.5":
+  version "22.6.5"
+  resolved "https://registry.yarnpkg.com/@nx/nx-darwin-x64/-/nx-darwin-x64-22.6.5.tgz#55b5e7c9137dbfea2acfd7043a58bdaca4f4e9df"
+  integrity sha512-9jICxb7vfJ56y/7Yuh3b/n1QJqWxO9xnXKYEs6SO8xPoW/KomVckILGc1C6RQSs6/3ixVJC7k1Dh1wm5tKPFrg==
 
-"@nx/nx-freebsd-x64@22.6.0":
-  version "22.6.0"
-  resolved "https://registry.yarnpkg.com/@nx/nx-freebsd-x64/-/nx-freebsd-x64-22.6.0.tgz#74dcbd8c0b16d61ad615b989eebd59d759c33f61"
-  integrity sha512-PjYRBZalFE2IGrZD7ukGXfRppPm21BpeGVqPH6BjcnB8dmyRx5cJG1uc6xom09yQK5X0Z+PPYzQhYGmZn5F4yQ==
+"@nx/nx-freebsd-x64@22.6.5":
+  version "22.6.5"
+  resolved "https://registry.yarnpkg.com/@nx/nx-freebsd-x64/-/nx-freebsd-x64-22.6.5.tgz#499e1fb013cf6fab217257d89405b9e19bf624a9"
+  integrity sha512-6B1wEKpqz5dI3AGMqttAVnA6M3DB/besAtuGyQiymK9ROlta1iuWgCcIYwcCQyhLn2Rx7vqj447KKcgCa8HlVw==
 
-"@nx/nx-linux-arm-gnueabihf@22.6.0":
-  version "22.6.0"
-  resolved "https://registry.yarnpkg.com/@nx/nx-linux-arm-gnueabihf/-/nx-linux-arm-gnueabihf-22.6.0.tgz#fe0be36cbb9052dc9a2e931c1abb7c94f365cc3a"
-  integrity sha512-rb/KEq90/Su5mzPdDybURzHt8cTAqwJPd6K/Q1ojD9dmClYVsPUZjbGwNveeQRp/iD1kzbaUF2WcbJx1b87seg==
+"@nx/nx-linux-arm-gnueabihf@22.6.5":
+  version "22.6.5"
+  resolved "https://registry.yarnpkg.com/@nx/nx-linux-arm-gnueabihf/-/nx-linux-arm-gnueabihf-22.6.5.tgz#e492bd050aee479976c290fb5b23f290c284d665"
+  integrity sha512-xV50B8mnDPboct7JkAHftajI02s+8FszA8WTzhore+YGR+lEKHTLpucwGEaQuMlSdLplH7pQix4B4uK5pcMhZw==
 
-"@nx/nx-linux-arm64-gnu@22.6.0":
-  version "22.6.0"
-  resolved "https://registry.yarnpkg.com/@nx/nx-linux-arm64-gnu/-/nx-linux-arm64-gnu-22.6.0.tgz#deb8a5fb42ab1bd7181c48687b59d75cc11c69d2"
-  integrity sha512-AfcY3cbtqwc43pIkI0vlgak70P7cQgt8RhfRpG9rd3LYEpdaVxxfKP+0unMFjT23UWEUfexHlJyLoam1lgIenQ==
+"@nx/nx-linux-arm64-gnu@22.6.5":
+  version "22.6.5"
+  resolved "https://registry.yarnpkg.com/@nx/nx-linux-arm64-gnu/-/nx-linux-arm64-gnu-22.6.5.tgz#4bdab184c1405e87680bbc49bb1ee79a3d8b0200"
+  integrity sha512-2JkWuMGj+HpW6oPAvU5VdAx1afTnEbiM10Y3YOrl3fipWV4BiP5VDx762QTrfCraP4hl6yqTgvTe7F9xaby+jQ==
 
-"@nx/nx-linux-arm64-musl@22.6.0":
-  version "22.6.0"
-  resolved "https://registry.yarnpkg.com/@nx/nx-linux-arm64-musl/-/nx-linux-arm64-musl-22.6.0.tgz#fd8ce893d67a837464d0ab9c6d35547b4c95cfce"
-  integrity sha512-hvFMdPnS1nSnzyklOJMyQEC12ovC8h0JRAvdmpEKBPLiHV3Wjuj2IGSl0MCMI/YVMq3Y3uxRtwIKqHzYsZK8kw==
+"@nx/nx-linux-arm64-musl@22.6.5":
+  version "22.6.5"
+  resolved "https://registry.yarnpkg.com/@nx/nx-linux-arm64-musl/-/nx-linux-arm64-musl-22.6.5.tgz#c1eb8ea0bb92cfbe50f3ccebdf931ce79d2052f6"
+  integrity sha512-Z/zMqFClnEyqDXouJKEPoWVhMQIif5F0YuECWBYjd3ZLwQsXGTItoh+6Wm3XF/nGMA2uLOHyTq/X7iFXQY3RzA==
 
-"@nx/nx-linux-x64-gnu@22.6.0":
-  version "22.6.0"
-  resolved "https://registry.yarnpkg.com/@nx/nx-linux-x64-gnu/-/nx-linux-x64-gnu-22.6.0.tgz#bc0d0cca071afa25f94dc577fc6f76f362233161"
-  integrity sha512-1EM/M9RVVfqSWsSJAb8RLXGBGiVuwLb2AA4Dpv1pC+yjziAbfg9ERsVXuh14XaUTklBugI+Tm/k0dyZD2B22qw==
+"@nx/nx-linux-x64-gnu@22.6.5":
+  version "22.6.5"
+  resolved "https://registry.yarnpkg.com/@nx/nx-linux-x64-gnu/-/nx-linux-x64-gnu-22.6.5.tgz#4f905688d30649c51035d71dca26a55666819cc2"
+  integrity sha512-FlotSyqNnaXSn0K+yWw+hRdYBwusABrPgKLyixfJIYRzsy+xPKN6pON6vZfqGwzuWF/9mEGReRz+iM8PiW0XSg==
 
-"@nx/nx-linux-x64-musl@22.6.0":
-  version "22.6.0"
-  resolved "https://registry.yarnpkg.com/@nx/nx-linux-x64-musl/-/nx-linux-x64-musl-22.6.0.tgz#6dc6d779946fd714e978d27dcba1b630541e43ee"
-  integrity sha512-C33hO5YMv55K0XK+elkCUKEN3c/86KAVTpXRGr3Ywvw/5dftR4vYI/yfBUC/gbxW95AjzeX9fHtY1EThKUCvuA==
+"@nx/nx-linux-x64-musl@22.6.5":
+  version "22.6.5"
+  resolved "https://registry.yarnpkg.com/@nx/nx-linux-x64-musl/-/nx-linux-x64-musl-22.6.5.tgz#94fed5da71aad67290ec10e35e30b9d065ed1c2e"
+  integrity sha512-RVOe2qcwhoIx6mxQURPjUfAW5SEOmT2gdhewvdcvX9ICq1hj5B2VarmkhTg0qroO7xiyqOqwq26mCzoV2I3NgQ==
 
-"@nx/nx-win32-arm64-msvc@22.6.0":
-  version "22.6.0"
-  resolved "https://registry.yarnpkg.com/@nx/nx-win32-arm64-msvc/-/nx-win32-arm64-msvc-22.6.0.tgz#97495fad2e4b82bec76628673fc5875af9ea1e12"
-  integrity sha512-/NJ1CgAWBpR55PUENospq5sChxK9PC2NIgOI5BLZpyjClAW1dLwaKRr5EFDS4wBKzhz5Dp9ebmo92MiPEWsAvg==
+"@nx/nx-win32-arm64-msvc@22.6.5":
+  version "22.6.5"
+  resolved "https://registry.yarnpkg.com/@nx/nx-win32-arm64-msvc/-/nx-win32-arm64-msvc-22.6.5.tgz#60e3ad6379fbd6e9ae1d189d9803f156bcc29774"
+  integrity sha512-ZqurqI8VuYnsr2Kn4K4t+Gx6j/BZdf6qz/6Tv4A7XQQ6oNYVQgTqoNEFj+CCkVaIe6aIdCWpousFLqs+ZgBqYQ==
 
-"@nx/nx-win32-x64-msvc@22.6.0":
-  version "22.6.0"
-  resolved "https://registry.yarnpkg.com/@nx/nx-win32-x64-msvc/-/nx-win32-x64-msvc-22.6.0.tgz#e1cf21422d02fe1cbd01e5657390dc341cea8cc3"
-  integrity sha512-XY/csfuGjVwVFyFayU0ZWbnXPinVnP/AcjMi39SCWM72bxeSB1lKmPYo0z/18mJcGQRQC0mJrGpzr1YPlhW3mQ==
+"@nx/nx-win32-x64-msvc@22.6.5":
+  version "22.6.5"
+  resolved "https://registry.yarnpkg.com/@nx/nx-win32-x64-msvc/-/nx-win32-x64-msvc-22.6.5.tgz#d07d4d9d48c99f7b4c8c8a0dc2b14bf9239a3076"
+  integrity sha512-i2QFBJIuaYg9BHxrrnBV4O7W9rVL2k0pSIdk/rRp3EYJEU93iUng+qbZiY9wh1xvmXuUCE2G7TRd+8/SG/RFKg==
 
-"@nx/webpack@22.6.0":
-  version "22.6.0"
-  resolved "https://registry.yarnpkg.com/@nx/webpack/-/webpack-22.6.0.tgz#8bb7e6357e90b91acb504d7a1d63cc90c2d4c906"
-  integrity sha512-UyoWtT6yXj/3uh1xkKafFJr2XOwxvNMXS1bu3T6IrgZ9S1E0a4awUeM85niYHgfvMeG5Nol8riD8OdGqknI+zQ==
+"@nx/webpack@22.6.5":
+  version "22.6.5"
+  resolved "https://registry.yarnpkg.com/@nx/webpack/-/webpack-22.6.5.tgz#1bf34224a9182793281882fe419ca296006fce2f"
+  integrity sha512-LN75xxd/6U/r8vI3nzs/N5sj22nrJdBhTfDPlYlhKz2caCCWImSvQSXmprU46xNbXuYAY0DmRcZ5fkeqjHegtw==
   dependencies:
     "@babel/core" "^7.23.2"
-    "@nx/devkit" "22.6.0"
-    "@nx/js" "22.6.0"
+    "@nx/devkit" "22.6.5"
+    "@nx/js" "22.6.5"
     "@phenomnomnominal/tsquery" "~6.1.4"
     ajv "^8.12.0"
     autoprefixer "^10.4.9"
@@ -2421,7 +2416,7 @@
     picocolors "^1.1.0"
     postcss "^8.4.38"
     postcss-import "~14.1.0"
-    postcss-loader "^6.1.1"
+    postcss-loader "^8.2.1"
     rxjs "^7.8.0"
     sass "^1.85.0"
     sass-embedded "^1.83.4"
@@ -2437,17 +2432,17 @@
     webpack-node-externals "^3.0.0"
     webpack-subresource-integrity "^5.1.0"
 
-"@nx/workspace@22.6.0":
-  version "22.6.0"
-  resolved "https://registry.yarnpkg.com/@nx/workspace/-/workspace-22.6.0.tgz#ce63c966c8de526a9b8ece1b24b8b948d2003846"
-  integrity sha512-QIAGL9W0QQYAYm///ovyAZTiSargyO4C2LpibnINJtsfUbj2QdJ17FAF6oAq+942Nw1+R4JJmpSjQzecm5Vmsg==
+"@nx/workspace@22.6.5":
+  version "22.6.5"
+  resolved "https://registry.yarnpkg.com/@nx/workspace/-/workspace-22.6.5.tgz#c4fbc276ca95850804fd75e0c5c5b8c5ad508c73"
+  integrity sha512-/CZtv1ESSfZ1MVqSlCsmnBWysU1z5VdNlwANlqL6BV2X6RUHKDPVj4YuNPvCK+0LsqyzfJdUt3pcnBYxnT5TIg==
   dependencies:
-    "@nx/devkit" "22.6.0"
+    "@nx/devkit" "22.6.5"
     "@zkochan/js-yaml" "0.0.7"
     chalk "^4.1.0"
     enquirer "~2.3.6"
-    nx "22.6.0"
-    picomatch "4.0.2"
+    nx "22.6.5"
+    picomatch "4.0.4"
     semver "^7.6.3"
     tslib "^2.3.0"
     yargs-parser "21.1.1"
@@ -3933,11 +3928,6 @@ ast-types@^0.13.4:
   dependencies:
     tslib "^2.0.1"
 
-async@^3.2.6:
-  version "3.2.6"
-  resolved "https://registry.yarnpkg.com/async/-/async-3.2.6.tgz#1b0728e14929d51b85b449b7f06e27c1145e38ce"
-  integrity sha512-htCUDlxyyCLMgaM3xXg0C0LW2xqfuQ6p05pCEIsXuyQ+a1koYKTuBMzRNwmybfLgvJDMd0r1LTn4+E0Ti6C2AA==
-
 asynckit@^0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/asynckit/-/asynckit-0.4.0.tgz#c79ed97f7f34cb8f2ba1bc9790bcc366474b4b79"
@@ -3955,7 +3945,7 @@ autoprefixer@^10.4.9:
     picocolors "^1.1.1"
     postcss-value-parser "^4.2.0"
 
-axios@^1.12.0:
+axios@1.15.0, axios@^1.12.0:
   version "1.15.0"
   resolved "https://registry.yarnpkg.com/axios/-/axios-1.15.0.tgz#0fcee91ef03d386514474904b27863b2c683bf4f"
   integrity sha512-wWyJDlAatxk30ZJer+GeCWS209sA42X+N5jU2jy6oHTp7ufw8uzUTVFBX9+wTfAlhiJXGS0Bq7X6efruWjuK9Q==
@@ -5405,12 +5395,10 @@ ee-first@1.1.1:
   resolved "https://registry.yarnpkg.com/ee-first/-/ee-first-1.1.1.tgz#590c61156b0ae2f4f0255732a158b266bc56b21d"
   integrity sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==
 
-ejs@^3.1.7:
-  version "3.1.10"
-  resolved "https://registry.yarnpkg.com/ejs/-/ejs-3.1.10.tgz#69ab8358b14e896f80cc39e62087b88500c3ac3b"
-  integrity sha512-UeJmFfOrAQS8OJWPZ4qtgHyWExa088/MtK5UEyoJGFH67cDEXkZSviOiKRCZ4Xij0zxI3JECgYs3oKx+AizQBA==
-  dependencies:
-    jake "^10.8.5"
+ejs@5.0.1:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/ejs/-/ejs-5.0.1.tgz#179523a437ed448543ad1b76ca4fb4c2e8950304"
+  integrity sha512-COqBPFMxuPTPspXl2DkVYaDS3HtrD1GpzOGkNTJ1IYkifq/r9h8SVEFrjA3D9/VJGOEoMQcrlhpntcSUrM8k6A==
 
 electron-to-chromium@^1.5.218:
   version "1.5.218"
@@ -6016,13 +6004,6 @@ file-type@21.3.2:
     strtok3 "^10.3.4"
     token-types "^6.1.1"
     uint8array-extras "^1.4.0"
-
-filelist@^1.0.4:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/filelist/-/filelist-1.0.4.tgz#f78978a1e944775ff9e62e744424f215e58352b5"
-  integrity sha512-w1cEuf3S+DrLCQL7ET6kz+gmlJdbq9J7yXCSjK/OZCPA+qEN1WyF4ZAf0YYJa4/shHJra2t/d/r8SV4Ji+x+8Q==
-  dependencies:
-    minimatch "^5.0.1"
 
 fill-range@^7.1.1:
   version "7.1.1"
@@ -7153,15 +7134,6 @@ jackspeak@^3.1.2:
   optionalDependencies:
     "@pkgjs/parseargs" "^0.11.0"
 
-jake@^10.8.5:
-  version "10.9.4"
-  resolved "https://registry.yarnpkg.com/jake/-/jake-10.9.4.tgz#d626da108c63d5cfb00ab5c25fadc7e0084af8e6"
-  integrity sha512-wpHYzhxiVQL+IV05BLE2Xn34zW1S223hvjtqk0+gsPrwd/8JNLXJgZZM/iPFsYc1xyphF+6M6EvdE5E9MBGkDA==
-  dependencies:
-    async "^3.2.6"
-    filelist "^1.0.4"
-    picocolors "^1.1.1"
-
 java-properties@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/java-properties/-/java-properties-1.0.2.tgz#ccd1fa73907438a5b5c38982269d0e771fe78211"
@@ -7848,6 +7820,11 @@ jiti@^2.4.1:
   resolved "https://registry.yarnpkg.com/jiti/-/jiti-2.5.1.tgz#bd099c1c2be1c59bbea4e5adcd127363446759d0"
   integrity sha512-twQoecYPiVA5K/h6SxtORw/Bs3ar+mLUtoPSc7iMXzQzK8d7eJ/R09wmTwAjiamETn1cXYPGfNnu7DMoHgu12w==
 
+jiti@^2.5.1:
+  version "2.6.1"
+  resolved "https://registry.yarnpkg.com/jiti/-/jiti-2.6.1.tgz#178ef2fc9a1a594248c20627cd820187a4d78d92"
+  integrity sha512-ekilCSN1jwRvIbgeg/57YFh8qQDNbwDb9xT/qu2DAHbFFZUicIl4ygVaAvzveMhMVr3LnpSKTNnwt8PoOfmKhQ==
+
 js-tokens@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-4.0.0.tgz#19203fb59991df98e3a287050d4647cdeaf32499"
@@ -8023,11 +8000,6 @@ kill-port@^1.6.1:
   dependencies:
     get-them-args "1.3.2"
     shell-exec "1.0.2"
-
-klona@^2.0.5:
-  version "2.0.6"
-  resolved "https://registry.yarnpkg.com/klona/-/klona-2.0.6.tgz#85bffbf819c03b2f53270412420a4555ef882e22"
-  integrity sha512-dhG34DXATL5hSxJbIexCft8FChFXtmskoZYnoPWjXQuebWYCNkVeV3KkGegCK9CP1oswI/vQibS2GY7Em/sJJA==
 
 launch-editor@^2.6.1:
   version "2.11.1"
@@ -8613,13 +8585,6 @@ minimatch@^3.1.5:
   dependencies:
     brace-expansion "^1.1.7"
 
-minimatch@^5.0.1:
-  version "5.1.6"
-  resolved "https://registry.yarnpkg.com/minimatch/-/minimatch-5.1.6.tgz#1cfcb8cf5522ea69952cd2af95ae09477f122a96"
-  integrity sha512-lKwV/1brpG6mBUFHtb7NUmtABCb2WZZmm2wNiOA5hAb8VdCS4B3dtMWyvcoViccwAW/COERjXLt0zP1zXUN26g==
-  dependencies:
-    brace-expansion "^2.0.1"
-
 minimatch@^9.0.0, minimatch@^9.0.4, minimatch@^9.0.5:
   version "9.0.5"
   resolved "https://registry.yarnpkg.com/minimatch/-/minimatch-9.0.5.tgz#d74f9dd6b57d83d8e98cfb82133b03978bc929e5"
@@ -8876,11 +8841,6 @@ node-int64@^0.4.0:
   resolved "https://registry.yarnpkg.com/node-int64/-/node-int64-0.4.0.tgz#87a9065cdb355d3182d8f94ce11188b825c68a3b"
   integrity sha512-O5lz91xSOeoXP6DulyHfllpq+Eg00MWitZIbtPfoSEvqIHdl5gfcY6hYzDWnj0qD5tz52PI08u9qUvSVeUBeHw==
 
-node-machine-id@1.1.12:
-  version "1.1.12"
-  resolved "https://registry.yarnpkg.com/node-machine-id/-/node-machine-id-1.1.12.tgz#37904eee1e59b320bb9c5d6c0a59f3b469cb6267"
-  integrity sha512-QNABxbrPa3qEIfrE6GOJ7BYIuignnJw7iQ2YPbc3Nla1HzRJjXzZOiikfF8m7eAMfichLt3M4VgLOetqgDmgGQ==
-
 node-releases@^2.0.21:
   version "2.0.21"
   resolved "https://registry.yarnpkg.com/node-releases/-/node-releases-2.0.21.tgz#f59b018bc0048044be2d4c4c04e4c8b18160894c"
@@ -9117,23 +9077,22 @@ nwsapi@^2.2.16:
   resolved "https://registry.yarnpkg.com/nwsapi/-/nwsapi-2.2.22.tgz#109f9530cda6c156d6a713cdf5939e9f0de98b9d"
   integrity sha512-ujSMe1OWVn55euT1ihwCI1ZcAaAU3nxUiDwfDQldc51ZXaB9m2AyOn6/jh1BLe2t/G8xd6uKG1UBF2aZJeg2SQ==
 
-nx@22.6.0:
-  version "22.6.0"
-  resolved "https://registry.yarnpkg.com/nx/-/nx-22.6.0.tgz#acae8febafa13464d977c58a8b22e273f6447ec3"
-  integrity sha512-pKkq/ZP2/4YcAQlDOQvtCmPz/gpTgn1AfBiYhcyKX970MilvK6lqb9u/PTLfbi146oqPyEmphupV8YsORDvJ6A==
+nx@22.6.5:
+  version "22.6.5"
+  resolved "https://registry.yarnpkg.com/nx/-/nx-22.6.5.tgz#71bfb4ccc35f2103397eb6ef251204256d0af541"
+  integrity sha512-VRKhDAt684dXNSz9MNjE7MekkCfQF41P2PSx5jEWQjDEP1Z4jFZbyeygWs5ZyOroG7/n0MoWAJTe6ftvIcBOAg==
   dependencies:
-    "@ltd/j-toml" "^1.38.0"
     "@napi-rs/wasm-runtime" "0.2.4"
     "@yarnpkg/lockfile" "^1.1.0"
     "@yarnpkg/parsers" "3.0.2"
     "@zkochan/js-yaml" "0.0.7"
-    axios "^1.12.0"
+    axios "1.15.0"
     cli-cursor "3.1.0"
     cli-spinners "2.6.1"
     cliui "^8.0.1"
     dotenv "~16.4.5"
     dotenv-expand "~11.0.6"
-    ejs "^3.1.7"
+    ejs "5.0.1"
     enquirer "~2.3.6"
     figures "3.2.0"
     flat "^5.0.2"
@@ -9143,13 +9102,13 @@ nx@22.6.0:
     jsonc-parser "3.2.0"
     lines-and-columns "2.0.3"
     minimatch "10.2.4"
-    node-machine-id "1.1.12"
     npm-run-path "^4.0.1"
     open "^8.4.0"
     ora "5.3.0"
     picocolors "^1.1.0"
     resolve.exports "2.0.3"
     semver "^7.6.3"
+    smol-toml "1.6.1"
     string-width "^4.2.3"
     tar-stream "~2.2.0"
     tmp "~0.2.1"
@@ -9160,16 +9119,16 @@ nx@22.6.0:
     yargs "^17.6.2"
     yargs-parser "21.1.1"
   optionalDependencies:
-    "@nx/nx-darwin-arm64" "22.6.0"
-    "@nx/nx-darwin-x64" "22.6.0"
-    "@nx/nx-freebsd-x64" "22.6.0"
-    "@nx/nx-linux-arm-gnueabihf" "22.6.0"
-    "@nx/nx-linux-arm64-gnu" "22.6.0"
-    "@nx/nx-linux-arm64-musl" "22.6.0"
-    "@nx/nx-linux-x64-gnu" "22.6.0"
-    "@nx/nx-linux-x64-musl" "22.6.0"
-    "@nx/nx-win32-arm64-msvc" "22.6.0"
-    "@nx/nx-win32-x64-msvc" "22.6.0"
+    "@nx/nx-darwin-arm64" "22.6.5"
+    "@nx/nx-darwin-x64" "22.6.5"
+    "@nx/nx-freebsd-x64" "22.6.5"
+    "@nx/nx-linux-arm-gnueabihf" "22.6.5"
+    "@nx/nx-linux-arm64-gnu" "22.6.5"
+    "@nx/nx-linux-arm64-musl" "22.6.5"
+    "@nx/nx-linux-x64-gnu" "22.6.5"
+    "@nx/nx-linux-x64-musl" "22.6.5"
+    "@nx/nx-win32-arm64-msvc" "22.6.5"
+    "@nx/nx-win32-x64-msvc" "22.6.5"
 
 object-assign@^4, object-assign@^4.0.1:
   version "4.1.1"
@@ -9741,14 +9700,14 @@ postcss-import@~14.1.0:
     read-cache "^1.0.0"
     resolve "^1.1.7"
 
-postcss-loader@^6.1.1:
-  version "6.2.1"
-  resolved "https://registry.yarnpkg.com/postcss-loader/-/postcss-loader-6.2.1.tgz#0895f7346b1702103d30fdc66e4d494a93c008ef"
-  integrity sha512-WbbYpmAaKcux/P66bZ40bpWsBucjx/TTgVVzRZ9yUO8yQfVBlameJ0ZGVaPfH64hNSBh63a+ICP5nqOpBA0w+Q==
+postcss-loader@^8.2.1:
+  version "8.2.1"
+  resolved "https://registry.yarnpkg.com/postcss-loader/-/postcss-loader-8.2.1.tgz#c3d9b35498af906fe6c25eb62583c06f619f92fc"
+  integrity sha512-k98jtRzthjj3f76MYTs9JTpRqV1RaaMhEU0Lpw9OTmQZQdppg4B30VZ74BojuBHt3F4KyubHJoXCMUeM8Bqeow==
   dependencies:
-    cosmiconfig "^7.0.0"
-    klona "^2.0.5"
-    semver "^7.3.5"
+    cosmiconfig "^9.0.0"
+    jiti "^2.5.1"
+    semver "^7.6.2"
 
 postcss-merge-longhand@^7.0.5:
   version "7.0.5"
@@ -10687,7 +10646,7 @@ semver@^7.1.1, semver@^7.1.2, semver@^7.3.2, semver@^7.3.4, semver@^7.3.5, semve
   resolved "https://registry.yarnpkg.com/semver/-/semver-7.7.2.tgz#67d99fdcd35cec21e6f8b87a7fd515a33f982b58"
   integrity sha512-RF0Fw+rO5AMf9MAyaRXI4AV0Ulj5lMHqVxxdSgiVbixSCXoEmmX/jk0CuJw4+3SqroYO9VoUh+HcuJivvtJemA==
 
-semver@^7.7.4:
+semver@^7.6.2, semver@^7.7.4:
   version "7.7.4"
   resolved "https://registry.yarnpkg.com/semver/-/semver-7.7.4.tgz#28464e36060e991fa7a11d0279d2d3f3b57a7e8a"
   integrity sha512-vFKC2IEtQnVhpT78h1Yp8wzwrf8CM+MzKMHGJZfBtzhZNycRFnXsHk6E5TxIkkMsgNS7mdX3AGB7x2QM2di4lA==
@@ -10892,6 +10851,11 @@ smart-buffer@^4.2.0:
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/smart-buffer/-/smart-buffer-4.2.0.tgz#6e1d71fa4f18c05f7d0ff216dd16a481d0e8d9ae"
   integrity sha512-94hK0Hh8rPqQl2xXc3HsaBoOXKV20MToPkcXvwbISWLEs+64sBq5kFgn2kJDHb1Pry9yrP0dxrCI9RRci7RXKg==
+
+smol-toml@1.6.1:
+  version "1.6.1"
+  resolved "https://registry.yarnpkg.com/smol-toml/-/smol-toml-1.6.1.tgz#4fceb5f7c4b86c2544024ef686e12ff0983465be"
+  integrity sha512-dWUG8F5sIIARXih1DTaQAX4SsiTXhInKf1buxdY9DIg4ZYPZK5nGM1VRIYmEbDbsHt7USo99xSLFu5Q1IqTmsg==
 
 sockjs@^0.3.24:
   version "0.3.24"
