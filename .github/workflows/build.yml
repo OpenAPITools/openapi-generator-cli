@@ -92,7 +92,8 @@ jobs:
           (npm run oa version-manager set 4.3.1 && npm run oa version | grep -q '4.3.1') || exit 1
           test -f ~/my/storage/4.3.1.jar || exit 1
           npm run oa:generate && mkdir ./foo && cd ./foo && npm run oa:generate
-
+          # with http proxy
+          HTTP_PROXY=http://35.209.198.222:80 npm run oa generate -- -g ruby -i https://raw.githubusercontent.com/OpenAPITools/openapi-generator/master/modules/openapi-generator/src/test/resources/3_0/petstore.yaml -o $GITHUB_WORKSPACE/tmp/ruby-client
 #  release:
 #    if: github.event.pull_request.merged == 'true'
 #    name: Release (Dry)
