@@ -2,18 +2,6 @@
 # yarn lockfile v1
 
 
-"@angular-devkit/core@19.2.23":
-  version "19.2.23"
-  resolved "https://registry.yarnpkg.com/@angular-devkit/core/-/core-19.2.23.tgz#6de99d6c6b568544f7f1ac98550e73f315654ea9"
-  integrity sha512-RazHPQkUEsNU/OZ75w9UeHxGFMthRiuAW2B/uA7eXExBj/1meHrrBfoCA56ujW2GUxVjRtSrMjylKh4R4meiYA==
-  dependencies:
-    ajv "8.18.0"
-    ajv-formats "3.0.1"
-    jsonc-parser "3.3.1"
-    picomatch "4.0.4"
-    rxjs "7.8.1"
-    source-map "0.7.4"
-
 "@angular-devkit/core@19.2.24":
   version "19.2.24"
   resolved "https://registry.yarnpkg.com/@angular-devkit/core/-/core-19.2.24.tgz#1d0448679c0292d46310b260f26e5eff7344eca1"
@@ -25,17 +13,6 @@
     picomatch "4.0.4"
     rxjs "7.8.1"
     source-map "0.7.4"
-
-"@angular-devkit/schematics@19.2.23":
-  version "19.2.23"
-  resolved "https://registry.yarnpkg.com/@angular-devkit/schematics/-/schematics-19.2.23.tgz#72f6bea510e3b98288cc07784b29de30c7a1625a"
-  integrity sha512-Jzs7YM4X6azmHU7Mw5tQSPMuvaqYS8SLnZOJbtiXCy1JyuW9bm/WBBecNHMiuZ8LHXKhvQ6AVX1tKrzF6uiDmw==
-  dependencies:
-    "@angular-devkit/core" "19.2.23"
-    jsonc-parser "3.3.1"
-    magic-string "0.30.17"
-    ora "5.4.1"
-    rxjs "7.8.1"
 
 "@angular-devkit/schematics@19.2.24":
   version "19.2.24"
@@ -2119,18 +2096,7 @@
     path-to-regexp "8.4.2"
     tslib "2.8.1"
 
-"@nestjs/schematics@11.0.10":
-  version "11.0.10"
-  resolved "https://registry.yarnpkg.com/@nestjs/schematics/-/schematics-11.0.10.tgz#27088f3d3ca62c0171572ff255c595fb5e800e4b"
-  integrity sha512-q9lr0wGwgBHLarD4uno3XiW4JX60WPlg2VTgbqPHl/6bT4u1IEEzj+q9Tad3bVnqL5mlDF3vrZ2tj+x13CJpmw==
-  dependencies:
-    "@angular-devkit/core" "19.2.23"
-    "@angular-devkit/schematics" "19.2.23"
-    comment-json "4.6.2"
-    jsonc-parser "3.3.1"
-    pluralize "8.0.0"
-
-"@nestjs/schematics@^11.0.0":
+"@nestjs/schematics@11.1.0", "@nestjs/schematics@^11.0.0":
   version "11.1.0"
   resolved "https://registry.yarnpkg.com/@nestjs/schematics/-/schematics-11.1.0.tgz#aa9bc77218e04696031db6efc4510c8eacb0a20c"
   integrity sha512-lVxGZ46tcdItFMoXr6vyKWlnOsm1SZm/GUqAEDvy2RL4Q4O+3bkziAhrO7Y8JLssFUUvNFEGqAizI52WAxhjDw==
@@ -4914,14 +4880,6 @@ commander@^2.20.0:
   version "2.20.3"
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.20.3.tgz#fd485e84c03eb4881c20722ba48035e8531aeb33"
   integrity sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==
-
-comment-json@4.6.2:
-  version "4.6.2"
-  resolved "https://registry.yarnpkg.com/comment-json/-/comment-json-4.6.2.tgz#235d8a908e211855b0068248a794afddb87670af"
-  integrity sha512-R2rze/hDX30uul4NZoIZ76ImSJLFxn/1/ZxtKC1L77y2X1k+yYu1joKbAtMA2Fg3hZrTOiw0I5mwVMo0cf250w==
-  dependencies:
-    array-timsort "^1.0.3"
-    esprima "^4.0.1"
 
 comment-json@5.0.0:
   version "5.0.0"
