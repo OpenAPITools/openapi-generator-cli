@@ -94,6 +94,9 @@ jobs:
           npm run oa:generate && mkdir ./foo && cd ./foo && npm run oa:generate
       - name: Test with HTTP proxy
         run: |
+          cd ./examples
+          yarn global add json && export PATH="$(yarn global bin):$PATH"
+          yarn cache clean && yarn add $GITHUB_WORKSPACE/package.tgz
           export HTTP_PROXY=http://35.209.198.1:7080
           npm run oa generate -- -g ruby -i https://raw.githubusercontent.com/OpenAPITools/openapi-generator/master/modules/openapi-generator/src/test/resources/3_0/petstore.yaml -o $GITHUB_WORKSPACE/tmp/ruby-client
 #  release:
