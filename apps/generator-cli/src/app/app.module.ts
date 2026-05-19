@@ -1,7 +1,7 @@
 import { Inject, Module, OnApplicationBootstrap } from '@nestjs/common';
 import { HttpModule, HttpModuleOptions } from '@nestjs/axios';
 import { Command } from 'commander';
-import ProxyAgent from 'proxy-agent';
+import { ProxyAgent } from 'proxy-agent';
 
 import { COMMANDER_PROGRAM, LOGGER } from './constants';
 import { VersionManagerController } from './controllers/version-manager.controller';
