@@ -21,7 +21,6 @@ const proxyAgent = new ProxyAgent();
 if (hasHttpProxyEnvs) {
   httpModuleConfig.proxy = false;
   httpModuleConfig.httpAgent = proxyAgent;
-  console.log("Using HTTP proxy agent for HTTP requests");
 }
 
 if (hasHttpsProxyEnvs) {
