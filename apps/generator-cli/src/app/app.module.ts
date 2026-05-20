@@ -1,6 +1,7 @@
 import { Inject, Module, OnApplicationBootstrap } from '@nestjs/common';
 import { HttpModule, HttpModuleOptions } from '@nestjs/axios';
 import { Command } from 'commander';
+import { ProxyAgent } from 'proxy-agent';
 
 import { COMMANDER_PROGRAM, LOGGER } from './constants';
 import { VersionManagerController } from './controllers/version-manager.controller';
@@ -15,19 +16,16 @@ import {
 const hasHttpProxyEnvs = process.env.HTTP_PROXY || process.env.http_proxy;
 const hasHttpsProxyEnvs = process.env.HTTPS_PROXY || process.env.https_proxy;
 const httpModuleConfig: HttpModuleOptions = {};
+const proxyAgent = new ProxyAgent();
 
 if (hasHttpProxyEnvs) {
   httpModuleConfig.proxy = false;
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const ProxyAgent = require('proxy-agent').default ?? require('proxy-agent');
-  httpModuleConfig.httpAgent = new ProxyAgent();
+  httpModuleConfig.httpAgent = proxyAgent;
 }
 
 if (hasHttpsProxyEnvs) {
   httpModuleConfig.proxy = false;
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const ProxyAgent = require('proxy-agent').default ?? require('proxy-agent');
-  httpModuleConfig.httpsAgent = new ProxyAgent();
+  httpModuleConfig.httpsAgent = proxyAgent;
 }
 
 @Module({
