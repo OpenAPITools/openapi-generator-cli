@@ -2,6 +2,11 @@ import { Test } from '@nestjs/testing';
 import chalk from 'chalk';
 import { Command, createCommand } from 'commander';
 import { COMMANDER_PROGRAM, LOGGER } from '../constants';
+jest.mock('concurrently', () => ({
+  concurrently: jest.fn(() => ({
+    result: Promise.resolve([]),
+  })),
+}));
 import { GeneratorService } from './generator.service';
 import { PassThroughService } from './pass-through.service';
 import { VersionManagerService } from './version-manager.service';

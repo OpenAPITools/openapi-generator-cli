@@ -1,4 +1,10 @@
 import { Test } from '@nestjs/testing';
+
+jest.mock('concurrently', () => ({
+  concurrently: jest.fn(() => ({
+    result: Promise.resolve([]),
+  })),
+}));
 import { GeneratorService } from './generator.service';
 import { LOGGER } from '../constants';
 import { VersionManagerService } from './version-manager.service';
@@ -6,7 +12,6 @@ import { ConfigService } from './config.service';
 
 jest.mock('fs-extra');
 jest.mock('glob');
-jest.mock('concurrently');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fs = jest.mocked(require('fs-extra'));
 // eslint-disable-next-line @typescript-eslint/no-var-requires

@@ -4,6 +4,12 @@ import { PassThroughService, VersionManagerService } from './services';
 import { of } from 'rxjs';
 import { COMMANDER_PROGRAM } from './constants';
 
+jest.mock('concurrently', () => ({
+  concurrently: jest.fn(() => ({
+    result: Promise.resolve([]),
+  })),
+}));
+
 describe('AppModule', () => {
   let fixture: AppModule;
 

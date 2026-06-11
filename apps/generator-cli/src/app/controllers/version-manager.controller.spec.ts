@@ -6,6 +6,11 @@ import { UIService, VersionManagerService } from '../services';
 import { of } from 'rxjs';
 import chalk from 'chalk';
 
+jest.mock('concurrently', () => ({
+  concurrently: jest.fn(() => ({
+    result: Promise.resolve([]),
+  })),
+}));
 jest.mock('fs-extra');
 
 describe('VersionManagerController', () => {
