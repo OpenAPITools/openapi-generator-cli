@@ -3,7 +3,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import concurrently, { type CloseEvent } from 'concurrently';
 import * as path from 'path';
 import * as fs from 'fs-extra';
-import * as glob from 'glob';
+import { globSync } from 'glob';
 import chalk from 'chalk';
 import * as os from 'os';
 import { VersionManagerService } from './version-manager.service';
@@ -76,13 +76,13 @@ export class GeneratorService {
           ];
         }
 
-        const specFiles = glob.sync(globPattern, { cwd });
+        const specFiles = globSync(globPattern, { cwd });
 
         if (specFiles.length < 1) {
           globsWithNoMatches.push(globPattern);
         }
 
-        return glob.sync(globPattern, { cwd }).map((spec) => ({
+        return specFiles.map((spec) => ({
           name: `[${name}] ${spec}`,
           command: this.buildCommand(cwd, params, customGenerator, spec),
         }));
