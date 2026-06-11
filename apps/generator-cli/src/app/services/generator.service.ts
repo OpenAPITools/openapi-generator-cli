@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 
-import concurrently = require('concurrently');
+import { concurrently } from 'concurrently';
 import type { CloseEvent } from 'concurrently';
 import * as path from 'path';
 import * as fs from 'fs-extra';
