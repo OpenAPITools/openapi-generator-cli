@@ -3,19 +3,16 @@ import { GeneratorService } from './generator.service';
 import { LOGGER } from '../constants';
 import { VersionManagerService } from './version-manager.service';
 import { ConfigService } from './config.service';
+import { runConcurrently } from './concurrently.adapter';
 
 jest.mock('fs-extra');
 jest.mock('glob');
-jest.mock('concurrently');
+jest.mock('./concurrently.adapter');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fs = jest.mocked(require('fs-extra'));
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const glob = jest.mocked(require('glob'));
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const concurrentlyModule = jest.mocked(require('concurrently'));
-const concurrently = (
-  concurrentlyModule.default ?? concurrentlyModule
-) as jest.Mock;
+const concurrently = jest.mocked(runConcurrently) as jest.Mock;
 
 describe('GeneratorService', () => {
   let fixture: GeneratorService;
@@ -115,7 +112,7 @@ describe('GeneratorService', () => {
       };
 
       let executedCommands = [];
-      let concurrentlyCfg = [];
+      let concurrentlyCfg = {};
 
       beforeEach(() => {
         executedCommands = [];

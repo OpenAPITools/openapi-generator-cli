@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 
-import concurrently, { type CloseEvent } from 'concurrently';
+import { type CloseEvent } from 'concurrently';
 import * as path from 'path';
 import * as fs from 'fs-extra';
 import * as glob from 'glob';
@@ -8,6 +8,7 @@ import chalk from 'chalk';
 import * as os from 'os';
 import { VersionManagerService } from './version-manager.service';
 import { ConfigService } from './config.service';
+import { runConcurrently } from './concurrently.adapter';
 import { LOGGER } from '../constants';
 
 interface GeneratorConfig {
@@ -94,7 +95,7 @@ export class GeneratorService {
       (await (async () => {
         try {
           this.printResult(
-            await concurrently(commands, { maxProcesses: 10 }).result,
+            await runConcurrently(commands, { maxProcesses: 10 }).result,
           );
           return true;
         } catch (e) {
