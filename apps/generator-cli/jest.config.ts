@@ -7,7 +7,7 @@ export default {
     '^.+\\.[cm]?[tj]s$': ['ts-jest', { tsconfig: '<rootDir>/tsconfig.spec.json' }],
   },
   transformIgnorePatterns: [
-    'node_modules/(?!(proxy-agent|agent-base|http-proxy-agent|https-proxy-agent|pac-proxy-agent|socks-proxy-agent|proxy-from-env)/)',
+    'node_modules/(?!(concurrently|proxy-agent|agent-base|http-proxy-agent|https-proxy-agent|pac-proxy-agent|socks-proxy-agent|proxy-from-env)/)',
   ],
   moduleFileExtensions: ['ts', 'js', 'mjs', 'cjs', 'html'],
   coverageDirectory: '../../coverage/apps/generator-cli',
