@@ -12,7 +12,10 @@ const fs = jest.mocked(require('fs-extra'));
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const glob = jest.mocked(require('glob'));
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const concurrently = jest.mocked(require('concurrently'));
+const concurrentlyModule = jest.mocked(require('concurrently'));
+const concurrently = (
+  concurrentlyModule.default ?? concurrentlyModule
+) as jest.Mock;
 
 describe('GeneratorService', () => {
   let fixture: GeneratorService;
