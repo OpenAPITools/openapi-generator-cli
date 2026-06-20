@@ -1,3 +1,4 @@
+import { delimiter, resolve } from 'path';
 import { Test } from '@nestjs/testing';
 import { GeneratorService } from './generator.service';
 import { LOGGER } from '../constants';
@@ -134,18 +135,18 @@ describe('GeneratorService', () => {
       const cmd = (name, appendix: string[]) => ({
         name,
         command: `java -jar "/path/to/4.2.1.jar" generate ${appendix.join(
-          ' '
+          ' ',
         )}`,
       });
 
       const cmdWithCustomJar = (
         name: string,
         customJar: string,
-        appendix: string[]
+        appendix: string[],
       ) => ({
         name,
-        command: `java -cp "/path/to/4.2.1.jar:${customJar}" org.openapitools.codegen.OpenAPIGenerator generate ${appendix.join(
-          ' '
+        command: `java -cp "/path/to/4.2.1.jar${delimiter}${customJar}" org.openapitools.codegen.OpenAPIGenerator generate ${appendix.join(
+          ' ',
         )}`,
       });
 
@@ -154,25 +155,25 @@ describe('GeneratorService', () => {
           'foo.json',
           [
             cmd('[angular] abc/app/pet.yaml', [
-              `--input-spec="${cwd}/abc/app/pet.yaml"`,
+              `--input-spec="${resolve(cwd, 'abc/app/pet.yaml')}"`,
               `--output="${cwd}/generated-sources/openapi/typescript-angular/pet"`,
               `--generator-name="typescript-angular"`,
               `--additional-properties="fileNaming=kebab-case,apiModulePrefix=Pet,npmName=petRestClient,supportsES6=true,withInterfaces=true"`,
             ]),
             cmd('[angular] abc/app/car.yaml', [
-              `--input-spec="${cwd}/abc/app/car.yaml"`,
+              `--input-spec="${resolve(cwd, 'abc/app/car.yaml')}"`,
               `--output="${cwd}/generated-sources/openapi/typescript-angular/car"`,
               `--generator-name="typescript-angular"`,
               `--additional-properties="fileNaming=kebab-case,apiModulePrefix=Car,npmName=carRestClient,supportsES6=true,withInterfaces=true"`,
             ]),
             cmd('[baz] def/app/pet.yaml', [
-              `--input-spec="${cwd}/def/app/pet.yaml"`,
+              `--input-spec="${resolve(cwd, 'def/app/pet.yaml')}"`,
               `--name="pet"`,
               `--name-uc-first="Pet"`,
               `--cwd="${cwd}"`,
               `--base="pet.yaml"`,
-              `--dir="${cwd}/def/app"`,
-              `--path="${cwd}/def/app/pet.yaml"`,
+              `--dir="${resolve(cwd, 'def/app')}"`,
+              `--path="${resolve(cwd, 'def/app/pet.yaml')}"`,
               `--rel-dir="def/app"`,
               `--rel-path="def/app/pet.yaml"`,
               `--ext="yaml"`,
@@ -180,13 +181,13 @@ describe('GeneratorService', () => {
               '--some-int=1',
             ]),
             cmd('[baz] def/app/car.json', [
-              `--input-spec="${cwd}/def/app/car.json"`,
+              `--input-spec="${resolve(cwd, 'def/app/car.json')}"`,
               `--name="car"`,
               `--name-uc-first="Car"`,
               `--cwd="${cwd}"`,
               `--base="car.json"`,
-              `--dir="${cwd}/def/app"`,
-              `--path="${cwd}/def/app/car.json"`,
+              `--dir="${resolve(cwd, 'def/app')}"`,
+              `--path="${resolve(cwd, 'def/app/car.json')}"`,
               `--rel-dir="def/app"`,
               `--rel-path="def/app/car.json"`,
               `--ext="json"`,
@@ -199,12 +200,12 @@ describe('GeneratorService', () => {
           'bar.json',
           [
             cmd('[bar] api/cat.yaml', [
-              `--input-spec="${cwd}/api/cat.yaml"`,
+              `--input-spec="${resolve(cwd, 'api/cat.yaml')}"`,
               `--output="bar/cat"`,
               '--some-bool',
             ]),
             cmd('[bar] api/bird.json', [
-              `--input-spec="${cwd}/api/bird.json"`,
+              `--input-spec="${resolve(cwd, 'api/bird.json')}"`,
               `--output="bar/bird"`,
               '--some-bool',
             ]),
@@ -214,12 +215,12 @@ describe('GeneratorService', () => {
           'bar.json',
           [
             cmdWithCustomJar('[bar] api/cat.yaml', '../some/custom.jar', [
-              `--input-spec="${cwd}/api/cat.yaml"`,
+              `--input-spec="${resolve(cwd, 'api/cat.yaml')}"`,
               `--output="bar/cat"`,
               '--some-bool',
             ]),
             cmdWithCustomJar('[bar] api/bird.json', '../some/custom.jar', [
-              `--input-spec="${cwd}/api/bird.json"`,
+              `--input-spec="${resolve(cwd, 'api/bird.json')}"`,
               `--output="bar/bird"`,
               '--some-bool',
             ]),
@@ -251,7 +252,7 @@ describe('GeneratorService', () => {
 
         beforeEach(async () => {
           configGet.mockImplementation(
-            (path, defaultValue) => config[filePath] || defaultValue
+            (path, defaultValue) => config[filePath] || defaultValue,
           );
           returnValue = await fixture.generate(customGenerator);
         });
@@ -260,7 +261,7 @@ describe('GeneratorService', () => {
           expect(configGet).toHaveBeenNthCalledWith(
             1,
             'generator-cli.generators',
-            {}
+            {},
           );
         });
 
@@ -296,11 +297,11 @@ describe('GeneratorService', () => {
           expect(executedCommands).toEqual([
             {
               name: '[bar] api/cat.yaml',
-              command: `java -jar "../some/custom.jar" generate --input-spec="${cwd}/api/cat.yaml" --output="bar/cat" --some-bool`,
+              command: `java -jar "../some/custom.jar" generate --input-spec="${resolve(cwd, 'api/cat.yaml')}" --output="bar/cat" --some-bool`,
             },
             {
               name: '[bar] api/bird.json',
-              command: `java -jar "../some/custom.jar" generate --input-spec="${cwd}/api/bird.json" --output="bar/bird" --some-bool`,
+              command: `java -jar "../some/custom.jar" generate --input-spec="${resolve(cwd, 'api/bird.json')}" --output="bar/bird" --some-bool`,
             },
           ]);
         });
