@@ -103,7 +103,11 @@ export class VersionManagerService {
 
   search(tags: string[]) {
     return this.getAll().pipe(
-      map((versions) => this.filterVersionsByTags(versions, tags))
+      map((versions) =>
+        [...this.filterVersionsByTags(versions, tags)].sort((l, r) =>
+          compareVersions(r.version, l.version),
+        ),
+      )
     );
   }
 

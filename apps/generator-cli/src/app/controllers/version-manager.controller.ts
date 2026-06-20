@@ -95,30 +95,34 @@ export class VersionManagerController {
     );
   };
 
-  private table = (versions: Version[]) =>
-    this.ui.table({
+  private table = (versions: Version[]) => {
+    // Keep row order identical to the order returned in versions.
+    const rows = versions.map((version) => {
+      const stable = version.versionTags.includes('stable');
+      const selected = this.service.isSelectedVersion(version.version);
+      const versionTags = version.versionTags.map((t) =>
+        t === 'latest' ? chalk.green(t) : t,
+      );
+
+      return {
+        value: version,
+        short: version.version,
+        row: {
+          '☐': selected ? '☒' : '☐',
+          releasedAt: version.releaseDate.toISOString().split('T')[0],
+          version: stable
+            ? chalk.yellow(version.version)
+            : chalk.gray(version.version),
+          installed: version.installed ? chalk.green('yes') : chalk.red('no'),
+          versionTags: versionTags.join(' '),
+        },
+      };
+    });
+
+    return this.ui.table({
       printColNum: false,
       message: 'The following releases are available:',
-      rows: versions.map((version) => {
-        const stable = version.versionTags.includes('stable');
-        const selected = this.service.isSelectedVersion(version.version);
-        const versionTags = version.versionTags.map((t) =>
-          t === 'latest' ? chalk.green(t) : t,
-        );
-
-        return {
-          value: version,
-          short: version.version,
-          row: {
-            '☐': selected ? '☒' : '☐',
-            releasedAt: version.releaseDate.toISOString().split('T')[0],
-            version: stable
-              ? chalk.yellow(version.version)
-              : chalk.gray(version.version),
-            installed: version.installed ? chalk.green('yes') : chalk.red('no'),
-            versionTags: versionTags.join(' '),
-          },
-        };
-      }),
+      rows,
     });
+  };
 }

@@ -189,10 +189,10 @@ describe('VersionManagerService', () => {
 
         it('returns all versions', () => {
           expect(returnValue).toEqual([
-            expectedVersions['4.2.0'],
+            expectedVersions['5.0.0-beta2'],
             expectedVersions['5.0.0-beta'],
             expectedVersions['4.3.1'],
-            expectedVersions['5.0.0-beta2'],
+            expectedVersions['4.2.0'],
             expectedVersions['3.0.0-alpha'],
           ]);
         });
@@ -201,15 +201,15 @@ describe('VersionManagerService', () => {
       describe.each([
         [
           ['beta'],
-          [expectedVersions['5.0.0-beta'], expectedVersions['5.0.0-beta2']],
+          [expectedVersions['5.0.0-beta2'], expectedVersions['5.0.0-beta']],
         ],
         [['beta', 'alpha'], []],
         [
           ['5'],
-          [expectedVersions['5.0.0-beta'], expectedVersions['5.0.0-beta2']],
+          [expectedVersions['5.0.0-beta2'], expectedVersions['5.0.0-beta']],
         ],
         [['4.2'], [expectedVersions['4.2.0']]],
-        [['stable'], [expectedVersions['4.2.0'], expectedVersions['4.3.1']]],
+        [['stable'], [expectedVersions['4.3.1'], expectedVersions['4.2.0']]],
       ])('using tags %s', (tags, expectation) => {
         beforeEach(async () => {
           returnValue = await fixture.search(tags).toPromise();
