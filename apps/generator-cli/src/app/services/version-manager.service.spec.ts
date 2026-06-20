@@ -5,10 +5,9 @@ import { of } from 'rxjs';
 import { LOGGER } from '../constants';
 import chalk from 'chalk';
 import { ConfigService } from './config.service';
-import { resolve } from 'path';
+import { join, normalize, resolve } from 'path';
 import * as os from 'os';
 import { TestingModule } from '@nestjs/testing/testing-module';
-import * as path from 'path';
 
 jest.mock('fs-extra');
 
@@ -328,7 +327,7 @@ describe('VersionManagerService', () => {
       it('removes the correct file', () => {
         expect(fs.removeSync).toHaveBeenNthCalledWith(
           1,
-          `${fixture.storage}/4.3.1.jar`,
+          resolve(fixture.storage, '4.3.1.jar'),
         );
       });
 
@@ -446,7 +445,7 @@ describe('VersionManagerService', () => {
                 before: [chalk.yellow(`Download 4.2.0 ...`)],
                 after: [
                   chalk.green(
-                    `Downloaded 4.2.0 to custom storage location ${expected}`,
+                    `Downloaded 4.2.0 to custom storage location ${resolve(expected)}`,
                   ),
                 ],
               });
@@ -473,22 +472,22 @@ describe('VersionManagerService', () => {
           it('creates a temporary directory', () => {
             expect(fs.mkdtempSync).toHaveBeenNthCalledWith(
               1,
-              path.join(os.tmpdir(), 'generator-cli-'),
+              join(os.tmpdir(), 'generator-cli-'),
             );
           });
 
           it('creates the correct write stream', () => {
             expect(fs.createWriteStream).toHaveBeenNthCalledWith(
               1,
-              '/tmp/generator-cli-abcDEF/4.2.0',
+              normalize('/tmp/generator-cli-abcDEF/4.2.0'),
             );
           });
 
           it('moves the file to the target location', () => {
             expect(fs.moveSync).toHaveBeenNthCalledWith(
               1,
-              '/tmp/generator-cli-abcDEF/4.2.0',
-              `${fixture.storage}/4.2.0.jar`,
+              normalize('/tmp/generator-cli-abcDEF/4.2.0'),
+              resolve(fixture.storage, '4.2.0.jar'),
               { overwrite: true },
             );
           });
@@ -563,7 +562,7 @@ describe('VersionManagerService', () => {
         fixture.isDownloaded('4.3.1');
         expect(fs.existsSync).toHaveBeenNthCalledWith(
           1,
-          fixture.storage + '/4.3.1.jar',
+          resolve(fixture.storage, '4.3.1.jar'),
         );
       });
     });
@@ -571,12 +570,14 @@ describe('VersionManagerService', () => {
     describe('filePath()', () => {
       it('returns the path to the given version name', () => {
         expect(fixture.filePath('1.2.3')).toEqual(
-          `${fixture.storage}/1.2.3.jar`,
+          resolve(fixture.storage, '1.2.3.jar'),
         );
       });
 
       it('returns the path to the selected version name as default', () => {
-        expect(fixture.filePath()).toEqual(`${fixture.storage}/4.3.0.jar`);
+        expect(fixture.filePath()).toEqual(
+          resolve(fixture.storage, '4.3.0.jar'),
+        );
       });
     });
 
@@ -597,7 +598,7 @@ describe('VersionManagerService', () => {
         ])('returns %s for %s', async (expected, cfgValue) => {
           getStorageDir.mockReturnValue(cfgValue);
           await compile();
-          expect(fixture.storage).toEqual(expected);
+          expect(fixture.storage).toEqual(resolve(expected));
         });
       });
     });
