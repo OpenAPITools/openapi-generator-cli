@@ -112,7 +112,7 @@
     "@nx/node": "22.6.0",
     "@nx/webpack": "22.6.0",
     "@nx/workspace": "22.6.0",
-    "@semantic-release/changelog": "6.0.3",
+    "@semantic-release/changelog": "7.0.0",
     "@types/fs-extra": "11.0.4",
     "@types/jest": "30.0.0",
     "@types/jsonpath": "0.2.4",
