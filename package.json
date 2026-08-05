@@ -130,7 +130,7 @@
     "jest-util": "30.4.1",
     "nx": "22.7.2",
     "prettier": "3.9.6",
-    "semantic-release": "25.0.8",
+    "semantic-release": "25.0.9",
     "ts-jest": "29.4.12",
     "ts-node": "10.9.2",
     "type-fest": "5.8.0",
