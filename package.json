@@ -128,7 +128,7 @@
     "jest-environment-jsdom": "30.4.1",
     "jest-environment-node": "^30.0.0",
     "jest-util": "30.4.1",
-    "nx": "22.7.2",
+    "nx": "22.7.7",
     "prettier": "3.9.6",
     "semantic-release": "25.0.9",
     "ts-jest": "29.4.12",
