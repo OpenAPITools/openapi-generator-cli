@@ -1977,9 +1977,9 @@
   integrity sha512-68pFJgu+/AZbWkGu65Z3r55bTsCPlgyKaV4BSG8yUAD72q1PPuyVRgUwFv6BxdnibTUHlyxm06FmYWNC+bjN7A==
 
 "@nestjs/common@^11.0.16":
-  version "11.1.29"
-  resolved "https://registry.yarnpkg.com/@nestjs/common/-/common-11.1.29.tgz#3749b5dd9a8375d3f848a0f81e6e0ebb952f698a"
-  integrity sha512-zkeNRlfiQIH/044r5zphjNzKYxBRC4O00onTdCsH2qq0R30Ixo0gOS9so5TadEbJJCuGNm0Vx3PBE2FG2vkBdA==
+  version "11.2.1"
+  resolved "https://registry.yarnpkg.com/@nestjs/common/-/common-11.2.1.tgz#0b767bef0157600ebbdc80c736752cadeb3f39c0"
+  integrity sha512-SEgtP+M9DqNhQkgJIlJ3oTp3gemo/8owySovzMGmJj2kcfIH1G6QP45AAb8dE4a3IpVicpUvdDAy7Syk7ebjBw==
   dependencies:
     uid "2.0.2"
     file-type "21.3.4"
@@ -1988,9 +1988,9 @@
     tslib "2.8.1"
 
 "@nestjs/core@^11.0.16":
-  version "11.1.29"
-  resolved "https://registry.yarnpkg.com/@nestjs/core/-/core-11.1.29.tgz#5baf77359af78acaa984198f51994714e4d36924"
-  integrity sha512-ANXnZxirMNAY+JuRHCIYIdTfbhX3rizeSbJloub/4EYwpIfCuUoaz9woOofWmywYYc3gsVkLxVZV03gqntI8vA==
+  version "11.2.1"
+  resolved "https://registry.yarnpkg.com/@nestjs/core/-/core-11.2.1.tgz#69a3e63ebf56360e0d7cdaa99318127f579709fb"
+  integrity sha512-M5PWFU8NdRTgX9Po49d7TQKg7f5t8GAVUa/Esy4tmaMWcKugTzg3ZzpJfD3LEPMuRHjfs6+8pQYgtuP2uz3rDw==
   dependencies:
     uid "2.0.2"
     fast-safe-stringify "2.1.1"
@@ -1999,9 +1999,9 @@
     tslib "2.8.1"
 
 "@nestjs/platform-express@^11.0.16":
-  version "11.1.29"
-  resolved "https://registry.yarnpkg.com/@nestjs/platform-express/-/platform-express-11.1.29.tgz#d59cdc4ab7b926ddc33057844f200f1d89e53478"
-  integrity sha512-OngsAjdzM+SbbmP1XojKfBgl0Lj7u8b7IK5duwpFymzNP5EmjS8ujvqck9M8h0L14I91aRIFSjIpVfHj8WVtqw==
+  version "11.2.1"
+  resolved "https://registry.yarnpkg.com/@nestjs/platform-express/-/platform-express-11.2.1.tgz#f8b5fee77d87be8d2bc2c59474f8d47ed31773dd"
+  integrity sha512-lbaVW94s1u8AJfgmBtdMPi16MEuFBiLrnflUIA9tZ9e5eoUsGTN7XXXRjU5kTTLgjnTCM53qgBXXGmTqmyfoQA==
   dependencies:
     cors "2.8.6"
     express "5.2.1"
@@ -2021,9 +2021,9 @@
     pluralize "8.0.0"
 
 "@nestjs/testing@^11.0.16":
-  version "11.1.29"
-  resolved "https://registry.yarnpkg.com/@nestjs/testing/-/testing-11.1.29.tgz#f80b7c849ffeb97d854fe4e02624cf2d95f29dcb"
-  integrity sha512-u+aEp90Ly3uQbLoicZs+ZOrJTyvaD0fbd6dpnSgFZz5Bf77gbKKfr+xFE2JxqZuIH15HlBrqDL7/OL2qL8oG+A==
+  version "11.2.1"
+  resolved "https://registry.yarnpkg.com/@nestjs/testing/-/testing-11.2.1.tgz#ccc7125209f79c4859b114de297880b3947569a4"
+  integrity sha512-3mdABjqFafW+ix6fGJMPHvnj/9Or6kAPiszN8zt9bHGPuHYdkkp+9zsBDDUVuP59BcbzBqNBa5fXHBaeMzVvog==
   dependencies:
     tslib "2.8.1"
 
@@ -4939,9 +4939,9 @@ content-type@^1.0.5, content-type@~1.0.4, content-type@~1.0.5:
   integrity sha512-nTjqfcBFEipKdXCv4YDQWCfmcLZKm81ldF0pAopTvyrFGVbcR6P/VAAd5G7N+0tTr8QqiU0tFadD6FK4NtJwOA==
 
 content-type@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/content-type/-/content-type-2.0.0.tgz#2fb3ede69dffa0af78ca7c4ce7589680638b56df"
-  integrity sha512-j/O/d7GcZCyNl7/hwZAb606rzqkyvaDctLmckbxLzHvFBzTJHuGEdodATcP3yIRoDrLHkIATJuvzbFlp/ki2cQ==
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/content-type/-/content-type-2.1.0.tgz#d9389c43c0a8cf6a355db464d21e07092a40493a"
+  integrity sha512-mj7UPXE0jaqaOsukNZRUEfEi2AcL7C/vwmwcHV0O97eO1E1pxBZuyjlZrx5seTaNBg1U6+o35wpa35Qfcc+7ag==
 
 conventional-changelog-angular@^8.0.0:
   version "8.3.1"
