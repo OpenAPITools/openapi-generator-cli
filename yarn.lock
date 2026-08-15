@@ -4012,10 +4012,15 @@ ansi-regex@5.0.1, ansi-regex@^5.0.1:
   resolved "https://registry.yarnpkg.com/ansi-regex/-/ansi-regex-5.0.1.tgz#082cb2c89c9fe8659a311a53bd6a4dc5301db304"
   integrity sha512-quJQXlTSUGL2LH9SUXo8VwsY4soanhgo6LNSm84E1LBcE8s3O0wpdiRzyR9z/ZZJMlMWv37qOOb9pdJlMUEKFQ==
 
-ansi-regex@^6.1.0, ansi-regex@^6.2.2:
+ansi-regex@^6.1.0:
   version "6.2.2"
   resolved "https://registry.yarnpkg.com/ansi-regex/-/ansi-regex-6.2.2.tgz#60216eea464d864597ce2832000738a0589650c1"
   integrity sha512-Bq3SmSpyFHaWjPk8If9yc6svM8c56dB5BAtW4Qbw5jHTwwXXcTLoRMkpDJp6VL0XzlWaCHTXrkFURMYmD0sLqg==
+
+ansi-regex@^6.2.2:
+  version "6.3.0"
+  resolved "https://registry.yarnpkg.com/ansi-regex/-/ansi-regex-6.3.0.tgz#247c8e7b70a1a43b10ce14c0226fcbf58e8815d5"
+  integrity sha512-WpDfL7NO6j7tH88IDBNVdUJxDh9nmCteAVW9dsep846XdwF4naCBK+/tGLX3KJgcpgMRXCFlTM2hKGoK9FsdrQ==
 
 ansi-styles@4.3.0, ansi-styles@^4.0.0, ansi-styles@^4.1.0:
   version "4.3.0"
@@ -4880,9 +4885,9 @@ concat-stream@^2.0.0:
     typedarray "^0.0.6"
 
 concurrently@^10.0.0:
-  version "10.0.4"
-  resolved "https://registry.yarnpkg.com/concurrently/-/concurrently-10.0.4.tgz#68ee55d60cbc3fee705958508fd5905acfc7514a"
-  integrity sha512-trZql+7l/0+WRAsAnEdctr4+iiOS6ZrViI6H8QWcCF9MFS/LT0dKpe8vluB1to6it+OxSI4VospFTIFMW8DJRw==
+  version "10.0.5"
+  resolved "https://registry.yarnpkg.com/concurrently/-/concurrently-10.0.5.tgz#5dd22464ad37f77136a02f4d0f05ddd912fe5c80"
+  integrity sha512-JaP/CoftUrCcAFW/g//RbgEGwlelnEae6cfBLgH6ZdO6s8jPkn6p9SB9u6pdVxYXoiSnFqseOlHfrEfF82TVOg==
   dependencies:
     chalk "5.6.2"
     rxjs "7.8.2"
