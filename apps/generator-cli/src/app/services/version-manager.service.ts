@@ -64,8 +64,8 @@ export class VersionManagerService {
 
     const queryUrl = this.replacePlaceholders(
       this.configService.get<string>('generator-cli.repository.queryUrl') ||
-        configSchema.properties['generator-cli'].properties.repository.queryUrl
-          .default
+        configSchema.properties['generator-cli'].properties.repository.properties
+          .queryUrl.default
     );
 
     return this.httpService.get(queryUrl, this.getAuthConfig()).pipe(
@@ -243,7 +243,8 @@ export class VersionManagerService {
   private createDownloadLink(versionName: string) {
     return this.replacePlaceholders(
       this.configService.get<string>('generator-cli.repository.downloadUrl') ||
-        configSchema.properties['generator-cli'].properties.repository.downloadUrl.default,
+        configSchema.properties['generator-cli'].properties.repository.properties
+          .downloadUrl.default,
       { versionName }
     );
   }
