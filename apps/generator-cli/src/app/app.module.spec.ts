@@ -146,6 +146,32 @@ describe('AppModule', () => {
         });
       });
 
+      describe.each([
+        ['the separate option value', ['--openapitools', 'x.json']],
+        ['the inline option value', ['--openapitools=x.json']],
+      ])('version-manager resolve with %s', (_, configArgs) => {
+        beforeEach(async () => {
+          process.argv = [
+            'foo',
+            'baz',
+            ...configArgs,
+            'version-manager',
+            'resolve',
+            'latest',
+          ];
+          programMock.parse.mockImplementation(() => undefined);
+          versionManagerServiceMock.getSelectedVersion.mockReturnValue('1.2.3');
+          await fixture.onApplicationBootstrap();
+        });
+
+        it('does not download or initialize the pass-through service', () => {
+          expect(
+            versionManagerServiceMock.downloadIfNeeded,
+          ).toHaveBeenCalledTimes(0);
+          expect(passThroughServiceMock.init).toHaveBeenCalledTimes(0);
+        });
+      });
+
       describe('a pass-through command contains version-manager resolve as arguments', () => {
         beforeEach(async () => {
           process.argv = [
