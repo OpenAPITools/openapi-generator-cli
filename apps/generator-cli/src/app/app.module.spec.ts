@@ -146,6 +146,25 @@ describe('AppModule', () => {
         });
       });
 
+      describe('a pass-through command contains version-manager resolve as arguments', () => {
+        beforeEach(async () => {
+          process.argv = [
+            'foo',
+            'baz',
+            'generate',
+            '--some-option',
+            'version-manager',
+            'resolve',
+          ];
+          versionManagerServiceMock.getSelectedVersion.mockReturnValue('1.2.3');
+          await fixture.onApplicationBootstrap();
+        });
+
+        it('initializes the pass-through service', () => {
+          expect(passThroughServiceMock.init).toHaveBeenCalledTimes(1);
+        });
+      });
+
       describe('a custom generator is provided', () => {
         beforeEach(async () => {
           process.argv = [

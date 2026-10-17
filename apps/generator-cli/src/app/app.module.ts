@@ -91,10 +91,27 @@ export class AppModule implements OnApplicationBootstrap {
 
   private isVersionManagerResolveCommand() {
     const args = process.argv.slice(2);
+    let commandIndex = 0;
 
-    return args.some(
-      (arg, index) =>
-        arg === 'version-manager' && args[index + 1] === 'resolve',
+    while (commandIndex < args.length) {
+      const arg = args[commandIndex];
+
+      if (arg === '--openapitools') {
+        commandIndex += 2;
+        continue;
+      }
+
+      if (arg.startsWith('--openapitools=')) {
+        commandIndex += 1;
+        continue;
+      }
+
+      break;
+    }
+
+    return (
+      args[commandIndex] === 'version-manager' &&
+      args[commandIndex + 1] === 'resolve'
     );
   }
 }
