@@ -326,7 +326,7 @@ describe('VersionManagerController', () => {
 
       it('prints the first matching version', async () => {
         versionManagerServiceMock.search.mockReturnValue(
-          of([{ version: '1.2.3' }, { version: '1.2.4' }]),
+          of([{ version: '1.2.4' }, { version: '1.2.3' }]),
         );
 
         await cmd.action(['latest']);
@@ -334,7 +334,7 @@ describe('VersionManagerController', () => {
         expect(versionManagerServiceMock.search).toHaveBeenNthCalledWith(1, [
           'latest',
         ]);
-        expect(log).toHaveBeenNthCalledWith(1, '1.2.3');
+        expect(log).toHaveBeenNthCalledWith(1, '1.2.4');
       });
 
       it('prints a message and sets a non-zero exit code if the search result is empty', async () => {
