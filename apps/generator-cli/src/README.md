@@ -34,10 +34,14 @@ That version is saved in the file *openapitools.json*. Therefore, you should inc
 to ensure that the correct version is being used next time you call the command.
 
 If you would like to use a different version of the [OpenAPITools/openapi-generator](https://github.com/OpenAPITools/openapi-generator), 
-you could change it by using one of the following commands:
+you can use one of the following commands:
  
 - `openapi-generator-cli version-manager list` 
 - `openapi-generator-cli version-manager set  <versionTags...>`
+- `openapi-generator-cli version-manager resolve <versionTags...>`
+
+The `list` and `set` commands can be used to inspect or change the configured version.
+The `resolve` command prints the matching version without downloading a generator or modifying `openapitools.json`.
 
 #### [added] generator config
 
@@ -306,6 +310,4 @@ yarn add @openapitools/openapi-generator-cli@1.0.18-4.3.1
 ## You like the package?
 
 Please leave a star.
-
-
 
