@@ -108,7 +108,7 @@ export class VersionManagerController {
       return;
     }
 
-    this.logger.log(
+    this.logger.error(
       chalk.red(
         `Unable to find version matching criteria "${versionTags.join(' ')}"`,
       ),

@@ -12,6 +12,7 @@ describe('VersionManagerController', () => {
   let commandMock: CommandMock;
 
   const log = jest.fn();
+  const error = jest.fn();
 
   const uiServiceMock = {
     table: jest.fn(),
@@ -32,6 +33,7 @@ describe('VersionManagerController', () => {
 
     [
       log,
+      error,
       ...Object.values(uiServiceMock),
       ...Object.values(versionManagerServiceMock),
     ].forEach((spy) => spy.mockReset());
@@ -42,7 +44,7 @@ describe('VersionManagerController', () => {
         { provide: UIService, useValue: uiServiceMock },
         { provide: VersionManagerService, useValue: versionManagerServiceMock },
         { provide: COMMANDER_PROGRAM, useValue: commandMock },
-        { provide: LOGGER, useValue: { log } },
+        { provide: LOGGER, useValue: { log, error } },
       ],
     }).compile();
   });
@@ -342,7 +344,7 @@ describe('VersionManagerController', () => {
 
         await cmd.action(['latest']);
 
-        expect(log).toHaveBeenNthCalledWith(
+        expect(error).toHaveBeenNthCalledWith(
           1,
           chalk.red('Unable to find version matching criteria "latest"'),
         );
