@@ -113,6 +113,7 @@ export class VersionManagerController {
         `Unable to find version matching criteria "${versionTags.join(' ')}"`,
       ),
     );
+    process.exitCode = 1;
   };
 
   private table = (versions: Version[]) => {

@@ -316,6 +316,10 @@ describe('VersionManagerController', () => {
         cmd = commandMock.commands['resolve <versionTags...>'];
       });
 
+      afterEach(() => {
+        process.exitCode = 0;
+      });
+
       it('has the correct description', () => {
         expect(cmd.description).toEqual('resolve version tags to a version');
       });
@@ -333,7 +337,7 @@ describe('VersionManagerController', () => {
         expect(log).toHaveBeenNthCalledWith(1, '1.2.3');
       });
 
-      it('prints a message, if the search result is empty', async () => {
+      it('prints a message and sets a non-zero exit code if the search result is empty', async () => {
         versionManagerServiceMock.search.mockReturnValue(of([]));
 
         await cmd.action(['latest']);
@@ -342,6 +346,7 @@ describe('VersionManagerController', () => {
           1,
           chalk.red('Unable to find version matching criteria "latest"'),
         );
+        expect(process.exitCode).toBe(1);
       });
     });
   });
