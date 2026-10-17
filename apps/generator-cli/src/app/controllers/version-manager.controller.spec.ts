@@ -47,10 +47,10 @@ describe('VersionManagerController', () => {
     }).compile();
   });
 
-  it('adds 3 commands, but 2 actions', () => {
-    expect(commandMock.action).toHaveBeenCalledTimes(2);
-    expect(commandMock.command).toHaveBeenCalledTimes(3);
-    expect(commandMock.description).toHaveBeenCalledTimes(3);
+  it('adds 4 commands, but 3 actions', () => {
+    expect(commandMock.action).toHaveBeenCalledTimes(3);
+    expect(commandMock.command).toHaveBeenCalledTimes(4);
+    expect(commandMock.description).toHaveBeenCalledTimes(4);
   });
 
   describe('commands', function () {
@@ -307,6 +307,40 @@ describe('VersionManagerController', () => {
         expect(log).toHaveBeenNthCalledWith(
           1,
           chalk.red('Unable to find version matching criteria "tag1 tag2"'),
+        );
+      });
+    });
+
+    describe('resolve', () => {
+      beforeEach(() => {
+        cmd = commandMock.commands['resolve <versionTags...>'];
+      });
+
+      it('has the correct description', () => {
+        expect(cmd.description).toEqual('resolve version tags to a version');
+      });
+
+      it('prints the first matching version', async () => {
+        versionManagerServiceMock.search.mockReturnValue(
+          of([{ version: '1.2.3' }, { version: '1.2.4' }]),
+        );
+
+        await cmd.action(['latest']);
+
+        expect(versionManagerServiceMock.search).toHaveBeenNthCalledWith(1, [
+          'latest',
+        ]);
+        expect(log).toHaveBeenNthCalledWith(1, '1.2.3');
+      });
+
+      it('prints a message, if the search result is empty', async () => {
+        versionManagerServiceMock.search.mockReturnValue(of([]));
+
+        await cmd.action(['latest']);
+
+        expect(log).toHaveBeenNthCalledWith(
+          1,
+          chalk.red('Unable to find version matching criteria "latest"'),
         );
       });
     });

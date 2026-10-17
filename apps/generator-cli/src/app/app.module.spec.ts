@@ -115,6 +115,37 @@ describe('AppModule', () => {
         });
       });
 
+      describe('version-manager resolve is provided', () => {
+        beforeEach(async () => {
+          process.argv = ['foo', 'baz', 'version-manager', 'resolve', 'latest'];
+          programMock.parse.mockImplementation(() => {
+            expect(passThroughServiceMock.init).toHaveBeenCalledTimes(0);
+          });
+          versionManagerServiceMock.getSelectedVersion.mockReturnValue('1.2.3');
+          await fixture.onApplicationBootstrap();
+        });
+
+        it('does not search for the latest version', () => {
+          expect(versionManagerServiceMock.search).toHaveBeenCalledTimes(0);
+        });
+
+        it('does not set the selected version', () => {
+          expect(
+            versionManagerServiceMock.setSelectedVersion,
+          ).toHaveBeenCalledTimes(0);
+        });
+
+        it('does not download', () => {
+          expect(
+            versionManagerServiceMock.downloadIfNeeded,
+          ).toHaveBeenCalledTimes(0);
+        });
+
+        it('parses the command', () => {
+          expect(programMock.parse).toHaveBeenNthCalledWith(1, process.argv);
+        });
+      });
+
       describe('a custom generator is provided', () => {
         beforeEach(async () => {
           process.argv = [

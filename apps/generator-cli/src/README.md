@@ -38,6 +38,9 @@ you could change it by using one of the following commands:
  
 - `openapi-generator-cli version-manager list` 
 - `openapi-generator-cli version-manager set  <versionTags...>`
+- `openapi-generator-cli version-manager resolve <versionTags...>`
+
+The `resolve` command prints the matching version without downloading a generator or modifying `openapitools.json`.
 
 #### [added] generator config
 
@@ -306,6 +309,5 @@ yarn add @openapitools/openapi-generator-cli@1.0.18-4.3.1
 ## You like the package?
 
 Please leave a star.
-
 
 

@@ -62,12 +62,14 @@ export class AppModule implements OnApplicationBootstrap {
   ) {}
 
   onApplicationBootstrap = async () => {
+    const isVersionManagerResolveCommand =
+      this.isVersionManagerResolveCommand();
     const hasCustomGenerator = process.argv.some(
       (arg) =>
         arg === '--custom-generator' || arg.startsWith('--custom-generator='),
     );
 
-    if (!hasCustomGenerator) {
+    if (!hasCustomGenerator && !isVersionManagerResolveCommand) {
       let selectedVersion = this.versionManager.getSelectedVersion();
 
       if (!selectedVersion) {
@@ -81,7 +83,18 @@ export class AppModule implements OnApplicationBootstrap {
       await this.versionManager.downloadIfNeeded(selectedVersion);
     }
 
-    await this.passThroughService.init();
+    if (!isVersionManagerResolveCommand) {
+      await this.passThroughService.init();
+    }
     this.program.parse(process.argv);
   };
+
+  private isVersionManagerResolveCommand() {
+    const args = process.argv.slice(2);
+
+    return args.some(
+      (arg, index) =>
+        arg === 'version-manager' && args[index + 1] === 'resolve',
+    );
+  }
 }
