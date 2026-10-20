@@ -22,6 +22,11 @@ export class VersionManagerController {
     .description('set version to use')
     .action((tags) => this.set(tags));
 
+  private readonly resolveCommand = this.mainCommand
+    .command('resolve <versionTags...>')
+    .description('resolve version tags to a version')
+    .action((tags) => this.resolve(tags));
+
   constructor(
     @Inject(LOGGER) private readonly logger: LOGGER,
     @Inject(COMMANDER_PROGRAM) private readonly program: Command,
@@ -93,6 +98,22 @@ export class VersionManagerController {
         `Unable to find version matching criteria "${versionTags.join(' ')}"`,
       ),
     );
+  };
+
+  private resolve = async (versionTags: string[]) => {
+    const versions = await this.service.search(versionTags).toPromise();
+
+    if (versions.length > 0) {
+      this.logger.log(versions[0].version);
+      return;
+    }
+
+    this.logger.error(
+      chalk.red(
+        `Unable to find version matching criteria "${versionTags.join(' ')}"`,
+      ),
+    );
+    process.exitCode = 1;
   };
 
   private table = (versions: Version[]) => {

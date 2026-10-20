@@ -12,6 +12,7 @@ describe('VersionManagerController', () => {
   let commandMock: CommandMock;
 
   const log = jest.fn();
+  const error = jest.fn();
 
   const uiServiceMock = {
     table: jest.fn(),
@@ -32,6 +33,7 @@ describe('VersionManagerController', () => {
 
     [
       log,
+      error,
       ...Object.values(uiServiceMock),
       ...Object.values(versionManagerServiceMock),
     ].forEach((spy) => spy.mockReset());
@@ -42,15 +44,15 @@ describe('VersionManagerController', () => {
         { provide: UIService, useValue: uiServiceMock },
         { provide: VersionManagerService, useValue: versionManagerServiceMock },
         { provide: COMMANDER_PROGRAM, useValue: commandMock },
-        { provide: LOGGER, useValue: { log } },
+        { provide: LOGGER, useValue: { log, error } },
       ],
     }).compile();
   });
 
-  it('adds 3 commands, but 2 actions', () => {
-    expect(commandMock.action).toHaveBeenCalledTimes(2);
-    expect(commandMock.command).toHaveBeenCalledTimes(3);
-    expect(commandMock.description).toHaveBeenCalledTimes(3);
+  it('adds 4 commands, but 3 actions', () => {
+    expect(commandMock.action).toHaveBeenCalledTimes(3);
+    expect(commandMock.command).toHaveBeenCalledTimes(4);
+    expect(commandMock.description).toHaveBeenCalledTimes(4);
   });
 
   describe('commands', function () {
@@ -308,6 +310,45 @@ describe('VersionManagerController', () => {
           1,
           chalk.red('Unable to find version matching criteria "tag1 tag2"'),
         );
+      });
+    });
+
+    describe('resolve', () => {
+      beforeEach(() => {
+        cmd = commandMock.commands['resolve <versionTags...>'];
+      });
+
+      afterEach(() => {
+        process.exitCode = 0;
+      });
+
+      it('has the correct description', () => {
+        expect(cmd.description).toEqual('resolve version tags to a version');
+      });
+
+      it('prints the first matching version', async () => {
+        versionManagerServiceMock.search.mockReturnValue(
+          of([{ version: '1.2.4' }, { version: '1.2.3' }]),
+        );
+
+        await cmd.action(['latest']);
+
+        expect(versionManagerServiceMock.search).toHaveBeenNthCalledWith(1, [
+          'latest',
+        ]);
+        expect(log).toHaveBeenNthCalledWith(1, '1.2.4');
+      });
+
+      it('prints a message and sets a non-zero exit code if the search result is empty', async () => {
+        versionManagerServiceMock.search.mockReturnValue(of([]));
+
+        await cmd.action(['latest']);
+
+        expect(error).toHaveBeenNthCalledWith(
+          1,
+          chalk.red('Unable to find version matching criteria "latest"'),
+        );
+        expect(process.exitCode).toBe(1);
       });
     });
   });

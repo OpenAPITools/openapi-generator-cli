@@ -56,6 +56,12 @@ describe('ConfigService', () => {
         it('can return a default value', () => {
           expect(fixture.get('unknown', 'foo')).toEqual('foo');
         });
+
+        it('does not create or modify the config file', () => {
+          fixture.get('some-path');
+          expect(fs.ensureFileSync).toHaveBeenCalledTimes(0);
+          expect(fs.writeJSONSync).toHaveBeenCalledTimes(0);
+        });
       });
 
       describe('the config has values', () => {
@@ -69,12 +75,10 @@ describe('ConfigService', () => {
           });
         });
 
-        it('ensures the config file', () => {
+        it('does not create or modify the config file', () => {
           fixture.get('some-path');
-          expect(fs.ensureFileSync).toHaveBeenNthCalledWith(
-            1,
-            fixture.configFile
-          );
+          expect(fs.ensureFileSync).toHaveBeenCalledTimes(0);
+          expect(fs.writeJSONSync).toHaveBeenCalledTimes(0);
         });
 
         it.each([

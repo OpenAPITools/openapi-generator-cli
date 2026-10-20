@@ -141,8 +141,6 @@ export class ConfigService {
       return result;
     };
 
-    fs.ensureFileSync(this.configFile);
-
     const fileConfig =
       fs.readJSONSync(this.configFile, { throws: false, encoding: 'utf8' }) ??
       {};
@@ -196,6 +194,7 @@ export class ConfigService {
   }
 
   private write(config) {
+    fs.ensureFileSync(this.configFile);
     fs.writeJSONSync(this.configFile, config, {encoding: 'utf8', spaces: config.spaces || 2})
   }
 }
