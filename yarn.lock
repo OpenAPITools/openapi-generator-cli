@@ -2166,10 +2166,10 @@
   dependencies:
     "@tybys/wasm-util" "^0.10.2"
 
-"@nestjs/axios@^4.0.0":
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/@nestjs/axios/-/axios-4.0.1.tgz#7ff73f47727b67dc04410ac6e9b3329401ebbb65"
-  integrity sha512-68pFJgu+/AZbWkGu65Z3r55bTsCPlgyKaV4BSG8yUAD72q1PPuyVRgUwFv6BxdnibTUHlyxm06FmYWNC+bjN7A==
+"@nestjs/axios@^12.0.0":
+  version "12.0.1"
+  resolved "https://registry.yarnpkg.com/@nestjs/axios/-/axios-12.0.1.tgz#6eb51a921f0cf33c3c531bc97f5b4a33b4e9b36e"
+  integrity sha512-Sqp14ZDrsNT96S9obtmQVzN1PLZ+FL0hnUEUjpOOtjYcGW30Knr9vV4goky/bPYPUxSCCFoXp+biRUyafkLFLA==
 
 "@nestjs/common@^11.0.16":
   version "11.2.3"
