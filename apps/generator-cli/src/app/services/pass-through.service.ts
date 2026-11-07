@@ -181,10 +181,17 @@ export class PassThroughService {
   }
 
   /**
-   * Splits a string into arguments the way a POSIX shell would, respecting
-   * single and double quotes as well as backslash escapes outside of quotes.
-   * A `|` inside JAVA_OPTS (legitimate for -Dhttp.nonProxyHosts) therefore
-   * stays part of its argument instead of splitting the command.
+   * Splits a string into arguments the way a shell tokenizes them, respecting
+   * single and double quotes. A `|` inside JAVA_OPTS (legitimate for
+   * -Dhttp.nonProxyHosts) therefore stays part of its argument instead of
+   * splitting the command.
+   *
+   * Unlike a POSIX shell, a backslash is kept verbatim in unquoted tokens:
+   * JAVA_OPTS on Windows regularly carries paths such as C:\certs\client.jks,
+   * and treating the backslash as an escape character outside of quotes would
+   * strip those separators (C:certsclient.jks). Backslash escapes are only
+   * interpreted inside double quotes, where they follow the typical shell
+   * rules (see below).
    */
   private splitArgs(input?: string): string[] {
     if (!input) {
@@ -215,10 +222,11 @@ export class PassThroughService {
           hasArg = true;
           break;
         case '\\':
-          if (i + 1 < input.length) {
-            arg += input[++i];
-            hasArg = true;
-          }
+          // keep backslashes verbatim in unquoted tokens so Windows paths in
+          // JAVA_OPTS (e.g. C:\certs\client.jks) reach java unmodified; the
+          // backslash is only an escape character inside double quotes
+          arg += char;
+          hasArg = true;
           break;
         default:
           if (/\s/.test(char)) {

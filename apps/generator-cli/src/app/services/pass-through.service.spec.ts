@@ -295,6 +295,36 @@ describe('PassThroughService', () => {
             );
           });
 
+          // Unlike a POSIX shell, an unquoted backslash is NOT an escape
+          // character here: JAVA_OPTS on Windows typically carries paths such
+          // as C:\certs\client.jks, and shell-style escape handling would
+          // silently strip the separators (C:certsclient.jks). Since the args
+          // are handed to java verbatim (no shell in between), java itself
+          // does not interpret the backslashes either, so keeping them is
+          // always the faithful transfer of JAVA_OPTS. Escaping is only
+          // interpreted inside double quotes, see the escaped quote tests
+          // below.
+          it('keeps backslashes of unquoted JAVA_OPTS verbatim', async () => {
+            process.env['JAVA_OPTS'] =
+              '-Djavax.net.ssl.keyStore=C:\\certs\\client.jks';
+            await program.parseAsync([name, ...argv], { from: 'user' });
+            expect(childProcess.spawn).toHaveBeenNthCalledWith(
+              3,
+              'java',
+              [
+                '-Djavax.net.ssl.keyStore=C:\\certs\\client.jks',
+                '-jar',
+                '/some/path/to/4.2.1.jar',
+                name,
+                ...argv,
+              ],
+              {
+                stdio: 'inherit',
+                shell: false,
+              }
+            );
+          });
+
           it('can delegate with custom jar', async () => {
             await program.parseAsync(
               [name, ...argv, '--custom-generator=../some/custom.jar'],
