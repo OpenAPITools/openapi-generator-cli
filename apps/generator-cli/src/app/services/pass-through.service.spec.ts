@@ -141,6 +141,9 @@ describe('PassThroughService', () => {
         ].join('\n');
 
         beforeEach(async () => {
+          // discovery must see a deterministic environment, regardless of
+          // what JAVA_OPTS an earlier test left behind
+          delete process.env['JAVA_OPTS'];
           childProcess.spawn.mockImplementation((command: string, args) => {
             const child = makeChildProcess();
             const invoked = [command, ...(args ?? [])].join(' ');
@@ -161,9 +164,31 @@ describe('PassThroughService', () => {
           await fixture.init();
         });
 
-        it('adds 10 commands', () => {
-          expect(program.commands).toHaveLength(10);
-        });
+          it('adds 10 commands', () => {
+            expect(program.commands).toHaveLength(10);
+          });
+
+          // the first two spawns are the command discovery of getCommands():
+          // `help` and `completion` are invoked on the exact argv (java,
+          // jar path, sub command - JAVA_OPTS unset) and without a shell, so
+          // regressions in the discovery process construction are caught
+          it('spawns help discovery with the exact argv and without a shell', () => {
+            expect(childProcess.spawn).toHaveBeenNthCalledWith(
+              1,
+              'java',
+              ['-jar', '/some/path/to/4.2.1.jar', 'help'],
+              { shell: false }
+            );
+          });
+
+          it('spawns completion discovery with the exact argv and without a shell', () => {
+            expect(childProcess.spawn).toHaveBeenNthCalledWith(
+              2,
+              'java',
+              ['-jar', '/some/path/to/4.2.1.jar', 'completion'],
+              { shell: false }
+            );
+          });
 
         describe.each([
           [
