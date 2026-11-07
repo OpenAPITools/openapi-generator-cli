@@ -104,6 +104,18 @@ describe('GeneratorService', () => {
             ext: '#{ext}',
           },
         },
+        ['ignore-list.json']: {
+          ignoreListArray: {
+            inputSpec: 'http://example.local/openapi.json',
+            output: 'ignore-list-array/#{name}',
+            openapiGeneratorIgnoreList: ['README.md', 'pom.xml', 'docs/*.md'],
+          },
+          ignoreListString: {
+            inputSpec: 'http://example.local/openapi.json',
+            output: 'ignore-list-string/#{name}',
+            openapiGeneratorIgnoreList: 'README.md,pom.xml',
+          },
+        },
       };
 
       const specFiles = {
@@ -229,6 +241,21 @@ describe('GeneratorService', () => {
         ],
         ['none.json', []],
         ['also-none.json', []],
+        [
+          'ignore-list.json',
+          [
+            cmd('[ignoreListArray] http://example.local/openapi.json', [
+              `--input-spec="http://example.local/openapi.json"`,
+              `--output="ignore-list-array/openapi"`,
+              `--openapi-generator-ignore-list="README.md,pom.xml,docs/*.md"`,
+            ]),
+            cmd('[ignoreListString] http://example.local/openapi.json', [
+              `--input-spec="http://example.local/openapi.json"`,
+              `--output="ignore-list-string/openapi"`,
+              `--openapi-generator-ignore-list="README.md,pom.xml"`,
+            ]),
+          ],
+        ],
         [
           'no-glob.json',
           [

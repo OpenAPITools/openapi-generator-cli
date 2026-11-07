@@ -169,6 +169,11 @@ export class GeneratorService {
           .toLowerCase();
 
         const value = (() => {
+          // arrays are passed as comma separated lists, matching the csv
+          // semantics of CLI flags like --openapi-generator-ignore-list
+          if (Array.isArray(v)) {
+            return `"${v.join(',')}"`;
+          }
           switch (typeof v) {
             case 'object':
               return `"${Object.entries(v)
