@@ -17,11 +17,11 @@ const fs = jest.mocked(require('fs'));
 
 const makeChildProcess = () => {
   const child = new EventEmitter() as EventEmitter & {
-    stdout: EventEmitter;
-    stderr: EventEmitter;
+    stdout: EventEmitter & { setEncoding: jest.Mock };
+    stderr: EventEmitter & { setEncoding: jest.Mock };
   };
-  child.stdout = new EventEmitter();
-  child.stderr = new EventEmitter();
+  child.stdout = Object.assign(new EventEmitter(), { setEncoding: jest.fn() });
+  child.stderr = Object.assign(new EventEmitter(), { setEncoding: jest.fn() });
   return child;
 };
 
@@ -140,12 +140,16 @@ describe('PassThroughService', () => {
           '  --help',
         ].join('\n');
 
+        let spawnedChildren: ReturnType<typeof makeChildProcess>[];
+
         beforeEach(async () => {
           // discovery must see a deterministic environment, regardless of
           // what JAVA_OPTS an earlier test left behind
           delete process.env['JAVA_OPTS'];
+          spawnedChildren = [];
           childProcess.spawn.mockImplementation((command: string, args) => {
             const child = makeChildProcess();
+            spawnedChildren.push(child);
             const invoked = [command, ...(args ?? [])].join(' ');
             const output = invoked.endsWith('/some/path/to/4.2.1.jar help')
               ? helpText
@@ -187,6 +191,24 @@ describe('PassThroughService', () => {
               'java',
               ['-jar', '/some/path/to/4.2.1.jar', 'completion'],
               { shell: false }
+            );
+          });
+
+          // the discovery output is decoded as utf8 up front, so a multi-byte
+          // character split across two stdout chunks cannot turn into
+          // replacement characters in the parsed command list
+          it('decodes the discovery stdout as utf8', () => {
+            expect(spawnedChildren[0].stdout.setEncoding).toHaveBeenCalledWith(
+              'utf8'
+            );
+            expect(spawnedChildren[0].stderr.setEncoding).toHaveBeenCalledWith(
+              'utf8'
+            );
+            expect(spawnedChildren[1].stdout.setEncoding).toHaveBeenCalledWith(
+              'utf8'
+            );
+            expect(spawnedChildren[1].stderr.setEncoding).toHaveBeenCalledWith(
+              'utf8'
             );
           });
 

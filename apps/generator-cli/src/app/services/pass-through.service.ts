@@ -133,8 +133,13 @@ export class PassThroughService {
       let stderr = '';
 
       const child = spawn(command, args, { shell: false });
-      child.stdout.on('data', (chunk) => (stdout += chunk.toString()));
-      child.stderr.on('data', (chunk) => (stderr += chunk.toString()));
+      // decode the streams as utf8 so that a multi-byte character split
+      // across two chunks is reassembled instead of being emitted as
+      // replacement characters in the middle of the output
+      child.stdout.setEncoding('utf8');
+      child.stdout.on('data', (chunk) => (stdout += chunk));
+      child.stderr.setEncoding('utf8');
+      child.stderr.on('data', (chunk) => (stderr += chunk));
       child
         .on('error', reject)
         .on('close', (code) =>
