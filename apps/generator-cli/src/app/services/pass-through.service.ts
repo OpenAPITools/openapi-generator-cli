@@ -207,7 +207,16 @@ export class PassThroughService {
       const char = input[i];
 
       if (quote) {
-        if (char === quote) {
+        // inside double quotes a backslash escapes exactly the characters a
+        // typical shell would let it escape, so the `\"` of -Dfoo="a\"b"
+        // becomes a literal quote instead of ending the quoted segment early
+        if (
+          char === '\\' &&
+          quote === '"' &&
+          ['"', '\\', '$', '`'].includes(input[i + 1])
+        ) {
+          arg += input[++i];
+        } else if (char === quote) {
           quote = undefined;
         } else {
           arg += char;

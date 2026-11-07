@@ -325,6 +325,36 @@ describe('PassThroughService', () => {
             );
           });
 
+          // Inside double quotes the backslash keeps its typical shell
+          // meaning and escapes exactly the characters a shell would let it
+          // escape (" \ $ `), so the \" of -Dfoo="a\"b" is passed to java as
+          // a literal quote instead of ending the quoted segment early (and
+          // the rest of JAVA_OPTS being parsed as unquoted input). Inside
+          // single quotes a backslash has no special meaning at all.
+          it('passes escaped quotes inside double-quoted JAVA_OPTS through to java', async () => {
+            // runtime JAVA_OPTS: -Dfoo="a\"b" -Dbaz="c\\d" -Dqux='e\"f'
+            process.env['JAVA_OPTS'] =
+              '-Dfoo="a\\"b" -Dbaz="c\\\\d" -Dqux=\'e\\"f\'';
+            await program.parseAsync([name, ...argv], { from: 'user' });
+            expect(childProcess.spawn).toHaveBeenNthCalledWith(
+              3,
+              'java',
+              [
+                '-Dfoo=a"b',
+                '-Dbaz=c\\d',
+                '-Dqux=e\\"f',
+                '-jar',
+                '/some/path/to/4.2.1.jar',
+                name,
+                ...argv,
+              ],
+              {
+                stdio: 'inherit',
+                shell: false,
+              }
+            );
+          });
+
           it('can delegate with custom jar', async () => {
             await program.parseAsync(
               [name, ...argv, '--custom-generator=../some/custom.jar'],
