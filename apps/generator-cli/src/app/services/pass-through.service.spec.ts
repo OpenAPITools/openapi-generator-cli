@@ -1,6 +1,7 @@
 import { Test } from '@nestjs/testing';
 import chalk from 'chalk';
 import { Command, createCommand } from 'commander';
+import { EventEmitter } from 'events';
 import { COMMANDER_PROGRAM, LOGGER } from '../constants';
 import { GeneratorService } from './generator.service';
 import { PassThroughService } from './pass-through.service';
@@ -13,6 +14,16 @@ jest.mock('fs');
 const childProcess = jest.mocked(require('child_process'));
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fs = jest.mocked(require('fs'));
+
+const makeChildProcess = () => {
+  const child = new EventEmitter() as EventEmitter & {
+    stdout: EventEmitter;
+    stderr: EventEmitter;
+  };
+  child.stdout = new EventEmitter();
+  child.stderr = new EventEmitter();
+  return child;
+};
 
 describe('PassThroughService', () => {
   let fixture: PassThroughService;
@@ -58,7 +69,9 @@ describe('PassThroughService', () => {
 
     fixture = moduleRef.get(PassThroughService);
 
-    childProcess.spawn.mockReset().mockReturnValue({ on: jest.fn() });
+    childProcess.spawn
+      .mockReset()
+      .mockImplementation(() => makeChildProcess());
     fs.existsSync.mockReset().mockReturnValue(true);
     configServiceMock.get.mockClear();
     configServiceMock.get.mockReset();
@@ -71,9 +84,14 @@ describe('PassThroughService', () => {
         let error: Error;
 
         beforeEach(async () => {
-          childProcess.exec.mockImplementation((cmd: string, cb) =>
-            cb(true, undefined, 'Some error')
-          );
+          childProcess.spawn.mockImplementation(() => {
+            const child = makeChildProcess();
+            setImmediate(() => {
+              child.stderr.emit('data', 'Some error');
+              child.emit('close', 1);
+            });
+            return child;
+          });
           try {
             await fixture.init();
           } catch (e) {
@@ -123,14 +141,22 @@ describe('PassThroughService', () => {
         ].join('\n');
 
         beforeEach(async () => {
-          childProcess.exec.mockImplementation((cmd: string, cb) => {
-            if (cmd.endsWith('"/some/path/to/4.2.1.jar" help')) {
-              cb(undefined, helpText);
-            }
+          childProcess.spawn.mockImplementation((command: string, args) => {
+            const child = makeChildProcess();
+            const invoked = [command, ...(args ?? [])].join(' ');
+            const output = invoked.endsWith('/some/path/to/4.2.1.jar help')
+              ? helpText
+              : invoked.endsWith('/some/path/to/4.2.1.jar completion')
+                ? completionText
+                : undefined;
 
-            if (cmd.endsWith('"/some/path/to/4.2.1.jar" completion')) {
-              cb(undefined, completionText);
-            }
+            setImmediate(() => {
+              if (output !== undefined) {
+                child.stdout.emit('data', output);
+                child.emit('close', 0);
+              }
+            });
+            return child;
           });
           await fixture.init();
         });
@@ -181,11 +207,20 @@ describe('PassThroughService', () => {
             it('delegates to docker', async () => {
               await program.parseAsync([name, ...argv], { from: 'user' });
               expect(childProcess.spawn).toHaveBeenNthCalledWith(
-                1,
-                `docker run --rm -v "/foo/bar:/local" openapitools/openapi-generator-cli:v4.2.1 ${name} ${argv.join(' ')}`,
+                3,
+                'docker',
+                [
+                  'run',
+                  '--rm',
+                  '-v',
+                  '/foo/bar:/local',
+                  'openapitools/openapi-generator-cli:v4.2.1',
+                  name,
+                  ...argv,
+                ],
                 {
                   stdio: 'inherit',
-                  shell: true,
+                  shell: false,
                 }
               );
             });
@@ -194,11 +229,12 @@ describe('PassThroughService', () => {
           it('can delegate', async () => {
             await program.parseAsync([name, ...argv], { from: 'user' });
             expect(childProcess.spawn).toHaveBeenNthCalledWith(
-              1,
-              `java -jar "/some/path/to/4.2.1.jar" ${name} ${argv.join(' ')}`,
+              3,
+              'java',
+              ['-jar', '/some/path/to/4.2.1.jar', name, ...argv],
               {
                 stdio: 'inherit',
-                shell: true,
+                shell: false,
               }
             );
           });
@@ -207,11 +243,54 @@ describe('PassThroughService', () => {
             process.env['JAVA_OPTS'] = 'java-opt-1=1';
             await program.parseAsync([name, ...argv], { from: 'user' });
             expect(childProcess.spawn).toHaveBeenNthCalledWith(
-              1,
-              `java java-opt-1=1 -jar "/some/path/to/4.2.1.jar" ${name} ${argv.join(' ')}`,
+              3,
+              'java',
+              ['java-opt-1=1', '-jar', '/some/path/to/4.2.1.jar', name, ...argv],
               {
                 stdio: 'inherit',
-                shell: true,
+                shell: false,
+              }
+            );
+          });
+
+          it('passes JAVA_OPTS with a pipe character through as a single argument', async () => {
+            process.env['JAVA_OPTS'] = '-Dhttp.nonProxyHosts=127.*|localhost';
+            await program.parseAsync([name, ...argv], { from: 'user' });
+            expect(childProcess.spawn).toHaveBeenNthCalledWith(
+              3,
+              'java',
+              [
+                '-Dhttp.nonProxyHosts=127.*|localhost',
+                '-jar',
+                '/some/path/to/4.2.1.jar',
+                name,
+                ...argv,
+              ],
+              {
+                stdio: 'inherit',
+                shell: false,
+              }
+            );
+          });
+
+          it('splits quoted JAVA_OPTS into separate arguments without a shell', async () => {
+            process.env['JAVA_OPTS'] =
+              '-Dhttp.nonProxyHosts="127.*|localhost|*.local" -Dsome.opt=\'a b\'';
+            await program.parseAsync([name, ...argv], { from: 'user' });
+            expect(childProcess.spawn).toHaveBeenNthCalledWith(
+              3,
+              'java',
+              [
+                '-Dhttp.nonProxyHosts=127.*|localhost|*.local',
+                '-Dsome.opt=a b',
+                '-jar',
+                '/some/path/to/4.2.1.jar',
+                name,
+                ...argv,
+              ],
+              {
+                stdio: 'inherit',
+                shell: false,
               }
             );
           });
@@ -224,14 +303,20 @@ describe('PassThroughService', () => {
             const cpDelimiter = process.platform === 'win32' ? ';' : ':';
 
             expect(childProcess.spawn).toHaveBeenNthCalledWith(
-              1,
-              `java -cp "${[
-                '/some/path/to/4.2.1.jar',
-                '../some/custom.jar',
-              ].join(cpDelimiter)}" org.openapitools.codegen.OpenAPIGenerator ${name} ${argv.join(' ')}`,
+              3,
+              'java',
+              [
+                '-cp',
+                ['/some/path/to/4.2.1.jar', '../some/custom.jar'].join(
+                  cpDelimiter
+                ),
+                'org.openapitools.codegen.OpenAPIGenerator',
+                name,
+                ...argv,
+              ],
               {
                 stdio: 'inherit',
-                shell: true,
+                shell: false,
               }
             );
           });
@@ -244,11 +329,12 @@ describe('PassThroughService', () => {
             );
 
             expect(childProcess.spawn).toHaveBeenNthCalledWith(
-              1,
-              `java -jar "../some/custom.jar" ${name} ${argv.join(' ')}`,
+              3,
+              'java',
+              ['-jar', '../some/custom.jar', name, ...argv],
               {
                 stdio: 'inherit',
-                shell: true,
+                shell: false,
               }
             );
           });
@@ -311,17 +397,19 @@ describe('PassThroughService', () => {
 
               describe('process spawn', () => {
                 it(`spawns ${spawn ? 1 : 0} times`, () => {
+                  // init() already spawned help and completion discovery
                   expect(childProcess.spawn).toHaveBeenCalledTimes(
-                    spawn ? 1 : 0
+                    spawn ? 3 : 2
                   );
                 });
 
                 spawn &&
                   it('spawns the correct process', () => {
                     expect(childProcess.spawn).toHaveBeenNthCalledWith(
-                      1,
-                      `java -jar "/some/path/to/4.2.1.jar" ${cmd}`,
-                      { stdio: 'inherit', shell: true }
+                      3,
+                      'java',
+                      ['-jar', '/some/path/to/4.2.1.jar', ...cmd.split(' ')],
+                      { stdio: 'inherit', shell: false }
                     );
                   });
               });
