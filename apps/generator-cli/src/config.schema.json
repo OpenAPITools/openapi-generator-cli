@@ -446,6 +446,20 @@
             }
           }
         },
+        "openapiGeneratorIgnoreList": {
+          "description": "specifies a list of files or patterns to be ignored during generation, pre-populating the .openapi-generator-ignore file in the output folder. Can be provided as an array of strings or a comma separated list",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          ]
+        },
         "packageName": {
           "type": "string",
           "description": "package for generated classes (where supported)"
