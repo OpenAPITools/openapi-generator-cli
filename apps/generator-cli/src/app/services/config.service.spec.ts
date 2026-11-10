@@ -15,7 +15,15 @@ describe('ConfigService', () => {
   const log = jest.fn();
   const error = jest.fn();
 
+  let originalArgv: string[];
+
   beforeEach(async () => {
+    // the config file is resolved from process.argv, pin it to a plain cli
+    // invocation so the runner's own arguments (e.g. jest's --config) are not
+    // mistaken for cli options
+    originalArgv = process.argv;
+    process.argv = ['node', 'openapi-generator-cli'];
+
     program = createCommand();
     jest.spyOn(program, 'helpInformation');
 
@@ -31,6 +39,10 @@ describe('ConfigService', () => {
     fs.writeJSONSync.mockReset();
     fs.readJSONSync.mockReset();
     fs.ensureFileSync.mockReset();
+  });
+
+  afterEach(() => {
+    process.argv = originalArgv;
   });
 
   describe('API', () => {
@@ -199,10 +211,13 @@ describe('ConfigService', () => {
       let originalEnv: NodeJS.ProcessEnv;
 
       const createFixture = async (
-        opts: Record<string, unknown> = {},
+        argv: string[] = ['node', 'openapi-generator-cli'],
       ): Promise<ConfigService> => {
-        program = createCommand();
-        Object.assign(program.opts(), opts);
+        process.argv = argv;
+        program = createCommand().option(
+          '--openapitools <openapitools.json>',
+          'Use the specified openapi-generator-cli configuration file',
+        );
 
         fs.writeJSONSync.mockReset();
         fs.readJSONSync.mockReset();
@@ -221,6 +236,7 @@ describe('ConfigService', () => {
 
       beforeEach(() => {
         fs.existsSync.mockReset();
+        error.mockClear();
         exitSpy = jest
           .spyOn(process, 'exit')
           .mockImplementation((() => undefined) as never);
@@ -231,34 +247,106 @@ describe('ConfigService', () => {
       afterEach(() => {
         exitSpy.mockRestore();
         process.env = { ...originalEnv };
+        process.argv = originalArgv;
       });
 
       describe('--openapitools set', () => {
         it('returns path set at cli, if openapitools argument provided', async () => {
           fs.existsSync.mockReturnValue(true);
-          const fixture = await createFixture({
-            openapitools: '/tmp/myopenapitools.json',
-          });
+          const fixture = await createFixture([
+            'node',
+            'openapi-generator-cli',
+            '--openapitools',
+            '/tmp/myopenapitools.json',
+          ]);
           expect(fixture.configFile).toEqual('/tmp/myopenapitools.json');
         });
       });
 
-      describe('-c/--config set', () => {
-        it('returns the path provided via --config', async () => {
-          fs.existsSync.mockReturnValue(true);
-          const fixture = await createFixture({
-            config: '/tmp/my-other-openapitools.json',
-          });
-          expect(fixture.configFile).toEqual('/tmp/my-other-openapitools.json');
-        });
+      describe('-c/--config set before the command', () => {
+        it.each([
+          [
+            'the separate -c option value',
+            ['-c', '/tmp/my-other-openapitools.json'],
+          ],
+          [
+            'the separate --config option value',
+            ['--config', '/tmp/my-other-openapitools.json'],
+          ],
+          [
+            'the inline --config option value',
+            ['--config=/tmp/my-other-openapitools.json'],
+          ],
+          [
+            'the attached -c option value',
+            ['-c/tmp/my-other-openapitools.json'],
+          ],
+        ])(
+          'returns the path provided via %s',
+          async (_, configArgs) => {
+            fs.existsSync.mockReturnValue(true);
+            const fixture = await createFixture([
+              'node',
+              'openapi-generator-cli',
+              ...configArgs,
+              'version-manager',
+              'resolve',
+            ]);
+            expect(fixture.configFile).toEqual(
+              '/tmp/my-other-openapitools.json',
+            );
+          },
+        );
 
         it('resolves a relative path against the cwd', async () => {
           fs.existsSync.mockReturnValue(true);
-          const fixture = await createFixture({ config: 'conf/openapi.json' });
+          const fixture = await createFixture([
+            'node',
+            'openapi-generator-cli',
+            '-c',
+            'conf/openapi.json',
+            'version-manager',
+            'resolve',
+          ]);
           expect(fixture.configFile).toEqual(
             path.resolve(fixture.cwd, 'conf/openapi.json'),
           );
         });
+      });
+
+      describe('the config options of the invoked command', () => {
+        it.each([
+          ['the separate -c option', ['generate', '-c', 'gen-cfg.yaml']],
+          [
+            'the separate --config option',
+            ['generate', '--config', 'gen-cfg.yaml'],
+          ],
+          [
+            'the inline --config option',
+            ['generate', '--config=gen-cfg.yaml'],
+          ],
+          ['the attached -c option', ['generate', '-cgen-cfg.yaml']],
+          [
+            'an option of another command',
+            ['version-manager', 'list', '-c', 'gen-cfg.yaml'],
+          ],
+        ])(
+          'is left to the command: %s reaches the command and the default config is used',
+          async (_, commandArgs) => {
+            // even a not existing path must not be mistaken for the cli config
+            fs.existsSync.mockReturnValue(false);
+            const fixture = await createFixture([
+              'node',
+              'openapi-generator-cli',
+              ...commandArgs,
+            ]);
+            expect(fixture.configFile).toEqual(
+              expect.stringMatching(/[/\\]openapitools\.json$/),
+            );
+            expect(exitSpy).not.toHaveBeenCalled();
+            expect(error).not.toHaveBeenCalled();
+          },
+        );
       });
 
       describe(ConfigService.envConfigVariable + ' set', () => {
@@ -285,10 +373,32 @@ describe('ConfigService', () => {
           fs.existsSync.mockReturnValue(true);
           process.env[ConfigService.envConfigVariable] =
             '/tmp/env-openapitools.json';
-          const fixture = await createFixture({
-            config: '/tmp/cli-openapitools.json',
-          });
+          const fixture = await createFixture([
+            'node',
+            'openapi-generator-cli',
+            '-c',
+            '/tmp/cli-openapitools.json',
+            'version-manager',
+            'resolve',
+          ]);
           expect(fixture.configFile).toEqual('/tmp/cli-openapitools.json');
+        });
+      });
+
+      describe('--openapitools and -c/--config are both set', () => {
+        it('--openapitools keeps precedence over -c/--config', async () => {
+          fs.existsSync.mockReturnValue(true);
+          const fixture = await createFixture([
+            'node',
+            'openapi-generator-cli',
+            '--openapitools',
+            '/tmp/openapitools.json',
+            '-c',
+            '/tmp/config.json',
+            'version-manager',
+            'resolve',
+          ]);
+          expect(fixture.configFile).toEqual('/tmp/openapitools.json');
         });
       });
 
@@ -304,9 +414,14 @@ describe('ConfigService', () => {
       describe('the explicit config file does not exist', () => {
         it('logs an error and exits, if the path was set via a cli option', async () => {
           fs.existsSync.mockReturnValue(false);
-          const fixture = await createFixture({
-            config: '/tmp/not-existing-openapitools.json',
-          });
+          const fixture = await createFixture([
+            'node',
+            'openapi-generator-cli',
+            '-c',
+            '/tmp/not-existing-openapitools.json',
+            'version-manager',
+            'resolve',
+          ]);
           expect(fixture.configFile).toEqual('/tmp/not-existing-openapitools.json');
           expect(error).toHaveBeenCalledWith(
             expect.stringContaining('/tmp/not-existing-openapitools.json'),

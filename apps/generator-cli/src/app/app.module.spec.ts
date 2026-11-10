@@ -195,6 +195,66 @@ describe('AppModule', () => {
         });
       });
 
+      describe('a command is invoked with its own -c/--config option', () => {
+        beforeEach(async () => {
+          process.argv = [
+            'foo',
+            'baz',
+            'generate',
+            '-i',
+            'spec.yaml',
+            '-c',
+            'gen-cfg.yaml',
+          ];
+          programMock.parse.mockImplementation(() => undefined);
+          versionManagerServiceMock.getSelectedVersion.mockReturnValue('1.2.3');
+          await fixture.onApplicationBootstrap();
+        });
+
+        it('hands the command arguments untouched to commander', () => {
+          expect(programMock.parse).toHaveBeenCalledWith([
+            'foo',
+            'baz',
+            'generate',
+            '-i',
+            'spec.yaml',
+            '-c',
+            'gen-cfg.yaml',
+          ]);
+        });
+      });
+
+      describe.each([
+        ['the separate -c option value', ['-c', 'x.json']],
+        ['the separate --config option value', ['--config', 'x.json']],
+        ['the inline --config option value', ['--config=x.json']],
+        ['the attached -c option value', ['-cx.json']],
+      ])('a global -c/--config option is used as %s before the command', (_, configArgs) => {
+        beforeEach(async () => {
+          process.argv = [
+            'foo',
+            'baz',
+            ...configArgs,
+            'version-manager',
+            'resolve',
+            'latest',
+          ];
+          programMock.parse.mockImplementation(() => undefined);
+          versionManagerServiceMock.getSelectedVersion.mockReturnValue('1.2.3');
+          await fixture.onApplicationBootstrap();
+        });
+
+        it('hands commander an argv without the config option, so the command is dispatched', () => {
+          expect(programMock.parse).toHaveBeenCalledWith([
+            'foo',
+            'baz',
+            'version-manager',
+            'resolve',
+            'latest',
+          ]);
+        });
+      });
+
       describe('a custom generator is provided', () => {
         beforeEach(async () => {
           process.argv = [

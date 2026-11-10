@@ -193,6 +193,10 @@ Relative paths are resolved against the current working directory. When an expli
 of silently creating a new configuration file. When neither the option nor the environment variable is
 set, the default *./openapitools.json* is used (and created on first usage), just like before.
 
+`-c` and `--config` must be placed **before** the command name — afterwards they belong to the
+invoked command itself. For example, the config file in `openapi-generator-cli generate -c generator-config.yaml`
+is the generator configuration read by the Java generator, not the *openapitools.json* location.
+
 
 ##### Available placeholders
      

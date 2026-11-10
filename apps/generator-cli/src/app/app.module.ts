@@ -5,7 +5,10 @@ import { ProxyAgent } from 'proxy-agent';
 
 import { COMMANDER_PROGRAM, LOGGER } from './constants';
 import { VersionManagerController } from './controllers/version-manager.controller';
-import { ConfigService } from './services/config.service';
+import {
+  ConfigService,
+  extractGlobalConfigArgs,
+} from './services/config.service';
 import {
   GeneratorService,
   PassThroughService,
@@ -50,11 +53,20 @@ if (hasHttpsProxyEnvs) {
           '--openapitools <openapitools.json>',
           'Use the specified openapi-generator-cli configuration file',
         )
-        .option(
-          '-c, --config <path>',
-          'Use the specified openapi-generator-cli configuration file (alternative to --openapitools, also available via the ' +
+        // The global `-c, --config <path>` option is intentionally NOT
+        // registered with commander: commander would consume it from the whole
+        // argv — including after the command name — which would swallow the
+        // Java generator's own `generate -c, --config <config file>` option.
+        // Instead, it is only honored BEFORE the command name by ConfigService
+        // (see extractGlobalConfigArgs) and stripped from the argv handed to
+        // commander below. It is listed here so it still shows up in the help.
+        .addHelpText(
+          'after',
+          '\nGlobal config option (must be placed before the command name):\n\n' +
+            '  -c, --config <path>\n' +
+            '      Use the specified openapi-generator-cli configuration file (alternative to --openapitools, also available via the ' +
             ConfigService.envConfigVariable +
-            ' environment variable)',
+            ' environment variable)\n',
         ),
     },
     { provide: LOGGER, useValue: console },
@@ -92,7 +104,13 @@ export class AppModule implements OnApplicationBootstrap {
     if (!isVersionManagerResolveCommand) {
       await this.passThroughService.init();
     }
-    this.program.parse(process.argv);
+    // Remove the global -c/--config options from the argv handed to commander:
+    // they are not registered (see above), and an unrecognized option before
+    // the command name would make commander treat the command itself as an
+    // unknown argument and skip its dispatch.
+    this.program.parse(
+      extractGlobalConfigArgs(process.argv).argvWithoutGlobalConfigArgs,
+    );
   };
 
   private isVersionManagerResolveCommand() {
