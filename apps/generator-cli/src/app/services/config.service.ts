@@ -6,19 +6,44 @@ import { Command } from 'commander';
 
 @Injectable()
 export class ConfigService {
+  /**
+   * Environment variable pointing to an openapitools.json outside of the cwd.
+   * Precedence: cli option (-c/--config or --openapitools) > env var > ./openapitools.json
+   */
+  public static readonly envConfigVariable = 'OPENAPI_GENERATOR_CLI_CONFIG';
+
   public readonly cwd =
     process.env.PWD || process.env.INIT_CWD || process.cwd();
   public readonly configFile = this.configFileOrDefault();
 
   private configFileOrDefault() {
     this.program.parseOptions(process.argv);
-    const conf = this.program.opts().openapitools;
+    const opts = this.program.opts();
+    const explicitConfigPath =
+      opts.openapitools ||
+      opts.config ||
+      process.env[ConfigService.envConfigVariable];
 
-    if (!conf) {
+    if (!explicitConfigPath) {
       return path.resolve(this.cwd, 'openapitools.json');
     }
 
-    return path.isAbsolute(conf) ? conf : path.resolve(this.cwd, conf);
+    const configPath = path.isAbsolute(explicitConfigPath)
+      ? explicitConfigPath
+      : path.resolve(this.cwd, explicitConfigPath);
+
+    if (!fs.existsSync(configPath)) {
+      this.logger.error(
+        `Config file not found at "${configPath}". It was set via ${
+          opts.openapitools || opts.config
+            ? 'the -c/--config or --openapitools option'
+            : `the ${ConfigService.envConfigVariable} environment variable`
+        }. Please make sure the file exists, or unset it to use the default ./openapitools.json.`,
+      );
+      process.exit(1);
+    }
+
+    return configPath;
   }
 
   public get useDocker() {

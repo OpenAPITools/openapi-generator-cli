@@ -149,6 +149,10 @@ describe('AppModule', () => {
       describe.each([
         ['the separate option value', ['--openapitools', 'x.json']],
         ['the inline option value', ['--openapitools=x.json']],
+        ['the separate -c option value', ['-c', 'x.json']],
+        ['the separate --config option value', ['--config', 'x.json']],
+        ['the inline --config option value', ['--config=x.json']],
+        ['the attached -c option value', ['-cx.json']],
       ])('version-manager resolve with %s', (_, configArgs) => {
         beforeEach(async () => {
           process.argv = [

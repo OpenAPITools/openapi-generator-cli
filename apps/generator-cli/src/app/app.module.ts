@@ -5,8 +5,8 @@ import { ProxyAgent } from 'proxy-agent';
 
 import { COMMANDER_PROGRAM, LOGGER } from './constants';
 import { VersionManagerController } from './controllers/version-manager.controller';
+import { ConfigService } from './services/config.service';
 import {
-  ConfigService,
   GeneratorService,
   PassThroughService,
   UIService,
@@ -49,6 +49,12 @@ if (hasHttpsProxyEnvs) {
         .option(
           '--openapitools <openapitools.json>',
           'Use the specified openapi-generator-cli configuration file',
+        )
+        .option(
+          '-c, --config <path>',
+          'Use the specified openapi-generator-cli configuration file (alternative to --openapitools, also available via the ' +
+            ConfigService.envConfigVariable +
+            ' environment variable)',
         ),
     },
     { provide: LOGGER, useValue: console },
@@ -96,12 +102,20 @@ export class AppModule implements OnApplicationBootstrap {
     while (commandIndex < args.length) {
       const arg = args[commandIndex];
 
-      if (arg === '--openapitools') {
+      if (
+        arg === '--openapitools' ||
+        arg === '--config' ||
+        arg === '-c'
+      ) {
         commandIndex += 2;
         continue;
       }
 
-      if (arg.startsWith('--openapitools=')) {
+      if (
+        arg.startsWith('--openapitools=') ||
+        arg.startsWith('--config=') ||
+        (arg.startsWith('-c') && arg.length > 2)
+      ) {
         commandIndex += 1;
         continue;
       }

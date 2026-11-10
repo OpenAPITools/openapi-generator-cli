@@ -1,5 +1,6 @@
 import { Test } from '@nestjs/testing';
 import { Command, createCommand } from 'commander';
+import * as path from 'path';
 import { ConfigService } from './config.service';
 import { LOGGER, COMMANDER_PROGRAM } from '../constants';
 
@@ -194,33 +195,148 @@ describe('ConfigService', () => {
     });
 
     describe('configFileOrDefault()', () => {
+      let exitSpy: jest.SpyInstance;
+      let originalEnv: NodeJS.ProcessEnv;
+
+      const createFixture = async (
+        opts: Record<string, unknown> = {},
+      ): Promise<ConfigService> => {
+        program = createCommand();
+        Object.assign(program.opts(), opts);
+
+        fs.writeJSONSync.mockReset();
+        fs.readJSONSync.mockReset();
+        fs.ensureFileSync.mockReset();
+
+        const moduleRef = await Test.createTestingModule({
+          providers: [
+            ConfigService,
+            { provide: LOGGER, useValue: { log, error } },
+            { provide: COMMANDER_PROGRAM, useValue: program },
+          ],
+        }).compile();
+
+        return moduleRef.get(ConfigService);
+      };
+
+      beforeEach(() => {
+        fs.existsSync.mockReset();
+        exitSpy = jest
+          .spyOn(process, 'exit')
+          .mockImplementation((() => undefined) as never);
+        originalEnv = { ...process.env };
+        delete process.env[ConfigService.envConfigVariable];
+      });
+
+      afterEach(() => {
+        exitSpy.mockRestore();
+        process.env = { ...originalEnv };
+      });
+
       describe('--openapitools set', () => {
-        beforeEach(async () => {
-          program = createCommand();
-          program.opts().openapitools = '/tmp/myopenapitools.json';
-
-          const moduleRef = await Test.createTestingModule({
-            providers: [
-              ConfigService,
-              { provide: LOGGER, useValue: { log } },
-              { provide: COMMANDER_PROGRAM, useValue: program },
-            ],
-          }).compile();
-
-          fixture = moduleRef.get(ConfigService);
-          fs.writeJSONSync.mockReset();
-          fs.readJSONSync.mockReset();
-          fs.ensureFileSync.mockReset();
-        });
-        it('returns path set at cli, if openapitools argument provided', () => {
+        it('returns path set at cli, if openapitools argument provided', async () => {
+          fs.existsSync.mockReturnValue(true);
+          const fixture = await createFixture({
+            openapitools: '/tmp/myopenapitools.json',
+          });
           expect(fixture.configFile).toEqual('/tmp/myopenapitools.json');
         });
       });
+
+      describe('-c/--config set', () => {
+        it('returns the path provided via --config', async () => {
+          fs.existsSync.mockReturnValue(true);
+          const fixture = await createFixture({
+            config: '/tmp/my-other-openapitools.json',
+          });
+          expect(fixture.configFile).toEqual('/tmp/my-other-openapitools.json');
+        });
+
+        it('resolves a relative path against the cwd', async () => {
+          fs.existsSync.mockReturnValue(true);
+          const fixture = await createFixture({ config: 'conf/openapi.json' });
+          expect(fixture.configFile).toEqual(
+            path.resolve(fixture.cwd, 'conf/openapi.json'),
+          );
+        });
+      });
+
+      describe(ConfigService.envConfigVariable + ' set', () => {
+        it('returns the path set via the environment variable', async () => {
+          fs.existsSync.mockReturnValue(true);
+          process.env[ConfigService.envConfigVariable] =
+            '/tmp/env-openapitools.json';
+          const fixture = await createFixture();
+          expect(fixture.configFile).toEqual('/tmp/env-openapitools.json');
+        });
+
+        it('resolves a relative environment variable path against the cwd', async () => {
+          fs.existsSync.mockReturnValue(true);
+          process.env[ConfigService.envConfigVariable] = 'conf/openapi.json';
+          const fixture = await createFixture();
+          expect(fixture.configFile).toEqual(
+            path.resolve(fixture.cwd, 'conf/openapi.json'),
+          );
+        });
+      });
+
+      describe('a cli option and the environment variable are set', () => {
+        it('the cli option takes precedence over the environment variable', async () => {
+          fs.existsSync.mockReturnValue(true);
+          process.env[ConfigService.envConfigVariable] =
+            '/tmp/env-openapitools.json';
+          const fixture = await createFixture({
+            config: '/tmp/cli-openapitools.json',
+          });
+          expect(fixture.configFile).toEqual('/tmp/cli-openapitools.json');
+        });
+      });
+
       describe('--openapitools not set', () => {
-        it('returns default path, if openapitools argument not provided', () => {
+        it('returns default path, if openapitools argument not provided', async () => {
+          const fixture = await createFixture();
           expect(fixture.configFile).toEqual(
             expect.stringMatching(/[/\\]openapitools\.json$/),
           );
+        });
+      });
+
+      describe('the explicit config file does not exist', () => {
+        it('logs an error and exits, if the path was set via a cli option', async () => {
+          fs.existsSync.mockReturnValue(false);
+          const fixture = await createFixture({
+            config: '/tmp/not-existing-openapitools.json',
+          });
+          expect(fixture.configFile).toEqual('/tmp/not-existing-openapitools.json');
+          expect(error).toHaveBeenCalledWith(
+            expect.stringContaining('/tmp/not-existing-openapitools.json'),
+          );
+          expect(exitSpy).toHaveBeenCalledWith(1);
+        });
+
+        it('logs an error and exits, if the path was set via the environment variable', async () => {
+          fs.existsSync.mockReturnValue(false);
+          process.env[ConfigService.envConfigVariable] =
+            '/tmp/not-existing-openapitools.json';
+          await createFixture();
+          expect(error).toHaveBeenCalledWith(
+            expect.stringContaining('/tmp/not-existing-openapitools.json'),
+          );
+          expect(error).toHaveBeenCalledWith(
+            expect.stringContaining(ConfigService.envConfigVariable),
+          );
+          expect(exitSpy).toHaveBeenCalledWith(1);
+        });
+
+        it('does not exit, if the default config file does not exist', async () => {
+          fs.existsSync.mockReturnValue(false);
+          const errorCallsBefore = error.mock.calls.length;
+          const fixture = await createFixture();
+          expect(fixture.configFile).toEqual(
+            expect.stringMatching(/[/\\]openapitools\.json$/),
+          );
+          expect(exitSpy).not.toHaveBeenCalled();
+          expect(error.mock.calls.length).toBe(errorCallsBefore);
         });
       });
     });

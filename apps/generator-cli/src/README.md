@@ -165,6 +165,34 @@ Further it is also possible to configure generators, for example:
 If `openapi-generator-cli generate` is called without further arguments, then the configuration 
 is automatically used to generate your code. 🎉
 
+### Config file location
+
+By default, `openapi-generator-cli` reads and writes *openapitools.json* in the current working directory.
+To use a config file somewhere else (e.g. in a monorepo with a shared configuration), pass a global option
+before the command or set an environment variable:
+
+```sh
+# global option (place it before the command)
+openapi-generator-cli -c /path/to/openapitools.json generate -i spec.yaml -g ruby
+
+# the long form works as well and is equivalent to the existing --openapitools option
+openapi-generator-cli --config /path/to/openapitools.json version-manager list
+
+# via environment variable, e.g. in CI
+OPENAPI_GENERATOR_CLI_CONFIG=/path/to/openapitools.json openapi-generator-cli generate
+```
+
+The config file location is resolved in the following order:
+
+1. the global option `-c, --config <path>` or `--openapitools <openapitools.json>`
+2. the `OPENAPI_GENERATOR_CLI_CONFIG` environment variable
+3. *./openapitools.json* (default)
+
+Relative paths are resolved against the current working directory. When an explicit path is given
+(via option or environment variable) but the file does not exist, the CLI exits with an error instead
+of silently creating a new configuration file. When neither the option nor the environment variable is
+set, the default *./openapitools.json* is used (and created on first usage), just like before.
+
 
 ##### Available placeholders
      
