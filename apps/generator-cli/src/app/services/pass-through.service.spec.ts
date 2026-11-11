@@ -1,6 +1,7 @@
 import { Test } from '@nestjs/testing';
 import chalk from 'chalk';
 import { Command, createCommand } from 'commander';
+import { EventEmitter } from 'events';
 import { COMMANDER_PROGRAM, LOGGER } from '../constants';
 import { GeneratorService } from './generator.service';
 import { PassThroughService } from './pass-through.service';
@@ -13,6 +14,16 @@ jest.mock('fs');
 const childProcess = jest.mocked(require('child_process'));
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fs = jest.mocked(require('fs'));
+
+const makeChildProcess = () => {
+  const child = new EventEmitter() as EventEmitter & {
+    stdout: EventEmitter & { setEncoding: jest.Mock };
+    stderr: EventEmitter & { setEncoding: jest.Mock };
+  };
+  child.stdout = Object.assign(new EventEmitter(), { setEncoding: jest.fn() });
+  child.stderr = Object.assign(new EventEmitter(), { setEncoding: jest.fn() });
+  return child;
+};
 
 describe('PassThroughService', () => {
   let fixture: PassThroughService;
@@ -58,7 +69,9 @@ describe('PassThroughService', () => {
 
     fixture = moduleRef.get(PassThroughService);
 
-    childProcess.spawn.mockReset().mockReturnValue({ on: jest.fn() });
+    childProcess.spawn
+      .mockReset()
+      .mockImplementation(() => makeChildProcess());
     fs.existsSync.mockReset().mockReturnValue(true);
     configServiceMock.get.mockClear();
     configServiceMock.get.mockReset();
@@ -71,9 +84,14 @@ describe('PassThroughService', () => {
         let error: Error;
 
         beforeEach(async () => {
-          childProcess.exec.mockImplementation((cmd: string, cb) =>
-            cb(true, undefined, 'Some error')
-          );
+          childProcess.spawn.mockImplementation(() => {
+            const child = makeChildProcess();
+            setImmediate(() => {
+              child.stderr.emit('data', 'Some error');
+              child.emit('close', 1);
+            });
+            return child;
+          });
           try {
             await fixture.init();
           } catch (e) {
@@ -122,22 +140,77 @@ describe('PassThroughService', () => {
           '  --help',
         ].join('\n');
 
-        beforeEach(async () => {
-          childProcess.exec.mockImplementation((cmd: string, cb) => {
-            if (cmd.endsWith('"/some/path/to/4.2.1.jar" help')) {
-              cb(undefined, helpText);
-            }
+        let spawnedChildren: ReturnType<typeof makeChildProcess>[];
 
-            if (cmd.endsWith('"/some/path/to/4.2.1.jar" completion')) {
-              cb(undefined, completionText);
-            }
+        beforeEach(async () => {
+          // discovery must see a deterministic environment, regardless of
+          // what JAVA_OPTS an earlier test left behind
+          delete process.env['JAVA_OPTS'];
+          spawnedChildren = [];
+          childProcess.spawn.mockImplementation((command: string, args) => {
+            const child = makeChildProcess();
+            spawnedChildren.push(child);
+            const invoked = [command, ...(args ?? [])].join(' ');
+            const output = invoked.endsWith('/some/path/to/4.2.1.jar help')
+              ? helpText
+              : invoked.endsWith('/some/path/to/4.2.1.jar completion')
+                ? completionText
+                : undefined;
+
+            setImmediate(() => {
+              if (output !== undefined) {
+                child.stdout.emit('data', output);
+                child.emit('close', 0);
+              }
+            });
+            return child;
           });
           await fixture.init();
         });
 
-        it('adds 10 commands', () => {
-          expect(program.commands).toHaveLength(10);
-        });
+          it('adds 10 commands', () => {
+            expect(program.commands).toHaveLength(10);
+          });
+
+          // the first two spawns are the command discovery of getCommands():
+          // `help` and `completion` are invoked on the exact argv (java,
+          // jar path, sub command - JAVA_OPTS unset) and without a shell, so
+          // regressions in the discovery process construction are caught
+          it('spawns help discovery with the exact argv and without a shell', () => {
+            expect(childProcess.spawn).toHaveBeenNthCalledWith(
+              1,
+              'java',
+              ['-jar', '/some/path/to/4.2.1.jar', 'help'],
+              { shell: false }
+            );
+          });
+
+          it('spawns completion discovery with the exact argv and without a shell', () => {
+            expect(childProcess.spawn).toHaveBeenNthCalledWith(
+              2,
+              'java',
+              ['-jar', '/some/path/to/4.2.1.jar', 'completion'],
+              { shell: false }
+            );
+          });
+
+          // the discovery output is decoded as utf8 up front, so a multi-byte
+          // character split across two stdout chunks cannot turn into
+          // replacement characters in the parsed command list
+          it('decodes the discovery stdout as utf8', () => {
+            expect(spawnedChildren[0].stdout.setEncoding).toHaveBeenCalledWith(
+              'utf8'
+            );
+            expect(spawnedChildren[0].stderr.setEncoding).toHaveBeenCalledWith(
+              'utf8'
+            );
+            expect(spawnedChildren[1].stdout.setEncoding).toHaveBeenCalledWith(
+              'utf8'
+            );
+            expect(spawnedChildren[1].stderr.setEncoding).toHaveBeenCalledWith(
+              'utf8'
+            );
+          });
 
         describe.each([
           [
@@ -181,11 +254,20 @@ describe('PassThroughService', () => {
             it('delegates to docker', async () => {
               await program.parseAsync([name, ...argv], { from: 'user' });
               expect(childProcess.spawn).toHaveBeenNthCalledWith(
-                1,
-                `docker run --rm -v "/foo/bar:/local" openapitools/openapi-generator-cli:v4.2.1 ${name} ${argv.join(' ')}`,
+                3,
+                'docker',
+                [
+                  'run',
+                  '--rm',
+                  '-v',
+                  '/foo/bar:/local',
+                  'openapitools/openapi-generator-cli:v4.2.1',
+                  name,
+                  ...argv,
+                ],
                 {
                   stdio: 'inherit',
-                  shell: true,
+                  shell: false,
                 }
               );
             });
@@ -194,11 +276,12 @@ describe('PassThroughService', () => {
           it('can delegate', async () => {
             await program.parseAsync([name, ...argv], { from: 'user' });
             expect(childProcess.spawn).toHaveBeenNthCalledWith(
-              1,
-              `java -jar "/some/path/to/4.2.1.jar" ${name} ${argv.join(' ')}`,
+              3,
+              'java',
+              ['-jar', '/some/path/to/4.2.1.jar', name, ...argv],
               {
                 stdio: 'inherit',
-                shell: true,
+                shell: false,
               }
             );
           });
@@ -207,11 +290,114 @@ describe('PassThroughService', () => {
             process.env['JAVA_OPTS'] = 'java-opt-1=1';
             await program.parseAsync([name, ...argv], { from: 'user' });
             expect(childProcess.spawn).toHaveBeenNthCalledWith(
-              1,
-              `java java-opt-1=1 -jar "/some/path/to/4.2.1.jar" ${name} ${argv.join(' ')}`,
+              3,
+              'java',
+              ['java-opt-1=1', '-jar', '/some/path/to/4.2.1.jar', name, ...argv],
               {
                 stdio: 'inherit',
-                shell: true,
+                shell: false,
+              }
+            );
+          });
+
+          it('passes JAVA_OPTS with a pipe character through as a single argument', async () => {
+            process.env['JAVA_OPTS'] = '-Dhttp.nonProxyHosts=127.*|localhost';
+            await program.parseAsync([name, ...argv], { from: 'user' });
+            expect(childProcess.spawn).toHaveBeenNthCalledWith(
+              3,
+              'java',
+              [
+                '-Dhttp.nonProxyHosts=127.*|localhost',
+                '-jar',
+                '/some/path/to/4.2.1.jar',
+                name,
+                ...argv,
+              ],
+              {
+                stdio: 'inherit',
+                shell: false,
+              }
+            );
+          });
+
+          it('splits quoted JAVA_OPTS into separate arguments without a shell', async () => {
+            process.env['JAVA_OPTS'] =
+              '-Dhttp.nonProxyHosts="127.*|localhost|*.local" -Dsome.opt=\'a b\'';
+            await program.parseAsync([name, ...argv], { from: 'user' });
+            expect(childProcess.spawn).toHaveBeenNthCalledWith(
+              3,
+              'java',
+              [
+                '-Dhttp.nonProxyHosts=127.*|localhost|*.local',
+                '-Dsome.opt=a b',
+                '-jar',
+                '/some/path/to/4.2.1.jar',
+                name,
+                ...argv,
+              ],
+              {
+                stdio: 'inherit',
+                shell: false,
+              }
+            );
+          });
+
+          // Unlike a POSIX shell, an unquoted backslash is NOT an escape
+          // character here: JAVA_OPTS on Windows typically carries paths such
+          // as C:\certs\client.jks, and shell-style escape handling would
+          // silently strip the separators (C:certsclient.jks). Since the args
+          // are handed to java verbatim (no shell in between), java itself
+          // does not interpret the backslashes either, so keeping them is
+          // always the faithful transfer of JAVA_OPTS. Escaping is only
+          // interpreted inside double quotes, see the escaped quote tests
+          // below.
+          it('keeps backslashes of unquoted JAVA_OPTS verbatim', async () => {
+            process.env['JAVA_OPTS'] =
+              '-Djavax.net.ssl.keyStore=C:\\certs\\client.jks';
+            await program.parseAsync([name, ...argv], { from: 'user' });
+            expect(childProcess.spawn).toHaveBeenNthCalledWith(
+              3,
+              'java',
+              [
+                '-Djavax.net.ssl.keyStore=C:\\certs\\client.jks',
+                '-jar',
+                '/some/path/to/4.2.1.jar',
+                name,
+                ...argv,
+              ],
+              {
+                stdio: 'inherit',
+                shell: false,
+              }
+            );
+          });
+
+          // Inside double quotes the backslash keeps its typical shell
+          // meaning and escapes exactly the characters a shell would let it
+          // escape (" \ $ `), so the \" of -Dfoo="a\"b" is passed to java as
+          // a literal quote instead of ending the quoted segment early (and
+          // the rest of JAVA_OPTS being parsed as unquoted input). Inside
+          // single quotes a backslash has no special meaning at all.
+          it('passes escaped quotes inside double-quoted JAVA_OPTS through to java', async () => {
+            // runtime JAVA_OPTS: -Dfoo="a\"b" -Dbaz="c\\d" -Dqux='e\"f'
+            process.env['JAVA_OPTS'] =
+              '-Dfoo="a\\"b" -Dbaz="c\\\\d" -Dqux=\'e\\"f\'';
+            await program.parseAsync([name, ...argv], { from: 'user' });
+            expect(childProcess.spawn).toHaveBeenNthCalledWith(
+              3,
+              'java',
+              [
+                '-Dfoo=a"b',
+                '-Dbaz=c\\d',
+                '-Dqux=e\\"f',
+                '-jar',
+                '/some/path/to/4.2.1.jar',
+                name,
+                ...argv,
+              ],
+              {
+                stdio: 'inherit',
+                shell: false,
               }
             );
           });
@@ -224,14 +410,20 @@ describe('PassThroughService', () => {
             const cpDelimiter = process.platform === 'win32' ? ';' : ':';
 
             expect(childProcess.spawn).toHaveBeenNthCalledWith(
-              1,
-              `java -cp "${[
-                '/some/path/to/4.2.1.jar',
-                '../some/custom.jar',
-              ].join(cpDelimiter)}" org.openapitools.codegen.OpenAPIGenerator ${name} ${argv.join(' ')}`,
+              3,
+              'java',
+              [
+                '-cp',
+                ['/some/path/to/4.2.1.jar', '../some/custom.jar'].join(
+                  cpDelimiter
+                ),
+                'org.openapitools.codegen.OpenAPIGenerator',
+                name,
+                ...argv,
+              ],
               {
                 stdio: 'inherit',
-                shell: true,
+                shell: false,
               }
             );
           });
@@ -244,11 +436,12 @@ describe('PassThroughService', () => {
             );
 
             expect(childProcess.spawn).toHaveBeenNthCalledWith(
-              1,
-              `java -jar "../some/custom.jar" ${name} ${argv.join(' ')}`,
+              3,
+              'java',
+              ['-jar', '../some/custom.jar', name, ...argv],
               {
                 stdio: 'inherit',
-                shell: true,
+                shell: false,
               }
             );
           });
@@ -311,17 +504,19 @@ describe('PassThroughService', () => {
 
               describe('process spawn', () => {
                 it(`spawns ${spawn ? 1 : 0} times`, () => {
+                  // init() already spawned help and completion discovery
                   expect(childProcess.spawn).toHaveBeenCalledTimes(
-                    spawn ? 1 : 0
+                    spawn ? 3 : 2
                   );
                 });
 
                 spawn &&
                   it('spawns the correct process', () => {
                     expect(childProcess.spawn).toHaveBeenNthCalledWith(
-                      1,
-                      `java -jar "/some/path/to/4.2.1.jar" ${cmd}`,
-                      { stdio: 'inherit', shell: true }
+                      3,
+                      'java',
+                      ['-jar', '/some/path/to/4.2.1.jar', ...cmd.split(' ')],
+                      { stdio: 'inherit', shell: false }
                     );
                   });
               });
