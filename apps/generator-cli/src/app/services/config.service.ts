@@ -4,21 +4,156 @@ import { COMMANDER_PROGRAM, LOGGER } from '../constants';
 import * as fs from 'fs-extra';
 import { Command } from 'commander';
 
+/**
+ * Result of scanning argv for the global config options.
+ */
+export interface GlobalConfigArgs {
+  /**
+   * The value of the global `-c/--config <path>` option, if it was used before
+   * the command name; `undefined` otherwise.
+   */
+  configPath: string | undefined;
+  /**
+   * The given argv without the global `-c/--config <path>` options, so they are
+   * not seen (and not passed on) by the invoked command.
+   */
+  argvWithoutGlobalConfigArgs: string[];
+}
+
+/**
+ * Extracts the global `-c/--config <path>` occurrences from `argv`.
+ *
+ * Only occurrences placed BEFORE the first positional argument (the command
+ * name) belong to the CLI itself. Afterwards, `-c` and `--config` are options
+ * of the invoked command — e.g. the Java generator defines its own
+ * `generate -c, --config <config file>` — so the scan stops there and those
+ * arguments are returned untouched.
+ *
+ * Root options that take their own value are skipped together with the value
+ * (e.g. `--openapitools`, `--custom-generator`), so a value that looks like a
+ * positional argument is not mistaken for the command name.
+ */
+export function extractGlobalConfigArgs(argv: string[]): GlobalConfigArgs {
+  const args = argv.slice(2); // skip the node executable and the script path
+  const occurrences: Array<{ index: number; hasSeparateValue: boolean }> = [];
+
+  let index = 0;
+  while (index < args.length) {
+    const arg = args[index];
+
+    if (arg === '--openapitools') {
+      // global option with a separate value, skip it and its value
+      index += 2;
+      continue;
+    }
+    if (arg.startsWith('--openapitools=')) {
+      index += 1;
+      continue;
+    }
+    if (arg === '--custom-generator') {
+      // root option with a separate value, skip it and its value
+      index += 2;
+      continue;
+    }
+    if (arg.startsWith('--custom-generator=')) {
+      index += 1;
+      continue;
+    }
+    if (arg === '-c' || arg === '--config') {
+      occurrences.push({ index, hasSeparateValue: true });
+      index += 2;
+      continue;
+    }
+    if (arg.startsWith('--config=')) {
+      occurrences.push({ index, hasSeparateValue: false });
+      index += 1;
+      continue;
+    }
+    if (arg.startsWith('-c') && arg.length > 2) {
+      // attached value, e.g. -cfoo.json
+      occurrences.push({ index, hasSeparateValue: false });
+      index += 1;
+      continue;
+    }
+
+    // the command name or an option of the invoked command:
+    // everything from here on belongs to the command
+    break;
+  }
+
+  if (occurrences.length === 0) {
+    return { configPath: undefined, argvWithoutGlobalConfigArgs: argv };
+  }
+
+  const configArgs = new Set<number>();
+  let configPath: string | undefined;
+  for (const { index, hasSeparateValue } of occurrences) {
+    configArgs.add(index);
+    if (hasSeparateValue) {
+      if (args[index + 1] === undefined) {
+        throw new Error(
+          'The -c/--config option requires a value (a path to an openapitools.json file)',
+        );
+      }
+      configArgs.add(index + 1);
+      configPath = args[index + 1];
+    } else if (args[index].startsWith('--config=')) {
+      configPath = args[index].slice('--config='.length);
+    } else {
+      configPath = args[index].slice(2);
+    }
+  }
+
+  return {
+    configPath,
+    argvWithoutGlobalConfigArgs: [
+      ...argv.slice(0, 2),
+      ...args.filter((_, i) => !configArgs.has(i)),
+    ],
+  };
+}
+
 @Injectable()
 export class ConfigService {
+  /**
+   * Environment variable pointing to an openapitools.json outside of the cwd.
+   * Precedence: cli option (-c/--config or --openapitools) > env var > ./openapitools.json
+   */
+  public static readonly envConfigVariable = 'OPENAPI_GENERATOR_CLI_CONFIG';
+
   public readonly cwd =
     process.env.PWD || process.env.INIT_CWD || process.cwd();
   public readonly configFile = this.configFileOrDefault();
 
   private configFileOrDefault() {
     this.program.parseOptions(process.argv);
-    const conf = this.program.opts().openapitools;
+    const opts = this.program.opts();
+    const globalConfigArgs = extractGlobalConfigArgs(process.argv);
+    const explicitConfigPath =
+      opts.openapitools ||
+      globalConfigArgs.configPath ||
+      process.env[ConfigService.envConfigVariable];
 
-    if (!conf) {
+    if (!explicitConfigPath) {
       return path.resolve(this.cwd, 'openapitools.json');
     }
 
-    return path.isAbsolute(conf) ? conf : path.resolve(this.cwd, conf);
+    const configPath = path.isAbsolute(explicitConfigPath)
+      ? explicitConfigPath
+      : path.resolve(this.cwd, explicitConfigPath);
+
+    if (!fs.existsSync(configPath)) {
+      this.logger.error(
+        `Config file not found at "${configPath}". It was set via ${
+          opts.openapitools || globalConfigArgs.configPath
+            ? 'the -c/--config or --openapitools option'
+            : `the ${ConfigService.envConfigVariable} environment variable`
+        }. Please make sure the file exists, or unset it to use the default ./openapitools.json.`,
+      );
+      process.exit(1);
+    }
+
+    return configPath;
   }
 
   public get useDocker() {
