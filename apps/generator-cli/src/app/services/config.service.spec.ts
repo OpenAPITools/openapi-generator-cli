@@ -23,6 +23,10 @@ describe('ConfigService', () => {
     // mistaken for cli options
     originalArgv = process.argv;
     process.argv = ['node', 'openapi-generator-cli'];
+    // keep the host environment from leaking into the resolution: an exported
+    // OPENAPI_GENERATOR_CLI_CONFIG would send every ConfigService construction
+    // in this suite down the config-not-found path
+    delete process.env[ConfigService.envConfigVariable];
 
     program = createCommand();
     jest.spyOn(program, 'helpInformation');
@@ -311,6 +315,35 @@ describe('ConfigService', () => {
           expect(fixture.configFile).toEqual(
             path.resolve(fixture.cwd, 'conf/openapi.json'),
           );
+        });
+
+        it('skips root options with a value, e.g. --custom-generator, before the command', async () => {
+          fs.existsSync.mockReturnValue(true);
+          const fixture = await createFixture([
+            'node',
+            'openapi-generator-cli',
+            '--custom-generator',
+            './my-generator.jar',
+            '-c',
+            '/tmp/my-other-openapitools.json',
+            'version-manager',
+            'resolve',
+          ]);
+          expect(fixture.configFile).toEqual(
+            '/tmp/my-other-openapitools.json',
+          );
+        });
+
+        it('rejects a trailing -c without a value', async () => {
+          await expect(
+            createFixture(['node', 'openapi-generator-cli', '-c']),
+          ).rejects.toThrow('The -c/--config option requires a value');
+        });
+
+        it('rejects a trailing --config without a value', async () => {
+          await expect(
+            createFixture(['node', 'openapi-generator-cli', '--config']),
+          ).rejects.toThrow('The -c/--config option requires a value');
         });
       });
 

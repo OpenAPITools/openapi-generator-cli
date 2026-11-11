@@ -28,6 +28,10 @@ export interface GlobalConfigArgs {
  * of the invoked command — e.g. the Java generator defines its own
  * `generate -c, --config <config file>` — so the scan stops there and those
  * arguments are returned untouched.
+ *
+ * Root options that take their own value are skipped together with the value
+ * (e.g. `--openapitools`, `--custom-generator`), so a value that looks like a
+ * positional argument is not mistaken for the command name.
  */
 export function extractGlobalConfigArgs(argv: string[]): GlobalConfigArgs {
   const args = argv.slice(2); // skip the node executable and the script path
@@ -43,6 +47,15 @@ export function extractGlobalConfigArgs(argv: string[]): GlobalConfigArgs {
       continue;
     }
     if (arg.startsWith('--openapitools=')) {
+      index += 1;
+      continue;
+    }
+    if (arg === '--custom-generator') {
+      // root option with a separate value, skip it and its value
+      index += 2;
+      continue;
+    }
+    if (arg.startsWith('--custom-generator=')) {
       index += 1;
       continue;
     }
@@ -77,6 +90,11 @@ export function extractGlobalConfigArgs(argv: string[]): GlobalConfigArgs {
   for (const { index, hasSeparateValue } of occurrences) {
     configArgs.add(index);
     if (hasSeparateValue) {
+      if (args[index + 1] === undefined) {
+        throw new Error(
+          'The -c/--config option requires a value (a path to an openapitools.json file)',
+        );
+      }
       configArgs.add(index + 1);
       configPath = args[index + 1];
     } else if (args[index].startsWith('--config=')) {
