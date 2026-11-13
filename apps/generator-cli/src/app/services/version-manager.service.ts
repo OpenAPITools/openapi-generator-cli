@@ -64,11 +64,11 @@ export class VersionManagerService {
 
     const queryUrl = this.replacePlaceholders(
       this.configService.get<string>('generator-cli.repository.queryUrl') ||
-        configSchema.properties['generator-cli'].properties.repository.queryUrl
-          .default
+        configSchema.properties['generator-cli'].properties.repository.properties
+          .queryUrl.default
     );
 
-    return this.httpService.get(queryUrl).pipe(
+    return this.httpService.get(queryUrl, this.getAuthConfig()).pipe(
       map(({ data }) => data.response.docs),
       map((docs) =>
         docs.map((doc) => ({
@@ -172,7 +172,7 @@ export class VersionManagerService {
 
     try {
       await this.httpService
-        .get<Stream>(downloadLink, { responseType: 'stream' })
+        .get<Stream>(downloadLink, { responseType: 'stream', ...this.getAuthConfig() })
         .pipe(
           switchMap(
             (res) =>
@@ -247,7 +247,7 @@ export class VersionManagerService {
   private createDownloadLink(versionName: string) {
     return this.replacePlaceholders(
       this.configService.get<string>('generator-cli.repository.downloadUrl') ||
-        configSchema.properties['generator-cli'].properties.repository
+        configSchema.properties['generator-cli'].properties.repository.properties
           .downloadUrl.default,
       { versionName }
     );
@@ -267,6 +267,15 @@ export class VersionManagerService {
     }
 
     return str;
+  }
+
+  private getAuthConfig() {
+    const username = this.configService.get<string>('generator-cli.repository.username');
+    const password = this.configService.get<string>('generator-cli.repository.password');
+    if (username && password) {
+      return { auth: { username, password } };
+    }
+    return {};
   }
 
   private printResponseError(error: AxiosError) {

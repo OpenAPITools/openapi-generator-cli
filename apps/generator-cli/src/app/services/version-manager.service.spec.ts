@@ -22,6 +22,8 @@ describe('VersionManagerService', () => {
 
   const getVersion = jest.fn().mockReturnValue('4.3.0');
   const getStorageDir = jest.fn().mockReturnValue(undefined);
+  const getUsername = jest.fn().mockReturnValue(undefined);
+  const getPassword = jest.fn().mockReturnValue(undefined);
   const setVersion = jest.fn();
 
   let testBed: TestingModule;
@@ -49,6 +51,14 @@ describe('VersionManagerService', () => {
                 // return 'https://search.maven.custom/solrsearch/select?q=g:${repository.groupId}+AND+a:${repository.artifactId}&core=gav&start=0&rows=250';
               }
 
+              if (k === 'generator-cli.repository.username') {
+                return getUsername();
+              }
+
+              if (k === 'generator-cli.repository.password') {
+                return getPassword();
+              }
+
               return getVersion(k);
             },
             set: setVersion,
@@ -65,6 +75,8 @@ describe('VersionManagerService', () => {
   beforeEach(async () => {
     [get].forEach((fn) => fn.mockClear());
     getStorageDir.mockReturnValue(undefined);
+    getUsername.mockReturnValue(undefined);
+    getPassword.mockReturnValue(undefined);
     await compile();
     fs.existsSync
       .mockReset()
@@ -142,6 +154,7 @@ describe('VersionManagerService', () => {
         expect(get).toHaveBeenNthCalledWith(
           1,
           'https://central.sonatype.com/solrsearch/select?q=g:org.openapitools+AND+a:openapi-generator-cli&core=gav&start=0&rows=200',
+          {},
         );
       });
 
@@ -184,6 +197,7 @@ describe('VersionManagerService', () => {
           expect(get).toHaveBeenNthCalledWith(
             1,
             'https://central.sonatype.com/solrsearch/select?q=g:org.openapitools+AND+a:openapi-generator-cli&core=gav&start=0&rows=200',
+            {},
           );
         });
 
@@ -219,6 +233,7 @@ describe('VersionManagerService', () => {
           expect(get).toHaveBeenNthCalledWith(
             1,
             'https://central.sonatype.com/solrsearch/select?q=g:org.openapitools+AND+a:openapi-generator-cli&core=gav&start=0&rows=200',
+            {},
           );
         });
 
@@ -371,7 +386,9 @@ describe('VersionManagerService', () => {
 
         it('logs the correct messages', () => {
           expect(logMessages).toEqual({
-            before: [chalk.yellow(`Download 4.2.0 ...`)],
+            before: [
+              chalk.yellow(`Download 4.2.0 ...`),
+            ],
             after: [
               chalk.red(`Download failed, because of: "HTTP 404 Not Found"`),
             ],
@@ -423,7 +440,9 @@ describe('VersionManagerService', () => {
         describe('logging', () => {
           it('logs the correct messages', () => {
             expect(logMessages).toEqual({
-              before: [chalk.yellow(`Download 4.2.0 ...`)],
+              before: [
+                chalk.yellow(`Download 4.2.0 ...`),
+              ],
               after: [chalk.green(`Downloaded 4.2.0`)],
             });
           });
@@ -442,7 +461,9 @@ describe('VersionManagerService', () => {
               await compile();
               await fixture.download('4.2.0');
               expect(logMessages).toEqual({
-                before: [chalk.yellow(`Download 4.2.0 ...`)],
+                before: [
+                  chalk.yellow(`Download 4.2.0 ...`),
+                ],
                 after: [
                   chalk.green(
                     `Downloaded 4.2.0 to custom storage location ${resolve(expected)}`,
@@ -599,6 +620,86 @@ describe('VersionManagerService', () => {
           getStorageDir.mockReturnValue(cfgValue);
           await compile();
           expect(fixture.storage).toEqual(resolve(expected));
+        });
+      });
+    });
+
+    describe('repository authentication', () => {
+      const mavenDocs = {
+        data: {
+          response: {
+            docs: [
+              { v: '4.2.0', timestamp: 1599197918000 },
+              { v: '4.3.1', timestamp: 1588758220000 },
+            ],
+          },
+        },
+      };
+
+      describe('when username and password are configured', () => {
+        beforeEach(async () => {
+          getUsername.mockReturnValue('myuser');
+          getPassword.mockReturnValue('mypass');
+          await compile();
+          get.mockReturnValue(of(mavenDocs));
+        });
+
+        it('passes auth to the query request', async () => {
+          await fixture.getAll().toPromise();
+          expect(get).toHaveBeenCalledWith(
+            expect.any(String),
+            { auth: { username: 'myuser', password: 'mypass' } },
+          );
+        });
+
+        it('passes auth to the download request', async () => {
+          const data = { pipe: jest.fn() };
+          const file = {
+            on: jest.fn().mockImplementation((listener, res) => {
+              if (listener === 'finish') return res();
+            }),
+          };
+
+          fs.mkdtempSync.mockReturnValue('/tmp/generator-cli-abcDEF');
+          fs.createWriteStream.mockReturnValue(file);
+          get.mockReturnValue(of({ data }));
+
+          await fixture.download('4.2.0');
+          expect(get).toHaveBeenCalledWith(
+            expect.any(String),
+            { responseType: 'stream', auth: { username: 'myuser', password: 'mypass' } },
+          );
+        });
+      });
+
+      describe('when only username is configured', () => {
+        beforeEach(async () => {
+          getUsername.mockReturnValue('myuser');
+          getPassword.mockReturnValue(undefined);
+          await compile();
+          get.mockReturnValue(of(mavenDocs));
+        });
+
+        it('does not pass auth to the query request', async () => {
+          await fixture.getAll();
+          expect(get).toHaveBeenCalledWith(
+            expect.any(String),
+            {},
+          );
+        });
+      });
+
+      describe('when neither username nor password is configured', () => {
+        beforeEach(async () => {
+          get.mockReturnValue(of(mavenDocs));
+        });
+
+        it('does not pass auth to the query request', async () => {
+          await fixture.getAll();
+          expect(get).toHaveBeenCalledWith(
+            expect.any(String),
+            {},
+          );
         });
       });
     });
