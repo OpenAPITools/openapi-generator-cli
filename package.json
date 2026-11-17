@@ -27,7 +27,7 @@
     "url": "git+https://github.com/OpenAPITools/openapi-generator-cli.git"
   },
   "publishConfig": {
-    "registry": "https://registry.npmjs.org"
+    "registry": "https://registry.yarnpkg.com"
   },
   "keywords": [
     "rest-api",
