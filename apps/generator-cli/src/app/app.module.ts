@@ -7,6 +7,9 @@ import { COMMANDER_PROGRAM, LOGGER } from './constants';
 import { VersionManagerController } from './controllers/version-manager.controller';
 import {
   ConfigService,
+  extractGlobalConfigArgs,
+} from './services/config.service';
+import {
   GeneratorService,
   PassThroughService,
   UIService,
@@ -49,6 +52,21 @@ if (hasHttpsProxyEnvs) {
         .option(
           '--openapitools <openapitools.json>',
           'Use the specified openapi-generator-cli configuration file',
+        )
+        // The global `-c, --config <path>` option is intentionally NOT
+        // registered with commander: commander would consume it from the whole
+        // argv — including after the command name — which would swallow the
+        // Java generator's own `generate -c, --config <config file>` option.
+        // Instead, it is only honored BEFORE the command name by ConfigService
+        // (see extractGlobalConfigArgs) and stripped from the argv handed to
+        // commander below. It is listed here so it still shows up in the help.
+        .addHelpText(
+          'after',
+          '\nGlobal config option (must be placed before the command name):\n\n' +
+            '  -c, --config <path>\n' +
+            '      Use the specified openapi-generator-cli configuration file (alternative to --openapitools, also available via the ' +
+            ConfigService.envConfigVariable +
+            ' environment variable)\n',
         ),
     },
     { provide: LOGGER, useValue: console },
@@ -86,7 +104,13 @@ export class AppModule implements OnApplicationBootstrap {
     if (!isVersionManagerResolveCommand) {
       await this.passThroughService.init();
     }
-    this.program.parse(process.argv);
+    // Remove the global -c/--config options from the argv handed to commander:
+    // they are not registered (see above), and an unrecognized option before
+    // the command name would make commander treat the command itself as an
+    // unknown argument and skip its dispatch.
+    this.program.parse(
+      extractGlobalConfigArgs(process.argv).argvWithoutGlobalConfigArgs,
+    );
   };
 
   private isVersionManagerResolveCommand() {
@@ -96,12 +120,20 @@ export class AppModule implements OnApplicationBootstrap {
     while (commandIndex < args.length) {
       const arg = args[commandIndex];
 
-      if (arg === '--openapitools') {
+      if (
+        arg === '--openapitools' ||
+        arg === '--config' ||
+        arg === '-c'
+      ) {
         commandIndex += 2;
         continue;
       }
 
-      if (arg.startsWith('--openapitools=')) {
+      if (
+        arg.startsWith('--openapitools=') ||
+        arg.startsWith('--config=') ||
+        (arg.startsWith('-c') && arg.length > 2)
+      ) {
         commandIndex += 1;
         continue;
       }
