@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import chalk from 'chalk';
-import { exec, spawn } from 'child_process';
+import { spawn } from 'child_process';
 import { Command } from 'commander';
 import * as fs from 'fs';
 import { COMMANDER_PROGRAM, LOGGER } from '../constants';
@@ -85,14 +85,15 @@ export class PassThroughService {
   }
 
   public passThrough = (cmd: Command) => {
-    const args = [cmd.name(), ...cmd.args];
-    // Join command and args into a single string to avoid Node 24+ deprecation warning
-    // DEP0190: passing args to spawn with shell: true concatenates without escaping
-    const fullCommand = [this.cmd(), ...args].join(' ');
+    const [command, ...args] = [...this.cmd(), cmd.name(), ...cmd.args];
 
-    spawn(fullCommand, {
+    // Spawned as an args array without a shell so that characters which are
+    // meaningful to a shell (e.g. the `|` in -Dhttp.nonProxyHosts=127.*|localhost
+    // coming from JAVA_OPTS) reach the java process verbatim. This also avoids
+    // the Node deprecation warning DEP0190.
+    spawn(command, args, {
       stdio: 'inherit',
-      shell: true,
+      shell: false,
     }).on('exit', process.exit);
   };
 
@@ -127,17 +128,40 @@ export class PassThroughService {
 
   private run = (subCmd: string) =>
     new Promise<string>((resolve, reject) => {
-      exec(`${this.cmd()} ${subCmd}`, (error, stdout, stderr) => {
-        error ? reject(new Error(stderr)) : resolve(stdout);
-      });
+      const [command, ...args] = [...this.cmd(), subCmd];
+      let stdout = '';
+      let stderr = '';
+
+      const child = spawn(command, args, { shell: false });
+      // decode the streams as utf8 so that a multi-byte character split
+      // across two chunks is reassembled instead of being emitted as
+      // replacement characters in the middle of the output
+      child.stdout.setEncoding('utf8');
+      child.stdout.on('data', (chunk) => (stdout += chunk));
+      child.stderr.setEncoding('utf8');
+      child.stderr.on('data', (chunk) => (stderr += chunk));
+      child
+        .on('error', reject)
+        .on('close', (code) =>
+          code === 0 ? resolve(stdout) : reject(new Error(stderr))
+        );
     });
 
-  private cmd() {
+  /**
+   * Returns the command which should be spawned as a proper argv array.
+   * JAVA_OPTS is split into separate arguments so that a shell is not needed
+   * (and must not misinterpret characters like `|` or `*`, see #1213).
+   */
+  private cmd(): string[] {
     if (this.configService.useDocker) {
       return [
-        `docker run --rm -v "${this.configService.cwd}:/local"`,
+        'docker',
+        'run',
+        '--rm',
+        '-v',
+        `${this.configService.cwd}:/local`,
         this.versionManager.getDockerImageName(),
-      ].join(' ');
+      ];
     }
 
     const customGenerator =
@@ -145,20 +169,98 @@ export class PassThroughService {
       this.getCustomGeneratorFromArgs();
     const cliPath = this.versionManager.filePath();
 
-    let subCmd: string;
+    let subCmd: string[];
     if (customGenerator) {
       subCmd = fs.existsSync(cliPath)
-        ? `-cp "${[cliPath, customGenerator].join(
-            this.isWin() ? ';' : ':'
-          )}" org.openapitools.codegen.OpenAPIGenerator`
-        : `-jar "${customGenerator}"`;
+        ? [
+            '-cp',
+            [cliPath, customGenerator].join(this.isWin() ? ';' : ':'),
+            'org.openapitools.codegen.OpenAPIGenerator',
+          ]
+        : ['-jar', customGenerator];
     } else {
-      subCmd = `-jar "${cliPath}"`;
+      subCmd = ['-jar', cliPath];
     }
 
-    return ['java', process.env['JAVA_OPTS'], subCmd]
-      .filter((str): str is string => str != null && typeof str === 'string')
-      .join(' ');
+    return ['java', ...this.splitArgs(process.env['JAVA_OPTS']), ...subCmd];
+  }
+
+  /**
+   * Splits a string into arguments the way a shell tokenizes them, respecting
+   * single and double quotes. A `|` inside JAVA_OPTS (legitimate for
+   * -Dhttp.nonProxyHosts) therefore stays part of its argument instead of
+   * splitting the command.
+   *
+   * Unlike a POSIX shell, a backslash is kept verbatim in unquoted tokens:
+   * JAVA_OPTS on Windows regularly carries paths such as C:\certs\client.jks,
+   * and treating the backslash as an escape character outside of quotes would
+   * strip those separators (C:certsclient.jks). Backslash escapes are only
+   * interpreted inside double quotes, where they follow the typical shell
+   * rules (see below).
+   */
+  private splitArgs(input?: string): string[] {
+    if (!input) {
+      return [];
+    }
+
+    const args: string[] = [];
+    let arg = '';
+    let hasArg = false;
+    let quote: '"' | "'" | undefined;
+
+    for (let i = 0; i < input.length; i++) {
+      const char = input[i];
+
+      if (quote) {
+        // inside double quotes a backslash escapes exactly the characters a
+        // typical shell would let it escape, so the `\"` of -Dfoo="a\"b"
+        // becomes a literal quote instead of ending the quoted segment early
+        if (
+          char === '\\' &&
+          quote === '"' &&
+          ['"', '\\', '$', '`'].includes(input[i + 1])
+        ) {
+          arg += input[++i];
+        } else if (char === quote) {
+          quote = undefined;
+        } else {
+          arg += char;
+        }
+        continue;
+      }
+
+      switch (char) {
+        case '"':
+        case "'":
+          quote = char;
+          hasArg = true;
+          break;
+        case '\\':
+          // keep backslashes verbatim in unquoted tokens so Windows paths in
+          // JAVA_OPTS (e.g. C:\certs\client.jks) reach java unmodified; the
+          // backslash is only an escape character inside double quotes
+          arg += char;
+          hasArg = true;
+          break;
+        default:
+          if (/\s/.test(char)) {
+            if (hasArg) {
+              args.push(arg);
+            }
+            arg = '';
+            hasArg = false;
+          } else {
+            arg += char;
+            hasArg = true;
+          }
+      }
+    }
+
+    if (hasArg) {
+      args.push(arg);
+    }
+
+    return args;
   }
 
   private printHelp(cmd: Pick<Command, 'helpInformation'>) {
